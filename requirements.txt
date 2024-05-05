@@ -1,0 +1,9 @@
+fastapi
+pydantic
+pydantic_core
+python-dotenv
+uvicorn
+SQLAlchemy
+psycopg2
+email-validator
+mysql-connector-python
