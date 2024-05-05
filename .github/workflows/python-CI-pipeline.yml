@@ -1,5 +1,5 @@
 name: Python CI Pipeline
-'on':
+on:
   pull_request:
     branches:
       - main
