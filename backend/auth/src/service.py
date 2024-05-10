@@ -20,8 +20,8 @@ def get_next_id(db):
 async def create_user(engine, user):
     """ Create a new user in the database, also check
     if user fields such as email already exist
-    :param db: Database session
-    :param user: User information to create, should be model.UserModel
+    :param db: Database engine, will be converted to session
+    :param user: User information to create, should be a dict
     :return: Created user, if an error is raised, return None"""
     with Session(engine) as db:
         # Ensure email is not a duplicate
