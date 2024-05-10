@@ -4,7 +4,7 @@ import schemas as _schemas
 import sqlalchemy.orm as _orm
 from auth import models as _model
 from sqlalchemy.orm.session import Session
-from database import get_db
+from service_database import get_db
 import auth.service as _service
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 

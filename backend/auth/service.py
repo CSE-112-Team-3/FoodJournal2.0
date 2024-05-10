@@ -5,12 +5,13 @@ import auth.models as _models
 from fastapi import HTTPException, status
 import email_validator as _email_validator
 from uuid import uuid4
-from sqlalchemy import or_
+from sqlalchemy import or_, and_, update, delete, insert, select
 import random
 import os
 from datetime import timedelta
+from auth.utils import verify, create_access_token
 
-async def login(request, db):
+async def login(request, db: _orm.Session):
     user = db.query(_models.UserModel).filter(
         or_(
             _models.UserModel.username == request.username,
