@@ -2,12 +2,12 @@ import './NavBar.css'
 import { Outlet, Link } from 'react-router-dom'
 export default function NavBar() {
     return(
-        <nav className='nav-bar'>
+        <nav className='nav-bar jockey-one-regular'>
             <div className='logo'>
                 <img src="../../public/images/nav-logo.png" alt='Food Journal Logo'/>
                 <p>My Food Journal</p>
             </div>
-            <ul>
+            <ul className='page-directory'>
                 <li>
                     <Link to='/'>HOME</Link>
                 </li>

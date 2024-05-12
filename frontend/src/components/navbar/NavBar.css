@@ -28,7 +28,14 @@
     color: white;
     text-decoration: none;
     padding: 10px 15px;
-    transition: color 0.2s;
+}
+
+.page-directory li:hover {
+    background-color: white;
+}
+
+.page-directory a:hover {
+    color: black;
 }
 
 .logo {
@@ -39,8 +46,9 @@
 }
 
 .logo p {
+    margin-top: 0px;
     color: white;
-    font-size: 20px;
+    font-size: 25px;
 }
 
 .sign-in {
@@ -57,5 +65,9 @@
 
 .sign-in a {
     text-decoration: underline;
+}
+
+.sign-in a:hover {
+    color: black;
 }
 
