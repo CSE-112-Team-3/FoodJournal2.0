@@ -5,6 +5,7 @@ import datetime as _datetime
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
+
 class UserModel(Base):
     __tablename__ = "fd_users"
 
@@ -15,3 +16,11 @@ class UserModel(Base):
     password = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+'''
+class VisitorModel(Base):
+    __tablename__ = "fd_visitors"
+
+    email: Column(String, nullable=False)
+    password: Column(String, nullable=False)
+'''

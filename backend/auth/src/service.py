@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 
 from .utils.hash import HashPass
 
+count = 0
+
 def email_exists(db, email):
     """ Check if a given email already exists in the database
     :param db: Database session
@@ -13,9 +15,16 @@ def email_exists(db, email):
     rslt = db.query(model.UserModel).filter(model.UserModel.email == email).first()
     return True if rslt is not None else False
 
+def is_login(db, email):
+    print(email)
+    rslt = db.query(model.VisitorModel).filter(model.VisitorModel.email == email).first()
+    return True if rslt is not None else False
+
+'''
 def get_next_id(db):
     rslt = db.query(model.UserModel).order_by(model.UserModel.id).all()[-1]
     return rslt.id + 1
+'''
 
 async def create_user(engine, user):
     """ Create a new user in the database, also check
@@ -36,7 +45,7 @@ async def create_user(engine, user):
         try:
             hash = HashPass.get_hash(user.get('password'))
             created_at = user.get('created_at')
-            user_obj = model.UserModel( id = get_next_id(db),
+            user_obj = model.UserModel( id = count + 1,
                                         first_name=user.get('first_name'), 
                                         last_name=user.get('last_name'),
                                         username=user.get('username'), 
@@ -50,4 +59,35 @@ async def create_user(engine, user):
         except Exception as e:
             print('User not added ', e)
         
-        return {"user": user_obj}
+        return {"user": user}
+    
+async def login(engine, visitor):
+    with Session(engine) as db:
+        if (email_exists(db, visitor.get('email'))):
+            rslt = db.query(model.UserModel).filter(model.UserModel.password == HashPass.get_hash(visitor.get('password'))).first()
+            try:
+                visitor_obj = model.VisitorModel( email=visitor.get('email'), 
+                                        password=visitor.get('password'))
+                db.add(visitor_obj)
+                print('added')
+                db.commit()
+                print('committed')
+            except Exception as e:
+                print('User not added ', e)
+            return True if rslt is not None else False
+        
+    return {"visitor": visitor}
+
+async def logout(engine, visitor):
+    with Session(engine) as db:
+        if (is_login(db, visitor.get('email'))):
+            rslt = db.query(model.VisitorModel).filter(model.VisitorModel.email == visitor.get('email')).first()
+            try:
+                db.delete(rslt)
+                db.commit()
+                print("Row deleted successfully.")
+            except Exception as e:
+                print('Row not deleted ', e)
+            return True if rslt is not None else False
+    
+    return {"visitor": visitor}
