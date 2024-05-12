@@ -7,7 +7,7 @@ from database import Base
 
 class UserModel(Base):
     __tablename__ = "fd_users" 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer(), primary_key=True, index=True)
     first_name = Column(String)
     last_name = Column(String)
     username = Column(String, unique=True, nullable=False)

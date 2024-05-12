@@ -12,17 +12,20 @@ from datetime import timedelta
 from auth.utils import verify, create_access_token
 
 async def login(request, db: _orm.Session):
+    # grabs information in regards to user per request
     user = db.query(_models.UserModel).filter(
         or_(
             _models.UserModel.username == request.username,
             _models.UserModel.email == request.username
         )
     ).first()
+    # return unauth if no user exists
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or username, try again."
         )
+    # case for inputting a wrong password
     if not verify(request.password, user.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
