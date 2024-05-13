@@ -26,6 +26,9 @@ export default function NavBar() {
                         <img src='../../public/images/default-pfp.png' alt='Default Profile Picture'/>
                     </li>
                     <li>
+                        {/* TO DO: once frontend has access to user token, 
+                        change this to switch btwn user's logout/username
+                        & sign in link if not logged in */}
                         <Link to='/signin'>Sign in?</Link>
                     </li>
                 </ul>
