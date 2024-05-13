@@ -28,6 +28,7 @@
     color: white;
     text-decoration: none;
     padding: 10px 15px;
+    transition: color 0.2s;
 }
 
 .nav-bar a:hover {
