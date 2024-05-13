@@ -10,7 +10,6 @@ import NavBar from './components/navbar/index.jsx';
 function App() {
   return (
     <div className="App">
-      <NavBar/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/discover" element={<Discover />} />

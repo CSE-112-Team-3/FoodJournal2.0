@@ -30,11 +30,16 @@
     padding: 10px 15px;
 }
 
-.page-directory li:hover {
+.nav-bar a:hover {
+    color: black;
+}
+
+.selected-page {
     background-color: white;
 }
 
-.page-directory a:hover {
+.selected-page a {
+    background-color: transparent;
     color: black;
 }
 
@@ -65,9 +70,5 @@
 
 .sign-in a {
     text-decoration: underline;
-}
-
-.sign-in a:hover {
-    color: black;
 }
 
