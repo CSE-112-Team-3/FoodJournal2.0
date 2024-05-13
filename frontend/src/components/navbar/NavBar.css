@@ -32,7 +32,7 @@
 }
 
 .nav-bar a:hover {
-    color: 636060;
+    color: #636060;
 }
 
 .selected-page {
@@ -41,7 +41,7 @@
 
 .selected-page a {
     background-color: transparent;
-    color: 636060;
+    color: #636060;
 }
 
 .logo {
