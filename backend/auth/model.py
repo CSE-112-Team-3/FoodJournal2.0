@@ -5,7 +5,6 @@ import datetime as _datetime
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
-
 class UserModel(Base):
     __tablename__ = "fd_users"
 
