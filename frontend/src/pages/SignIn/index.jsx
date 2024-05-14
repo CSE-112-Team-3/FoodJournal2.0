@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 import './SignInPage.css';
 
 function SignIn() {
@@ -7,31 +8,10 @@ function SignIn() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-  
-    const userData = {
-      email: email,
-      password: password
-    };
-  
-    fetch('INSERT API NAME', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData)
-    })
-    .then(response => {
-      if (response.ok) {
-        // REDIRECT TO HOME PAGE
-      } else {
-        // ERROR MESSAGE
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+    // send stuff to backend
+    console.log('Email:', email);
+    console.log('Password:', password);
   };
-  
 
   return (
     <div className="sign-in-box">
@@ -61,7 +41,7 @@ function SignIn() {
             <div className="sign-up-text">
               <p>New to food journal?</p>
                 <div className="sign-up-link">
-                  <a href="./SignUpPage.jsx">Sign up for free</a>
+                  <Link to='/signup'>Sign up for free</Link>
                 </div>
             </div>
           </div>

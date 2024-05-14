@@ -17,7 +17,8 @@ function App() {
           <Route path="/settings" element={<Settings/>}/>
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/signup" element={<SignUp/>}/>
-          <Route path="*" element={<h1>page not found</h1>}/>
+          <Route path="*" eq
+          lement={<h1>page not found</h1>}/>
         </Routes>
     </div>
   );
