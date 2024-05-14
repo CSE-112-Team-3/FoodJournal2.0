@@ -15,13 +15,20 @@ router_auth = APIRouter(
 
 @router_auth.post("/create_user")
 async def create_user(user: _schemas.UserBase, db: Session = Depends(get_db)):
-    """ Create a new user in the databse. Endpoint receives
+    """ 
+    Create a new user in the databse. Endpoint receives
     a JSON string with user information. To test the endpoint you can create a JSON file
-    and run `curl -X POST http://0.0.0.0:6542/user -H "Content-Type: application/json" -d @<filename>`"""
+    and run `curl -X POST http://0.0.0.0:6542/user -H "Content-Type: application/json" -d @<filename>`
+    """
     return await _service.create_user(user, db)
   
   
 
 @router_auth.post("/login")
 async def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    """ 
+    Login endpoint receives a JSON string with user information. 
+    To test the endpoint you can create a JSON file    
+    and run `curl -X POST http://0.0.0.0:6542/user -H "Content-Type: application/json" -d @<filename>`
+    """
     return await _service.login(request, db)

@@ -15,7 +15,7 @@ import os
 from datetime import timedelta
 from auth.utils import verify, create_access_token
 
-def email_exists(db, email):
+def email_exists(db: _orm.Session, email: str):
     """ Check if a given email already exists in the database
     :param db: Database session
     :param email: Email address to check"""
@@ -23,23 +23,35 @@ def email_exists(db, email):
     rslt = db.query(model.UserModel).filter(model.UserModel.email == email).first()
     return True if rslt is not None else False
 
-def is_login(db, email):
+def is_login(db: _orm.Session, email: str):
+    """
+    Check if a given email is logged in by querying the database.
+    
+    :param db: Database session
+    :param email: Email address to check
+    :return: True if the email is logged in, False otherwise
+    """
     print(email)
-    rslt = db.query(model.VisitorModel).filter(model.VisitorModel.email == email).first()
+    rslt = db.query(model.UserModel).filter(model.UserModel.email == email).first()
     return True if rslt is not None else False
 
-def get_next_id(db):
-    """ Get the next usable ID from the database. Check
+def get_next_id(db: _orm.Session):
+    """ 
+    Get the next usable ID from the database. Check
     the ID everytime instead of using local count to ensure that
     if the server restarts the count isn't reset.
+
     :paam db: Database session
-    :returns: Next usable ID"""
+    :returns: Next usable ID
+    """
     rslt = db.query(model.UserModel).order_by(model.UserModel.id).all()[-1]
     return rslt.id + 1
 
-async def create_user(user, db):
-    """ Create a new user in the database, also check
+async def create_user(user, db: _orm.Session):
+    """ 
+    Create a new user in the database, also check
     if user fields such as email already exist
+
     :param db: Database engine, will be converted to session
     :param user: User information to create, should be a dict
     :return: Created user, if an error is raised, return None"""
@@ -70,6 +82,14 @@ async def create_user(user, db):
     return {"user": user}
 
 async def login(request, db: _orm.Session):
+    """
+    Authenticate a user based on the provided request and database session.
+
+    :param request: Request object containing user credentials
+    :param db: Database session
+    :return: User access token and information upon successful authentication
+    """
+    
     # grabs information in regards to user per request
     user = db.query(_models.UserModel).filter(
         or_(
