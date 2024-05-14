@@ -4,11 +4,10 @@ from email_validator import validate_email
 from sqlalchemy.orm import Session
 from auth.utils import bcrypt
 from sqlalchemy import DateTime
-
 import sqlalchemy.orm as _orm
 import schemas as _schemas
 import datetime as _datetime
-import auth.models as _models
+import auth.model as _models
 from uuid import uuid4
 from sqlalchemy import or_, and_, update, delete, insert, select
 import random
@@ -38,40 +37,37 @@ def get_next_id(db):
     rslt = db.query(model.UserModel).order_by(model.UserModel.id).all()[-1]
     return rslt.id + 1
 
-async def create_user(engine, user):
+async def create_user(user, db):
     """ Create a new user in the database, also check
     if user fields such as email already exist
     :param db: Database engine, will be converted to session
     :param user: User information to create, should be a dict
     :return: Created user, if an error is raised, return None"""
-    with Session(engine) as db:
-        # Ensure email is not a duplicate
-        if (email_exists(db, user.email)):
-            raise HTTPException(status_code=400, detail=f"Email {user.email} already exists")
-            return None
-        elif (not validate_email(user.email)):
-            raise HTTPException(status_code=400, detail=f"Invalid email address")
-            return None
+    # Ensure email is not a duplicate
+    if (email_exists(db, user.email)):
+        raise HTTPException(status_code=400, detail=f"Email {user.email} already exists")
+    elif (not validate_email(user.email)):
+        raise HTTPException(status_code=400, detail=f"Invalid email address")
 
-        # Add user to database
-        try:
-            hash = bcrypt(user.password)
-            user_obj = model.UserModel( id = get_next_id(db),
-                                        first_name=user.first_name, 
-                                        last_name=user.last_name,
-                                        username=user.username, 
-                                        password=hash, 
-                                        email=user.email)
-            db.add(user_obj)
-            print('added')
-            db.commit()
-            print('committed')
-        except Exception as e:
-            print('User not added ', e)
-            raise HTTPException(status_code=400, detail=f"User could not be added")
-            return None
-        
-        return {"user": user}
+    # Add user to database
+    try:
+        hash = bcrypt(user.password)
+        user_obj = model.UserModel( id = get_next_id(db),
+                                    first_name=user.first_name, 
+                                    last_name=user.last_name,
+                                    username=user.username, 
+                                    password=hash, 
+                                    email=user.email)
+        db.add(user_obj)
+        print('added')
+        db.commit()
+        print('committed')
+    except Exception as e:
+        print('User not added ', e)
+        raise HTTPException(status_code=400, detail=f"User could not be added")
+        return None
+    
+    return {"user": user}
 
 async def login(request, db: _orm.Session):
     # grabs information in regards to user per request

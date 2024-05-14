@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import uvicorn
-from auth.router import router_auth_su, router_auth
+from auth.router import router_auth
 
 app = FastAPI()
 
@@ -21,7 +21,6 @@ def root():
             "Project": "Food Journal"
             }
 
-app.include_router(router_auth_su)
 app.include_router(router_auth)
 
 if __name__ == "__main__":
