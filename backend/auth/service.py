@@ -3,6 +3,8 @@ from fastapi import HTTPException, status
 from email_validator import validate_email
 from sqlalchemy.orm import Session
 from auth.utils import bcrypt
+from sqlalchemy import DateTime
+
 
 def email_exists(db, email):
     """ Check if a given email already exists in the database
@@ -34,24 +36,22 @@ async def create_user(engine, user):
     :return: Created user, if an error is raised, return None"""
     with Session(engine) as db:
         # Ensure email is not a duplicate
-        if (email_exists(db, user.get('email'))):
-            raise HTTPException(status_code=400, detail=f"Email {user.get('email')} already exists")
+        if (email_exists(db, user.email)):
+            raise HTTPException(status_code=400, detail=f"Email {user.email} already exists")
             return None
-        elif (not validate_email(user.get('email'))):
+        elif (not validate_email(user.email)):
             raise HTTPException(status_code=400, detail=f"Invalid email address")
             return None
 
         # Add user to database
         try:
-            hash = bcrypt(user.get('password'))
-            created_at = user.get('created_at')
+            hash = bcrypt(user.password)
             user_obj = model.UserModel( id = get_next_id(db),
-                                        first_name=user.get('first_name'), 
-                                        last_name=user.get('last_name'),
-                                        username=user.get('username'), 
+                                        first_name=user.first_name, 
+                                        last_name=user.last_name,
+                                        username=user.username, 
                                         password=hash, 
-                                        email=user.get('email'), 
-                                        created_at=created_at)
+                                        email=user.email)
             db.add(user_obj)
             print('added')
             db.commit()

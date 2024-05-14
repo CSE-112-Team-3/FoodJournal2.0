@@ -10,7 +10,7 @@ from sqlalchemy import create_engine, inspect
 import os
 from auth.model import UserModel
 
-router_auth = APIRouter()
+router_auth_su = APIRouter()
 
 # Load environment variables (if using .env file)
 from dotenv import load_dotenv
@@ -24,15 +24,9 @@ engine = create_engine(DATABASE_URL)
 print(engine)
 
 # router connects main with service
-@router_auth.post("/user")
-async def create_user(request: Request):
-    """Request should pass in a JSON object containing the following fields
-    {
-        "username": USERNAME,
-        "email": EMAIL,
-        "password": PASSWORD,
-        "first_name": FIRSTNAME,
-        "last_name": LASTNAME
-    }"""
-    data = await request.json()
-    return await _service.create_user(engine, data)
+@router_auth_su.post("/user")
+async def create_user(user: _schemas.UserBase):
+    """ Create a new user in the databse. Endpoint receives
+    a JSON string with user information. To test the endpoint you can create a JSON file
+    and run `curl -X POST http://0.0.0.0:6542/user -H "Content-Type: application/json" -d @<filename>`"""
+    return await _service.create_user(engine, user)
