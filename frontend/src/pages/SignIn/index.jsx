@@ -1,17 +1,37 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
 import './SignInPage.css';
 
-function SignIn() {
+function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // send stuff to backend
-    console.log('Email:', email);
-    console.log('Password:', password);
+  
+    const userData = {
+      email: email,
+      password: password
+    };
+  
+    fetch('INSERT API NAME', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    })
+    .then(response => {
+      if (response.ok) {
+        // REDIRECT TO HOME PAGE
+      } else {
+        // ERROR MESSAGE
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   };
+  
 
   return (
     <div className="sign-in-box">
@@ -41,7 +61,7 @@ function SignIn() {
             <div className="sign-up-text">
               <p>New to food journal?</p>
                 <div className="sign-up-link">
-                  <Link to='/signup'>Sign up for free</Link>
+                  <a href="./SignUpPage.jsx">Sign up for free</a>
                 </div>
             </div>
           </div>
@@ -51,4 +71,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignInPage;
