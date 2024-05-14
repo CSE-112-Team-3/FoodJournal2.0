@@ -1,7 +1,7 @@
 ## For Development
-1. Install `pipreqs` using pip:
+1. Install dependencies using pip:
     ```
-    pip install pipreqs
+    pip install -r requirements.txt
     ```
 2. Create a `.env` file in the backend directory of your project.
 3. Initialize the following environment variables in your `.env` file:
