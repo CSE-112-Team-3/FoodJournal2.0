@@ -1,15 +1,77 @@
+from . import model
+from fastapi import HTTPException, status
+from email_validator import validate_email
+from sqlalchemy.orm import Session
+from auth.utils import bcrypt
+from sqlalchemy import DateTime
+
 import sqlalchemy.orm as _orm
 import schemas as _schemas
 import datetime as _datetime
 import auth.models as _models
-from fastapi import HTTPException, status
-import email_validator as _email_validator
 from uuid import uuid4
 from sqlalchemy import or_, and_, update, delete, insert, select
 import random
 import os
 from datetime import timedelta
 from auth.utils import verify, create_access_token
+
+def email_exists(db, email):
+    """ Check if a given email already exists in the database
+    :param db: Database session
+    :param email: Email address to check"""
+    print(email)
+    rslt = db.query(model.UserModel).filter(model.UserModel.email == email).first()
+    return True if rslt is not None else False
+
+def is_login(db, email):
+    print(email)
+    rslt = db.query(model.VisitorModel).filter(model.VisitorModel.email == email).first()
+    return True if rslt is not None else False
+
+def get_next_id(db):
+    """ Get the next usable ID from the database. Check
+    the ID everytime instead of using local count to ensure that
+    if the server restarts the count isn't reset.
+    :paam db: Database session
+    :returns: Next usable ID"""
+    rslt = db.query(model.UserModel).order_by(model.UserModel.id).all()[-1]
+    return rslt.id + 1
+
+async def create_user(engine, user):
+    """ Create a new user in the database, also check
+    if user fields such as email already exist
+    :param db: Database engine, will be converted to session
+    :param user: User information to create, should be a dict
+    :return: Created user, if an error is raised, return None"""
+    with Session(engine) as db:
+        # Ensure email is not a duplicate
+        if (email_exists(db, user.email)):
+            raise HTTPException(status_code=400, detail=f"Email {user.email} already exists")
+            return None
+        elif (not validate_email(user.email)):
+            raise HTTPException(status_code=400, detail=f"Invalid email address")
+            return None
+
+        # Add user to database
+        try:
+            hash = bcrypt(user.password)
+            user_obj = model.UserModel( id = get_next_id(db),
+                                        first_name=user.first_name, 
+                                        last_name=user.last_name,
+                                        username=user.username, 
+                                        password=hash, 
+                                        email=user.email)
+            db.add(user_obj)
+            print('added')
+            db.commit()
+            print('committed')
+        except Exception as e:
+            print('User not added ', e)
+            raise HTTPException(status_code=400, detail=f"User could not be added")
+            return None
+        
+        return {"user": user}
 
 async def login(request, db: _orm.Session):
     # grabs information in regards to user per request
@@ -44,8 +106,3 @@ async def login(request, db: _orm.Session):
         "user_id": user.id,
         "email": user.email,
     }
-
-
-
-
-
