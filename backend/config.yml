@@ -1,0 +1,9 @@
+version: '1'
+services:
+  web:
+    port: 6542
+    commands:
+      setup: |
+        python -m venv /opt/venv
+        . /opt/venv/bin/activate
+        pip install -r requirements.txt
