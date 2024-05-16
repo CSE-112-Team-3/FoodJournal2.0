@@ -19,7 +19,6 @@ def email_exists(db: _orm.Session, email: str):
     """ Check if a given email already exists in the database
     :param db: Database session
     :param email: Email address to check"""
-    print(email)
     rslt = db.query(model.UserModel).filter(model.UserModel.email == email).first()
     return True if rslt is not None else False
 
@@ -31,7 +30,6 @@ def is_login(db: _orm.Session, email: str):
     :param email: Email address to check
     :return: True if the email is logged in, False otherwise
     """
-    print(email)
     rslt = db.query(model.UserModel).filter(model.UserModel.email == email).first()
     return True if rslt is not None else False
 
@@ -71,11 +69,8 @@ async def create_user(user, db: _orm.Session):
                                     password=hash, 
                                     email=user.email)
         db.add(user_obj)
-        print('added')
         db.commit()
-        print('committed')
     except Exception as e:
-        print('User not added ', e)
         raise HTTPException(status_code=400, detail=f"User could not be added")
         return None
     
