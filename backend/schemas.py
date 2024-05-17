@@ -2,7 +2,7 @@ from pydantic import BaseModel
 import datetime as dt
 
 # ===============================================================
-# User schema
+# User schemas
 # ===============================================================
 
 class UserBase(BaseModel):
@@ -11,14 +11,3 @@ class UserBase(BaseModel):
     username: str
     password: str
     email: str
-
-# ===============================================================
-# Post schema
-# ===============================================================
-class PostReviewBase(BaseModel):
-    food_name: str
-    image: str #(optional)
-    restaurant_name: str #(optional)
-    rating: float
-    review: str 
-    tags: list[str] #(optional)

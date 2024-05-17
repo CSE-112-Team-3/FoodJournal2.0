@@ -1,5 +1,7 @@
 import datetime as _datetime
+import datetime
 from sqlalchemy import Column, Integer, String, DateTime
+import datetime as _datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 Base = declarative_base()
@@ -14,3 +16,11 @@ class UserModel(Base):
     password = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     created_at = Column(DateTime, default=func.now())
+
+'''
+class VisitorModel(Base):
+    __tablename__ = "fd_visitors"
+
+    email: Column(String, nullable=False)
+    password: Column(String, nullable=False)
+'''
