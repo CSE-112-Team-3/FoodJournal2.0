@@ -15,7 +15,7 @@ CREATE TABLE if not exists fd_users (
 CREATE TABLE if not exists post (
   id int primary key,
   food_name varchar(64) not null,
-  img varchar(64),
+  img blob,
   rating int not null,
   rest_name varchar(64),
   review varchar(64) not null,
