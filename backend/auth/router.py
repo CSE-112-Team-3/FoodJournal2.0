@@ -5,12 +5,10 @@ import sqlalchemy.orm as _orm
 from sqlalchemy.orm.session import Session
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 import auth.service as _service
-from auth.model import UserModel #, VisitorModel
 from auth import models as _model
 from service_database import get_db
 from sqlalchemy import create_engine, inspect
 import os
-from auth.model import UserModel
 
 router_auth_su = APIRouter()
 
