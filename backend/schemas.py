@@ -17,8 +17,8 @@ class UserBase(BaseModel):
 # ===============================================================
 class PostReviewBase(BaseModel):
     food_name: str
-    image: str #(optional)
-    restaurant_name: str #(optional)
+    img: str #(optional)
+    rest_name: str #(optional)
     rating: float
     review: str 
     tags: list[str] #(optional)
