@@ -62,8 +62,7 @@ async def create_user(user, db: _orm.Session):
     # Add user to database
     try:
         hash = bcrypt(user.password)
-        user_obj = model.UserModel( id = get_next_id(db),
-                                    first_name=user.first_name, 
+        user_obj = model.UserModel( first_name=user.first_name, 
                                     last_name=user.last_name,
                                     username=user.username, 
                                     password=hash, 
@@ -72,7 +71,6 @@ async def create_user(user, db: _orm.Session):
         db.commit()
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"User could not be added")
-        return None
     
     return {"user": user}
 
@@ -117,3 +115,12 @@ async def login(request, db: _orm.Session):
         "user_id": user.id,
         "email": user.email,
     }
+
+async def get_user_by_username(username: str, db: _orm.Session):
+    try:
+        user = db.query(_models.UserModel).filter(_models.UserModel.username == username).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        return user.id
+    except:
+        raise HTTPException(status_code=400, detail=f"User could not be retrieved")
