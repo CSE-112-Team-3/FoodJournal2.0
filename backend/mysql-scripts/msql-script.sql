@@ -14,10 +14,11 @@ CREATE TABLE if not exists fd_users (
 
 CREATE TABLE if not exists post (
   id int primary key,
+  post_id int not null,
   food_name varchar(64) not null,
-  img blob,
-  rating int not null,
-  rest_name varchar(64),
+  image blob,
+  restaurant_name int not null,
+  rating float not null,
   review varchar(64) not null,
   tags varchar(64) not null,
   FOREIGN KEY (id) REFERENCES fd_users(id)

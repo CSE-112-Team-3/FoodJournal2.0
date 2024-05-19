@@ -1,8 +1,9 @@
 from pydantic import BaseModel
 import datetime as dt
+from typing import Optional
 
 # ===============================================================
-# User schemas
+# User schema
 # ===============================================================
 
 class UserBase(BaseModel):
@@ -11,3 +12,14 @@ class UserBase(BaseModel):
     username: str
     password: str
     email: str
+
+# ===============================================================
+# Post schema
+# ===============================================================
+class PostReviewBase(BaseModel):
+    food_name: str
+    image: Optional[str] 
+    restaurant_name: Optional[str]
+    rating: float
+    review: str 
+    tags: Optional[str]
