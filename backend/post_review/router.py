@@ -16,7 +16,6 @@ router_post_review = APIRouter(
 @router_post_review.post("/create_post_review")
 async def create_post_review(
     post_review: _schemas.PostReviewBase, 
-    user_id: int,
     access_token: str,
     db: Session = Depends(get_db)):
     """ 
@@ -24,4 +23,4 @@ async def create_post_review(
     a JSON string with post review information. To test the endpoint you can create a JSON file
     and run `curl -X POST http://0.0.0.0:6542/create_post_review -H "Content-Type: application/json" -d @<filename>`
     """
-    return await _service.create_post_review(post_review, db, user_id, access_token)
+    return await _service.create_post_review(post_review, db, access_token)

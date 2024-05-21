@@ -1,11 +1,11 @@
-from fastapi import HTTPException, status
+from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from sqlalchemy import Inspector, or_, and_, update, delete, insert, select
+from sqlalchemy import or_, and_, update, delete, insert, select
 import sqlalchemy.orm as _orm
-from post_review.model import PostReviewModel 
+import post_review.model as _model
 from auth import model as user_model
-from sqlalchemy import create_engine, inspect
 import schemas
+from auth.utils import get_current_user
 
 MAX_POSTS_TO_FECTH = 20
 
@@ -17,7 +17,7 @@ async def get_post_reviews(db: _orm.Session):
     :return: List of all posts
     """
     try:
-        posts = db.query(PostReviewModel).all()
+        posts = db.query(_model.PostReviewModel).all()
         if not posts:
             raise HTTPException(status_code=404, detail="No posts found")
         
@@ -28,19 +28,19 @@ async def get_post_reviews(db: _orm.Session):
 async def create_post_review(
         post_review: schemas.PostReviewBase, 
         db: _orm.Session, 
-        user_id: int, 
-        access_token: str):
+        access_token: str
+        ):
     
-    if not access_token:
-        raise HTTPException(status_code=401, detail="Unauthorized")
+    # if not access_token:
+    #     raise HTTPException(status_code=401, detail="Unauthorized")
+    user_id = get_current_user(access_token, db)
 
-    
     try:
         user = db.query(user_model.UserModel).filter(user_model.UserModel.id == user_id).first()
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         
-        post_review_model = PostReviewModel(
+        post_review_model = _model.PostReviewModel(
             post_id=user_id,  # Assuming post_id corresponds to the user_id
             food_name=post_review.food_name,
             image=post_review.image,

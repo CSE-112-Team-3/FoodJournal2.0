@@ -1,5 +1,5 @@
 from . import model
-from fastapi import HTTPException, status
+from fastapi import Depends, HTTPException, status
 from email_validator import validate_email
 from sqlalchemy.orm import Session
 from auth.utils import bcrypt
@@ -109,18 +109,10 @@ async def login(request, db: _orm.Session):
         },
         expires_delta=timedelta(hours=24)
     )
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
         "user_id": user.id,
         "email": user.email,
     }
-
-async def get_user_by_username(username: str, db: _orm.Session):
-    try:
-        user = db.query(_models.UserModel).filter(_models.UserModel.username == username).first()
-        if not user:
-            raise HTTPException(status_code=404, detail="User not found")
-        return user.id
-    except:
-        raise HTTPException(status_code=400, detail=f"User could not be retrieved")
