@@ -6,17 +6,16 @@ function SignUpPage() {
   const [lastName, setLastName] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
-
-  const [passwordMatch, setPasswordMatch] = useState(true);
   const [userNameValid, setUserNameValid] = useState(true);
   const [emailValid, setEmailValid] = useState(true);
+  const [passwordMatch, setPasswordMatch] = useState(true);
 
   const firstNameRef = useRef(null);
 
   useEffect(() => {
     firstNameRef.current.focus();
-
   }, []);
 
   const validateUserName = (userName) => {
@@ -29,29 +28,46 @@ function SignUpPage() {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleUserNameChange = (e) => {
+    setUserName(e.target.value);
+    setUserNameValid(validateUserName(e.target.value));
+  };
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setEmailValid(validateEmail(e.target.value));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const isUserNameValid = validateUserName(userName);
     const isEmailValid = validateEmail(email);
+    const isPasswordMatch = password === confirmPassword;
+
     setUserNameValid(isUserNameValid);
     setEmailValid(isEmailValid);
+    setPasswordMatch(isPasswordMatch);
 
-    if (password === confirmPassword && isUserNameValid && isEmailValid) {
-      setPasswordMatch(true);
-      // send data to the backend
-      console.log('FirstName:', firstName);
-      console.log('LastName:', lastName);
-      console.log('UserName:', userName);
-      console.log('Email:', email);
-      console.log('Password:', password);
-      console.log('ConfirmPassword:', confirmPassword);
-      console.log('PasswordMatch:', passwordMatch);
-    } else {
-      setPasswordMatch(password === confirmPassword);
-      console.log('Password Match:', password === confirmPassword);
-      console.log('UserName Valid:', isUserNameValid);
-      console.log('Email Valid:', isEmailValid);
+    if (isUserNameValid && isEmailValid && isPasswordMatch) {
+      const userData = {
+        first_name: firstName,
+        last_name: lastName,
+        username: userName,
+        password: password,
+        email: email
+      };
+
+      fetch('https://foodjournal20-production.up.railway.app/api/v1/auth/create_user', {
+        method: 'POST',
+        body: JSON.stringify(userData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .catch((error) => {
+          console.error('Error creating user:', error);
+        });
     }
   };
 
@@ -84,7 +100,7 @@ function SignUpPage() {
               id="userName"
               type="text"
               value={userName}
-              onChange={(e) => setUserName(e.target.value)}
+              onChange={handleUserNameChange}
               required
             />
             {!userNameValid && <p>Username must be at least 5 characters long and contain at least 1 number.</p>}
@@ -93,7 +109,7 @@ function SignUpPage() {
               id="email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange}
               required
             />
             {!emailValid && <p>Invalid email address</p>}
@@ -114,7 +130,7 @@ function SignUpPage() {
               required
             />
             {!passwordMatch && <p>Passwords do not match</p>}
-            <button className="submit">Sign Up</button>
+            <button className="submit" type="submit">Sign Up</button>
           </div>
         </div>
       </form>
@@ -123,3 +139,4 @@ function SignUpPage() {
 }
 
 export default SignUpPage;
+
