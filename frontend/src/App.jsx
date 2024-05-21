@@ -7,6 +7,7 @@ import Settings from './pages/Settings/index.jsx';
 import SignIn from './pages/SignIn/index.jsx';
 import SignUp from './pages/SignUp/index.jsx';
 import NavBar from './components/navbar/index.jsx';
+import Review from './pages/Review/index.jsx';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/settings" element={<Settings/>}/>
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/signup" element={<SignUp/>}/>
+          <Route path="/new-review" element={<Review/>}/>
           <Route path="*" eq
           lement={<h1>page not found</h1>}/>
         </Routes>
