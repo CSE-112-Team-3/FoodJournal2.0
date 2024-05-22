@@ -73,3 +73,7 @@
     text-decoration: underline;
 }
 
+.profileImage{
+    width:150px;
+    border-radius: 50%;
+}

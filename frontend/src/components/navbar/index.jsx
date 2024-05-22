@@ -1,6 +1,8 @@
 import './NavBar.css'
 import { Outlet, Link, useLocation } from 'react-router-dom'
-export default function NavBar() {
+import { useState } from 'react';
+
+export default function NavBar({ pictureNavbar }) {
     const location = useLocation();
     const { hash, pathname, search } = location;
     return(
@@ -23,7 +25,9 @@ export default function NavBar() {
             <div className='sign-in'>
                 <ul>
                     <li>
-                        <img src='../../public/images/default-pfp.png' alt='Default Profile Picture'/>
+                        <Link to="/profile">
+                            <img className = 'profileImage' src= {pictureNavbar || '../../public/images/default-pfp.png'} alt='Default Profile Picture'/>
+                        </Link>
                     </li>
                     <li>
                         {/* TO DO: once frontend has access to user token, 
