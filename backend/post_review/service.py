@@ -31,8 +31,14 @@ async def create_post_review(
         access_token: str
         ):
     
-    # if not access_token:
-    #     raise HTTPException(status_code=401, detail="Unauthorized")
+    """
+    Creates a new post review in the database.
+
+    :param post_review: Post review information
+    :param db: Database session
+    :param access_token: User access token
+    :return: Message indicating whether the post was created successfully
+    """
     user_id = get_current_user(access_token, db)
 
     try:

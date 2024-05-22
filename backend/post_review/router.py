@@ -19,8 +19,7 @@ async def create_post_review(
     access_token: str,
     db: Session = Depends(get_db)):
     """ 
-    Create a new post review in the database. Endpoint receives
-    a JSON string with post review information. To test the endpoint you can create a JSON file
-    and run `curl -X POST http://0.0.0.0:6542/create_post_review -H "Content-Type: application/json" -d @<filename>`
+    Create a new post review in the database. Endpoint receives an access token and
+    a JSON string with post review information.
     """
     return await _service.create_post_review(post_review, db, access_token)
