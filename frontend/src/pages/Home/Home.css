@@ -1,13 +1,12 @@
 .home-container {
-    display: flex;
-    flex-direction: row;
-    margin-left: 200px;
-    height: 100vh;
-    overflow: hidden;
+  display: flex;
+  flex-direction: row;
 }
 
 .post-container {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Ensures 2 cards per row */
+  gap: 20px;
+  padding: 20px;
+  margin-left: 220px; /* Adjust this value based on the width of your navbar */
 }
