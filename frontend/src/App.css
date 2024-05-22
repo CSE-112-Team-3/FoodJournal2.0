@@ -1,10 +1,5 @@
-body {
-  margin: 0;
-  padding: 0;
-  background-image: url('./assets/backgroundImage.jpeg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 100vh; 
+body{
+  background-color: beige;
 }
 @import url('https://fonts.googleapis.com/css2?family=Jockey+One&display=swap');
 .jockey-one-regular {
