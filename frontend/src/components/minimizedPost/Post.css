@@ -1,0 +1,11 @@
+.min-post-container {
+    background-color: #FCBA3A;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.min-post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
