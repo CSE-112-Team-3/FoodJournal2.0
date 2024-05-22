@@ -3,6 +3,7 @@ import NavBar from '../../components/navbar'
 import MinimizedPost from '../../components/minimizedPost';
 import StaticStarRating from '../../components/staticStarRating';
 import ProfilePic from '../../components/profilePic';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
     const posts = [
@@ -31,11 +32,13 @@ export default function Home() {
             images: ['https://i.redd.it/yplxndi8izdb1.jpg']
         }
       ];
+
+
     return(
         <div className='home-container'>
-            <NavBar />
-            <div className='post-container'>
-                {posts.map((post, index) => (
+            <NavBar/>
+            <div className='post-container reddit-sans-condensed'>
+                {posts ? posts.map((post, index) => (
                 <MinimizedPost
                     key={index}
                     username={post.username}
@@ -45,7 +48,7 @@ export default function Home() {
                     description={post.description}
                     images={post.images}
                 />
-                ))}
+                )) : null}
             </div>
         </div>
     );

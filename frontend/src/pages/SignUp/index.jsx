@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SignUpPage.css';
+import backgroundImage from '../../assets/background.jpg';
 
 function SignUpPage() {
   const [firstName, setFirstName] = useState('');
@@ -11,6 +12,16 @@ function SignUpPage() {
   const [userNameValid, setUserNameValid] = useState(true);
   const [emailValid, setEmailValid] = useState(true);
   const [passwordMatch, setPasswordMatch] = useState(true);
+
+  useEffect(() => {
+    document.body.style.backgroundImage = `url(${backgroundImage})`;
+    document.body.style.backgroundSize = 'cover';
+
+    return () => {
+      document.body.style.backgroundImage = '';
+      document.body.style.backgroundSize = '';
+    };
+  }, [])
 
   const firstNameRef = useRef(null);
 
@@ -72,7 +83,7 @@ function SignUpPage() {
   };
 
   return (
-    <div className='sign-up-container'>
+    <div className='sign-up-container reddit-sans-condensed'>
       <div className="sign-up-box">
         <h1>Food Journal</h1>
         <h2>Sign Up</h2>

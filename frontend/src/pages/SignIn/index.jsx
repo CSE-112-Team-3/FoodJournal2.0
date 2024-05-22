@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './SignInPage.css';
+import backgroundImage from '../../assets/background.jpg';
 
 function SignIn() {
   const [username, setUsername] = useState('');
@@ -9,6 +10,16 @@ function SignIn() {
   const [loading, setLoading] = useState(false);
   const base_url = "https://foodjournal20-production.up.railway.app";
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.body.style.backgroundImage = `url(${backgroundImage})`;
+    document.body.style.backgroundSize = 'cover';
+
+    return () => {
+      document.body.style.backgroundImage = '';
+      document.body.style.backgroundSize = '';
+    };
+  }, [])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -48,7 +59,7 @@ function SignIn() {
   };
 
   return (
-    <div className="sign-in-box">
+    <div className="sign-in-box reddit-sans-condensed">
       <h1>Food Journal</h1>
       <h2>Sign In</h2>
       <form onSubmit={handleSubmit}>

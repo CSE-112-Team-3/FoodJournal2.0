@@ -5,8 +5,8 @@
 
 .post-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Ensures 2 cards per row */
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   padding: 20px;
-  margin-left: 220px; /* Adjust this value based on the width of your navbar */
+  margin-left: 220px;
 }
