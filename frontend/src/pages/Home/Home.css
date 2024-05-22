@@ -1,3 +1,6 @@
+/*
+replace by the home page container
+*/
 .container {
     position: relative;
   }
@@ -11,6 +14,11 @@
     color: white;
     font-size: 30px;
     text-align: center;
+    /* 
+    uncomment, delete the margin-top and -left, and add below the page container
+    margin-bottom: 10px;
+    margin-right: 10px;
+    */
     margin-top: 630px;
-    margin-left: 1200px;
+    margin-left: 1370px;
   }
