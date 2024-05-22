@@ -32,3 +32,7 @@ async def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = De
     and run `curl -X POST http://0.0.0.0:6542/user -H "Content-Type: application/json" -d @<filename>`
     """
     return await _service.login(request, db)
+
+@router_auth.patch("/update_user")
+async def update_user(request: _schemas.UserBase, accessToken: str, db: Session = Depends(get_db)):
+    return await _service.update_user(request, accessToken, db)

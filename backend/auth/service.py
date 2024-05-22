@@ -13,7 +13,7 @@ from sqlalchemy import or_, and_, update, delete, insert, select
 import random
 import os
 from datetime import timedelta
-from auth.utils import verify, create_access_token
+from auth.utils import verify, create_access_token, get_current_user
 
 def email_exists(db: _orm.Session, email: str):
     """ Check if a given email already exists in the database
@@ -62,8 +62,7 @@ async def create_user(user, db: _orm.Session):
     # Add user to database
     try:
         hash = bcrypt(user.password)
-        user_obj = model.UserModel( id = get_next_id(db),
-                                    first_name=user.first_name, 
+        user_obj = model.UserModel( first_name=user.first_name, 
                                     last_name=user.last_name,
                                     username=user.username, 
                                     password=hash, 
@@ -71,7 +70,7 @@ async def create_user(user, db: _orm.Session):
         db.add(user_obj)
         db.commit()
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"User could not be added")
+        raise HTTPException(status_code=400, detail=f"User could not be added: {e}")
         return None
     
     return {"user": user}
@@ -117,3 +116,25 @@ async def login(request, db: _orm.Session):
         "user_id": user.id,
         "email": user.email,
     }
+
+async def update_user(request: _schemas.UserBase, accessToken: str, db: _orm.Session):
+    try:
+        user_id = get_current_user(accessToken, db)
+        stmt = (
+            update(_models.UserModel).
+            where(_models.UserModel.id == user_id).
+            values(first_name = request.first_name, 
+                last_name = request.last_name,
+                email = request.email,
+                username = request.username)
+        )
+        result = db.execute(stmt)
+        if result.rowcount == 0:
+            raise HTTPException (
+                status_code = status.HTTP_404_NOT_FOUND,
+                detail = "User not found"
+            )
+        db.commit()
+        return {"message":"User was updated"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"User could not be updated: {e}")
