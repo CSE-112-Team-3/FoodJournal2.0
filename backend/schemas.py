@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 import datetime as dt
+from typing import Optional
 
 # ===============================================================
 # User schema
@@ -17,8 +18,8 @@ class UserBase(BaseModel):
 # ===============================================================
 class PostReviewBase(BaseModel):
     food_name: str
-    image: str #(optional)
-    restaurant_name: str #(optional)
+    image: Optional[str] 
+    restaurant_name: Optional[str]
     rating: float
     review: str 
-    tags: list[str] #(optional)
+    tags: Optional[str]
