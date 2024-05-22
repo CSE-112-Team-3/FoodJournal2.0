@@ -17,13 +17,12 @@
 ## Sprint Tasks ##
 |           Issue     | Assignee    |
 |-------------------- | ----------- |
-| Redoing Sign Up Page | Adhithi    |
-| Updating frontend documentation | Adhithi |
-| Form for user to make a new post | Cecilia |
-| Backend for creating new post | Raul and Kim |
-| Backend: create new table for post info | Marc |
-| Adding get posts query and endpoint | Ethan |
-| Update backend documentation | Ethan |
-| Post Review Setup | Ethan |
-| Integrating API calls into sign up/login pages | Adhithi|
+| Finish profile page, frontend task | Yuhao    |
+| Finish create new post page, frontend task | Summer |
+| Finish integrating APIs, frontend task | Adhithi |
+| Finish home page with posts, frontend task | Cecilia |
+| Setup for updating a new user | Kim and Satya |
+| Setup deleting a post | Ethan |
+| Setup updating a post | Raul and Marc |
+
 
