@@ -23,3 +23,14 @@ async def create_post_review(
     a JSON string with post review information.
     """
     return await _service.create_post_review(post_review, db, access_token)
+
+@router_post_review.post("/update_post_review")
+async def update_post_review(
+    post_review: _schemas.PostReviewBase, 
+    access_token: str,
+    db: Session = Depends(get_db)):
+    """ 
+    Create a new post review in the database. Endpoint receives an access token and
+    a JSON string with post review information.
+    """
+    return await _service.update_post_review(post_review, db, access_token)
