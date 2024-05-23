@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SignUpPage.css';
-import backgroundImage from '../../assets/background.jpg';
+
 
 function SignUpPage() {
   const [firstName, setFirstName] = useState('');
@@ -13,15 +13,6 @@ function SignUpPage() {
   const [emailValid, setEmailValid] = useState(true);
   const [passwordMatch, setPasswordMatch] = useState(true);
 
-  useEffect(() => {
-    document.body.style.backgroundImage = `url(${backgroundImage})`;
-    document.body.style.backgroundSize = 'cover';
-
-    return () => {
-      document.body.style.backgroundImage = '';
-      document.body.style.backgroundSize = '';
-    };
-  }, [])
 
   const firstNameRef = useRef(null);
 
