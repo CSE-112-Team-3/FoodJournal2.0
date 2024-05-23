@@ -4,10 +4,13 @@ import './NewReviewPage.css';
 
 function ReviewPage() {
     const [mealName, setMealName] = useState('');
+    const [restaurant, setRestaurant] = useState('');
     const [mealPics, setMealPics] = useState('');
     const [picsMode, setPicsMode] = useState('upload');
     const [stars, setStars] = useState(0);
+    const [showError, setShowError] = useState(false);
     const [comments, setComments] = useState('');
+    const [tag, setTag] = useState('');
 
     const videoRef = useRef(null);
     const mediaStreamRef = useRef(null);
@@ -22,6 +25,12 @@ function ReviewPage() {
   
     const handleSubmit = (event) => {
       event.preventDefault();
+      // Check if the star is selected
+      if (stars === 0) {
+        setShowError(true);
+      } else {
+        setShowError(false);
+      }
       // send stuff to backend
       console.log('MealName:', mealName);
       console.log('MealPics:', mealPics);
@@ -82,47 +91,6 @@ function ReviewPage() {
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <div className="left-inputs">
-            <label htmlFor="mealName">Meal Name</label>
-            <input
-              id="mealName"
-              type="text"
-              value={mealName}
-              onChange={(e) => setMealName(e.target.value)}
-              ref={mealNameRef}
-              required
-            />
-            <label htmlFor="stars">Rating</label>
-            <div className="rating">
-            <div className="star-rating">
-              {[...Array(5)].map((star, index) => {
-                const ratingValue = index + 1;
-                  return (
-                    <label key={ratingValue}>
-                      <input
-                        type="radio"
-                        value={ratingValue}
-                        onClick={() => setStars(ratingValue)}
-                        onMouseOver={() => handleStarsHover(ratingValue)}
-                        onMouseOut={() => handleStarsHover(stars)}
-                      />
-                      <span
-                        className={`star ${ratingValue <= stars ? 'on' : 'off'}`}
-                      >
-                        &#9733;
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-              <label htmlFor="comments">Comments</label>
-              <input
-                id="comments"
-                text="text"
-                value={comments}
-                onChange={(e) => setComments(e.target.value)}
-                required
-              />
-            </div>
             <label htmlFor="mealPics">Picture</label>
               <select
                 value={picsMode}
@@ -158,6 +126,63 @@ function ReviewPage() {
                   )}
                 </>
               )}
+            <label htmlFor="mealName">Meal Name</label>
+            <input
+              id="mealName"
+              type="text"
+              value={mealName}
+              onChange={(e) => setMealName(e.target.value)}
+              ref={mealNameRef}
+              required
+            />
+            <label htmlFor="restaurant">Restaurant</label>
+            <input
+              id="restaurant"
+              type="text"
+              value={restaurant}
+              onChange={(e) => setRestaurant(e.target.value)}
+            />
+            <label htmlFor="stars">Rating</label>
+            <div className="rating">
+            <div className="star-rating">
+              {[...Array(5)].map((star, index) => {
+                const ratingValue = index + 1;
+                  return (
+                    <label key={ratingValue}>
+                      <input
+                        type="radio"
+                        value={ratingValue}
+                        onClick={() => setStars(ratingValue)}
+                        onMouseOver={() => handleStarsHover(ratingValue)}
+                        onMouseOut={() => handleStarsHover(stars)}
+                      />
+                      <span
+                        className={`star ${ratingValue <= stars ? 'on' : 'off'}`}
+                      >
+                        &#9733;
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+              {showError && <p>Please select a rating.</p>}
+              <label htmlFor="comments">Comments</label>
+              <input
+                id="comments"
+                text="text"
+                value={comments}
+                onChange={(e) => setComments(e.target.value)}
+                required
+              />
+              <label htmlFor="tag">Tags</label>
+            <input
+              id="tag"
+              type="text"
+              value={tag}
+              onChange={(e) => setTag(e.target.value)}
+            />
+            </div>
+            
                <button className="submit">Save Review</button>
             </div>
           </div>
