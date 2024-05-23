@@ -1,0 +1,121 @@
+* {
+    font-family: "Reddit Sans Condensed", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
+
+  body {
+    padding: 0;
+    background-image: url('../../assets/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh; 
+  
+  }
+  
+  .review-box {
+    width: 500px; 
+    padding: 20px; 
+    border-radius: 20px; 
+    background-color: #FCCE76; 
+    border: 4px solid #36A7F9; 
+    margin: 0 auto; 
+    margin-top: 50px; 
+  }
+  
+  .review-box h1 {
+    text-align: center;
+    font-size: 300%;
+    margin-bottom: 20px; 
+  }
+
+  .review-box h2 {
+    margin-bottom: 20px; 
+  }
+  
+  .review-box h4 {
+    color: #36A7F9;
+  }
+
+  .review-box label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 18px;
+  }
+
+  .review-box .rating .star-rating {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .review-box .rating .star {
+    color: #ccc;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .review-box .rating .star.on {
+    color: #f90;
+  }
+  
+  .review-box .rating input[type='radio'] {
+    display: none;
+  }
+  
+  .review-box input {
+    width: 50%; 
+    height: 35px;
+    margin-bottom: 20px; 
+    border-radius: 5px;
+    border: 1px solid #000000;
+  }
+  
+  .review-box input::placeholder {
+    font-size: 20px; 
+  }
+  
+  
+  .review-box button.submit {
+    width: 50%;
+    color: #36A7F9;
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .left-inputs {
+    width: 100%;
+  }
+
+  .camera-preview {
+    position: relative;
+    width: 320px;
+    height: 240px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+  .camera-preview video,
+  .camera-preview img,
+  .camera-preview canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+  }
+  
+  .submit {
+    margin-top: 10px;
+    height: 40px;
+    font-size: 18px;
+  }
+  p{
+    color:blue;
+  }
+  
