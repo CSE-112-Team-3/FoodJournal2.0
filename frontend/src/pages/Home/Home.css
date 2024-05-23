@@ -1,9 +1,20 @@
-/*
-replace by the home page container
-*/
-.container {
-    position: relative;
-  }
+
+.home-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.post-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 20px;
+  margin-left: 220px;
+}
+
+.container{
+  postion:relative;
+}
 
 .circle-btn {
     width: 50px;
@@ -14,11 +25,7 @@ replace by the home page container
     color: white;
     font-size: 30px;
     text-align: center;
-    /* 
-    uncomment, delete the margin-top and -left, and add below the page container
     margin-bottom: 10px;
     margin-right: 10px;
-    */
-    margin-top: 630px;
-    margin-left: 1370px;
-  }
+
+}

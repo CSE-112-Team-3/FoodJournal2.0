@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SignUpPage.css';
+import backgroundImage from '../../assets/background.jpg';
 
 function SignUpPage() {
   const [firstName, setFirstName] = useState('');
@@ -11,6 +12,16 @@ function SignUpPage() {
   const [userNameValid, setUserNameValid] = useState(true);
   const [emailValid, setEmailValid] = useState(true);
   const [passwordMatch, setPasswordMatch] = useState(true);
+
+  useEffect(() => {
+    document.body.style.backgroundImage = `url(${backgroundImage})`;
+    document.body.style.backgroundSize = 'cover';
+
+    return () => {
+      document.body.style.backgroundImage = '';
+      document.body.style.backgroundSize = '';
+    };
+  }, [])
 
   const firstNameRef = useRef(null);
 
@@ -72,68 +83,70 @@ function SignUpPage() {
   };
 
   return (
-    <div className="sign-up-box">
-      <h1>Food Journal</h1>
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <div className="left-inputs">
-            <label htmlFor="firstName">First Name</label>
-            <input
-              id="firstName"
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              ref={firstNameRef}
-              required
-            />
-            <label htmlFor="lastName">Last Name</label>
-            <input
-              id="lastName"
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              required
-            />
-            <label htmlFor="userName">Username</label>
-            <input
-              id="userName"
-              type="text"
-              value={userName}
-              onChange={handleUserNameChange}
-              required
-            />
-            {!userNameValid && <p>Username must be at least 5 characters long and contain at least 1 number.</p>}
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={handleEmailChange}
-              required
-            />
-            {!emailValid && <p>Invalid email address</p>}
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-            {!passwordMatch && <p>Passwords do not match</p>}
-            <button className="submit" type="submit">Sign Up</button>
+    <div className='sign-up-container reddit-sans-condensed'>
+      <div className="sign-up-box">
+        <h1>Food Journal</h1>
+        <h2>Sign Up</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
+            <div className="left-inputs">
+              <label htmlFor="firstName">First Name</label>
+              <input
+                id="firstName"
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                ref={firstNameRef}
+                required
+              />
+              <label htmlFor="lastName">Last Name</label>
+              <input
+                id="lastName"
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+              />
+              <label htmlFor="userName">Username</label>
+              <input
+                id="userName"
+                type="text"
+                value={userName}
+                onChange={handleUserNameChange}
+                required
+              />
+              {!userNameValid && <p>Username must be at least 5 characters long and contain at least 1 number.</p>}
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={handleEmailChange}
+                required
+              />
+              {!emailValid && <p>Invalid email address</p>}
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              {!passwordMatch && <p>Passwords do not match</p>}
+              <button className="submit" type="submit">Sign Up</button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
