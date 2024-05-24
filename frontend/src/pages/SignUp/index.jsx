@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SignUpPage.css';
-
+import CustomPopup from '../../components/popUp/index';
+import { useNavigate } from 'react-router-dom';
 
 function SignUpPage() {
   const [firstName, setFirstName] = useState('');
@@ -12,7 +13,9 @@ function SignUpPage() {
   const [userNameValid, setUserNameValid] = useState(true);
   const [emailValid, setEmailValid] = useState(true);
   const [passwordMatch, setPasswordMatch] = useState(true);
-
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [popupVisibility, setPopupVisibility] = useState(false);
+  const navigate = useNavigate();
 
   const firstNameRef = useRef(null);
 
@@ -66,11 +69,29 @@ function SignUpPage() {
           'Content-Type': 'application/json',
         },
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.ok) {
+            setShowSuccessMessage(true);
+            setPopupVisibility(true);
+            setTimeout(() => {
+              setPopupVisibility(false);
+              setShowSuccessMessage(false);
+              navigate('/signin');
+            }, 3000); 
+          } else {
+            console.error('Error creating user:', response.status);
+          }
+        })
         .catch((error) => {
           console.error('Error creating user:', error);
         });
     }
+  };
+
+  const popupCloseHandler = () => {
+    setPopupVisibility(false);
+    setShowSuccessMessage(false);
+    navigate('/signin');
   };
 
   return (
@@ -138,9 +159,17 @@ function SignUpPage() {
           </div>
         </form>
       </div>
+      {showSuccessMessage && (
+        <CustomPopup
+          onClose={popupCloseHandler}
+          show={popupVisibility}
+        >
+          <h1>Welcome to Food Journal!</h1>
+          <h2>Your account was created successfully, redirecting you to the Sign In page...</h2>
+        </CustomPopup>
+      )}
     </div>
   );
 }
 
 export default SignUpPage;
-
