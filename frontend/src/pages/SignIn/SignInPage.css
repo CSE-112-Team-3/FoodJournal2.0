@@ -6,6 +6,11 @@ body {
   height: 100vh; 
 } 
 
+.forgot{
+  text-decoration: none;
+  color: blue
+}
+
 .sign-in-box {
   width: 700px; 
   height: 550px;

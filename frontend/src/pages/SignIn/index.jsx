@@ -91,7 +91,7 @@ function SignIn() {
             <button className="submit" disabled={loading}>
               {loading ? 'Signing In...' : 'Sign In'}
             </button>
-            <Link to='/forgot-password' className="forgot-password">Forgot Password?</Link>
+            <a href = "https://youtu.be/b3rNUhDqciM" className = "forgot">Forgot Password?</a>
           </div>
           <div className="right-text">
             <div className="sign-up-text">
