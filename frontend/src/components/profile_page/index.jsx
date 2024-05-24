@@ -8,8 +8,6 @@ export default function ProfilePage({ setPictureNavbar }) {
     const [lastName, setLastName] = useState(''); //TODO: need to get the last name from the database.
     const [userName, setUserName] = useState(''); //TODO: need to get the username from the database.
     const [email, setEmail] = useState(''); //TODO: need to get the email from the database.
-    const [mobile, setMobile] = useState('');
-    const [favoriteFoods, setFoods] = useState('');
     const [newPassword, setPassword] = useState('');
     //The information above should be stored in the database when the form is submitted.
 
@@ -42,14 +40,8 @@ export default function ProfilePage({ setPictureNavbar }) {
     const handleUsernameChange = (event)=>{
         setUserName(event.target.value);
     }
-    const handleMobileChange = (event)=>{
-        setMobile(event.target.value);
-    }
     const handleEmailChange = (event)=>{
         setEmail(event.target.value);
-    }
-    const handleFoodChange = (event)=>{
-        setFoods(event.target.value);
     }
     const handlePasswordChange = (event)=>{
         setPassword(event.target.value);
@@ -57,7 +49,6 @@ export default function ProfilePage({ setPictureNavbar }) {
     const VerifyNewPassword = (event)=>{
         comfirmPassword(event.target.value);
     }
-
     const isValidEmail = (email)=>{
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
@@ -116,21 +107,13 @@ export default function ProfilePage({ setPictureNavbar }) {
                     <input value = {userName} onChange={handleUsernameChange} type="text" className="form-control" name="username" id="phone" placeholder="current username" />
                     <p>{invalidUsername}</p>
                 </div>
-                <div>
-                    <label htmlFor="mobile"><h4>Mobile</h4></label>
-                    <input value = {mobile} onChange={handleMobileChange} type="text" className="form-control" name="mobile" id="mobile" placeholder="enter mobile number" />
-                    <p>{''}</p>
-                </div>
+
                 <div>
                     <label htmlFor="email"><h4>Email</h4></label>
                     <input value = {email} onChange={handleEmailChange} type="email" className="form-control" name="email" id="email" placeholder="you@email.com" />
                     <p>{invalidEmail}</p>
                 </div>
-                <div>
-                    <label htmlFor="favoriteFoods"><h4>Favorite Foods</h4></label>
-                    <input value = {favoriteFoods} onChange={handleFoodChange} type="text" className="form-control" id="favoriteFoods" placeholder="enter your favorite foods" />
-                    <p>{''}</p>
-                </div>
+
                 <div>
                     <label htmlFor="password"><h4>New Password</h4></label>
                     <input onChange={handlePasswordChange} type="password" className="form-control" name="password" id="password" placeholder="password" />
