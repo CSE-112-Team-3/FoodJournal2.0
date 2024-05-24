@@ -1,11 +1,11 @@
-  /* body {
+body {
     padding: 0;
     background-image: url('../../assets/background.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     height: 100vh; 
-  } */
-  
+  } 
+
   .sign-up-box {
     width: 500px;
     padding: 20px;
