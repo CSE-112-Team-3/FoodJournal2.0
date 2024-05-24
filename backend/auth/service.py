@@ -117,16 +117,23 @@ async def login(request, db: _orm.Session):
         "email": user.email,
     }
 
-async def update_user(request: _schemas.UserBase, accessToken: str, db: _orm.Session):
+async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _orm.Session):
     try:
         user_id = get_current_user(accessToken, db)
+        update_data = request.model_dump(exclude_unset=True)
+        if not update_data:
+            raise HTTPException(status_code=400, detail=f"No fields to update")
+        if update_data.get("email"):
+            if (email_exists(db, update_data.get("email"))):
+                raise HTTPException(status_code=400, detail=f'Email {update_data.get("email")} already exists')
+            elif (not validate_email(update_data.get("email"))):
+                raise HTTPException(status_code=400, detail=f"Invalid email address")
+        if update_data.get("password"):
+            update_data["password"] = bcrypt(update_data.get("password"))
         stmt = (
             update(_models.UserModel).
             where(_models.UserModel.id == user_id).
-            values(first_name = request.first_name, 
-                last_name = request.last_name,
-                email = request.email,
-                username = request.username)
+            values(**update_data)
         )
         result = db.execute(stmt)
         if result.rowcount == 0:

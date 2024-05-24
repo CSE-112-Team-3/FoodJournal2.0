@@ -34,5 +34,5 @@ async def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = De
     return await _service.login(request, db)
 
 @router_auth.patch("/update_user")
-async def update_user(request: _schemas.UserBase, accessToken: str, db: Session = Depends(get_db)):
+async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: Session = Depends(get_db)):
     return await _service.update_user(request, accessToken, db)
