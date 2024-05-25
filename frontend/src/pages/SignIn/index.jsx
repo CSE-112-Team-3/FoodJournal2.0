@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './SignInPage.css';
 import backgroundImage from '../../assets/background.jpg';
@@ -10,6 +10,11 @@ function SignIn() {
   const [loading, setLoading] = useState(false);
   const base_url = "https://foodjournal20-production.up.railway.app";
   const navigate = useNavigate();
+  const usernameInputRef = useRef(null);
+
+  useEffect(() => {
+    usernameInputRef.current.focus();
+  }, []);
 
   useEffect(() => {
     document.body.style.backgroundImage = `url(${backgroundImage})`;
@@ -19,7 +24,7 @@ function SignIn() {
       document.body.style.backgroundImage = '';
       document.body.style.backgroundSize = '';
     };
-  }, [])
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -49,10 +54,10 @@ function SignIn() {
 
       //SUCCESSFUL LOGIN YIPPEEEE
       localStorage.setItem('token', data.token);
-      navigate('/'); // Navigate to the home page
+      navigate('/'); 
     } catch (error) {
       console.error('Error:', error);
-      setError(`Failed to sign in: Incorrect username or password`);
+      setError(`Failed to sign in: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -65,29 +70,32 @@ function SignIn() {
       <form onSubmit={handleSubmit}>
         <div className="input-group">
           <div className="left-inputs">
+            <label htmlFor="username">Username</label>
             <input
+              id="username"
               type="text"
-              placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              ref={usernameInputRef}
               required
             />
+            <label htmlFor="password">Password</label>
             <input
+              id="password"
               type="password"
-              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-            <a href="https://www.youtube.com/watch?v=XJFFgc9jZz0" className="forgot-password">Forgot Password?</a>
+            {error && <div className="error-message">{error}</div>}
             <button className="submit" disabled={loading}>
               {loading ? 'Signing In...' : 'Sign In'}
             </button>
+            <a href = "https://youtu.be/b3rNUhDqciM" className = "forgot">Forgot Password?</a>
           </div>
           <div className="right-text">
             <div className="sign-up-text">
-              <p style={{ color: 'black' }}>New to food journal?</p>
+              <p>New to Food Journal?</p>
               <div className="sign-up-link">
                 <Link to='/signup'>Sign up for free</Link>
               </div>

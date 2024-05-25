@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import './NewReviewPage.css';
 
 function ReviewPage() {
@@ -8,6 +8,7 @@ function ReviewPage() {
     const [mealPics, setMealPics] = useState('');
     const [picsMode, setPicsMode] = useState('upload');
     const [stars, setStars] = useState(0);
+    const [starSelected, setStarSelected] = useState(false);
     const [showError, setShowError] = useState(false);
     const [comments, setComments] = useState('');
     const [tag, setTag] = useState('');
@@ -17,26 +18,57 @@ function ReviewPage() {
     const canvasRef = useRef(null);
 
     const mealNameRef = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         mealNameRef.current.focus();
     
       }, []);
   
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
       event.preventDefault();
-      // Check if the star is selected
-      if (stars === 0) {
-        setShowError(true);
-      } else {
-        setShowError(false);
-      }
+
       // send stuff to backend
-      console.log('MealName:', mealName);
-      console.log('MealPics:', mealPics);
-      console.log('Stars:', stars);
-      console.log('Comments:', comments);
-    };
+      if (!showError) {
+        try {
+            // Get the access token stored during signIn
+           const token = localStorage.getItem('token'); 
+      
+            /* if (!token) {
+              console.error('Access token not found');
+              return;
+            }*/
+      
+            const reviewData = {
+              food_name: mealName,
+              image: mealPics,
+              restaurant_name: restaurant,
+              rating: stars,
+              review: comments,
+              tags: tag
+            };
+      
+            const response = await fetch('https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify(reviewData)
+            });
+      
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message);
+              }
+        
+              const data = await response.json();
+              console.log('Success:', data);
+          } catch (error) {
+            console.error('Error creating new review:', error);
+          }
+        }
+    }
 
     const handleImageUpload = (event) => {
         setMealPics(event.target.files[0]);
@@ -44,6 +76,12 @@ function ReviewPage() {
 
     const handleStarsHover = (ratingValue) => {
         setStars(ratingValue);
+      };
+
+    const handleCommentsChange = (comment) => {
+        setComments(comment);
+        const starNotSet = stars === 0;
+        setShowError(starNotSet);
       };
 
     const handlePicsModeChange = (mode) => {
@@ -152,7 +190,10 @@ function ReviewPage() {
                       <input
                         type="radio"
                         value={ratingValue}
-                        onClick={() => setStars(ratingValue)}
+                        onClick={() => {
+                            setStars(ratingValue);
+                            setShowError(false);
+                        }}
                         onMouseOver={() => handleStarsHover(ratingValue)}
                         onMouseOut={() => handleStarsHover(stars)}
                       />
@@ -171,7 +212,7 @@ function ReviewPage() {
                 id="comments"
                 text="text"
                 value={comments}
-                onChange={(e) => setComments(e.target.value)}
+                onChange={handleCommentsChange}
                 required
               />
               <label htmlFor="tag">Tags</label>
@@ -182,7 +223,6 @@ function ReviewPage() {
               onChange={(e) => setTag(e.target.value)}
             />
             </div>
-            
                <button className="submit">Save Review</button>
             </div>
           </div>

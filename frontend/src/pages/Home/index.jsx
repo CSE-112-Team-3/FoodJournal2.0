@@ -53,9 +53,7 @@ export default function Home() {
                 />
                 )) : null}
             </div>
-            <Link to="/new-review">
-              <button className="circle-btn">+</button>
-            </Link>
+        
         </div>
     );
 }
