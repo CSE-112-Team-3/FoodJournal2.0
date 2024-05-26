@@ -13,7 +13,7 @@ from sqlalchemy import or_, and_, update, delete, insert, select
 import random
 import os
 from datetime import timedelta
-from auth.utils import verify, create_access_token
+from auth.utils import verify, create_access_token, get_current_user
 
 def email_exists(db: _orm.Session, email: str):
     """ Check if a given email already exists in the database
@@ -70,8 +70,8 @@ async def create_user(user, db: _orm.Session):
         db.add(user_obj)
         db.commit()
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"User could not be added")
-    
+        raise HTTPException(status_code=400, detail=f"User could not be added: {e}")
+
     return {"user": user}
 
 async def login(request, db: _orm.Session):
@@ -116,3 +116,32 @@ async def login(request, db: _orm.Session):
         "user_id": user.id,
         "email": user.email,
     }
+
+async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _orm.Session):
+    try:
+        user_id = get_current_user(accessToken, db)
+        update_data = request.model_dump(exclude_unset=True)
+        if not update_data:
+            raise HTTPException(status_code=400, detail=f"No fields to update")
+        if update_data.get("email"):
+            if (email_exists(db, update_data.get("email"))):
+                raise HTTPException(status_code=400, detail=f'Email {update_data.get("email")} already exists')
+            elif (not validate_email(update_data.get("email"))):
+                raise HTTPException(status_code=400, detail=f"Invalid email address")
+        if update_data.get("password"):
+            update_data["password"] = bcrypt(update_data.get("password"))
+        stmt = (
+            update(_models.UserModel).
+            where(_models.UserModel.id == user_id).
+            values(**update_data)
+        )
+        result = db.execute(stmt)
+        if result.rowcount == 0:
+            raise HTTPException (
+                status_code = status.HTTP_404_NOT_FOUND,
+                detail = "User not found"
+            )
+        db.commit()
+        return {"message":"User was updated"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"User could not be updated: {e}")
