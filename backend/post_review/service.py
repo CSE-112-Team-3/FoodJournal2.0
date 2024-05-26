@@ -9,10 +9,6 @@ from auth.utils import get_current_user
 
 MAX_POSTS_TO_FECTH = 20
 
-def get_post_id(db: _orm.Session):
-
-    return 0
-
 async def get_post_reviews(db: _orm.Session):
     """
     Retrieve all posts from the database.
