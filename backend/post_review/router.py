@@ -25,11 +25,11 @@ async def create_post_review(
 
 @router_post_review.post("/delete_post_review")
 async def delete_post_review(
-    post_id: int,
+    id: int,
     access_token: str,
     db: Session = Depends(get_db)):
     """ 
     Delete a post review from the database. Endpoint receives an access token and
     a post id.
     """
-    return await _service.delete_post_review(post_id, db, access_token)
+    return await _service.delete_post_review(id, db, access_token)
