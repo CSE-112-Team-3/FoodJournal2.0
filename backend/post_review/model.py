@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Float, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
@@ -10,6 +10,6 @@ class PostReviewModel(Base):
     food_name = Column(String, nullable=False)
     image = Column(String, nullable=True)
     restaurant_name = Column(String, nullable=True)
-    rating = Column(String, nullable=False)
+    rating = Column(Float, nullable=False)
     review = Column(String, nullable=False)
     tags = Column(String, nullable=True)

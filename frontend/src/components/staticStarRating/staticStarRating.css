@@ -1,0 +1,8 @@
+.star {
+    font-size: 30px;
+    color: gray;
+  }
+  
+  .star.filled {
+    color: #47B2FF;
+  }
