@@ -17,6 +17,6 @@ router_post_review = APIRouter(
 async def get_post_reviews(db: Session = Depends(get_db)):
     """ 
     Get all post reviews from the database.
+    Returns a list of tuples where each tuple contains a post review and the user who created it.
     """
-    print('reached')
     return await _service.get_post_reviews(db)

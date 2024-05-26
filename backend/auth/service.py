@@ -117,3 +117,19 @@ async def login(request, db: _orm.Session):
         "user_id": user.id,
         "email": user.email,
     }
+
+async def get_user_by_id(user_id: int, db: _orm.Session):
+    """
+    Retrieve a user based on the provided user ID.
+
+    :param user_id: User ID to retrieve
+    :param db: Database session
+    :return: User information
+    """
+    user = db.query(_models.UserModel).filter(_models.UserModel.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    return user.username
