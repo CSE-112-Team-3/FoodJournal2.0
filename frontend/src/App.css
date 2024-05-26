@@ -1,14 +1,15 @@
-body {
-  margin: 0;
-  padding: 0;
-  background-image: url('./assets/backgroundImage.jpeg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 100vh; 
-}
+@import url('https://fonts.googleapis.com/css2?family=Reddit+Sans+Condensed:wght@200..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Jockey+One&display=swap');
+body{
+  background-color: beige;
+}
 .jockey-one-regular {
     font-family: "Jockey One", sans-serif;
     font-weight: 400;
     font-style: normal;
   }
+.reddit-sans-condensed {
+  font-family: "Reddit Sans Condensed", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}

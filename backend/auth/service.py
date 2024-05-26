@@ -1,5 +1,5 @@
 from . import model
-from fastapi import HTTPException, status
+from fastapi import Depends, HTTPException, status
 from email_validator import validate_email
 from sqlalchemy.orm import Session
 from auth.utils import bcrypt
@@ -71,8 +71,7 @@ async def create_user(user, db: _orm.Session):
         db.commit()
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"User could not be added: {e}")
-        return None
-    
+
     return {"user": user}
 
 async def login(request, db: _orm.Session):
@@ -110,6 +109,7 @@ async def login(request, db: _orm.Session):
         },
         expires_delta=timedelta(hours=24)
     )
+
     return {
         "access_token": access_token,
         "token_type": "bearer",

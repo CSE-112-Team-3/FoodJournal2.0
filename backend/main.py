@@ -26,4 +26,4 @@ app.include_router(router_auth)
 app.include_router(router_post_review)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=6542)
+    uvicorn.run("main:app", host="0.0.0.0", port=6542, reload=True)

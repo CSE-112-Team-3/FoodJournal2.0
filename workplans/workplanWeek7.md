@@ -11,9 +11,9 @@
 - created issues on Github and assigned important tasks to all team members
 - not as urgent, but upcoming tasks were given "could" label so people who have extra time could choose to work on these tasks
 - decided to focus on website development this sprint rather than social media aspect of website (creating users, creating posts under that account, etc.)
+- talked about branch labeling (decided to create branch from issue page which conveniently names branch with issue # and name)
+- decided pull request conventions
 
-### Sunday (5/19): Sprint Retrospective Meeting ###
-- TBD
 
 ## Sprint Tasks ##
 |           Issue     | Assignee    |
