@@ -22,9 +22,11 @@ async def get_post_reviews(db: _orm.Session):
         
         posts = posts[:MAX_POSTS_TO_FECTH]
         # Probably could be optimized
-        post_user = [(post, get_user_by_id(post.post_id, db) for post in posts) for post in posts]
-
+        print(posts)
+        post_user = [(post, await get_user_by_id(post.post_id, db)) for post in posts]
+        print(post_user)
         return post_user
-    except:
+    except Exception as e:
+        print(e)
         raise HTTPException(status_code=400, detail=f"Posts could not be retrieved")
         return None

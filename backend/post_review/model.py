@@ -6,6 +6,7 @@ class PostReviewModel(Base):
     __tablename__ = "post"
 
     id = Column(Integer, primary_key=True, index=True)
+    post_id = Column(Integer, nullable=False)
     food_name = Column(String, nullable=False)
     image = Column(String, nullable=True)
     restaurant_name = Column(String, nullable=True)
