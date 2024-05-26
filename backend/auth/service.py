@@ -126,10 +126,17 @@ async def get_user_by_id(user_id: int, db: _orm.Session):
     :param db: Database session
     :return: User information
     """
-    user = db.query(_models.UserModel).filter(_models.UserModel.id == user_id).first()
-    if not user:
+    try:
+        user = db.query(_models.UserModel).filter(_models.UserModel.id == user_id).first()
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+        return user.username
+    except:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User could not be retrieved"
         )
-    return user.username
+        return None
