@@ -9,6 +9,10 @@ from auth.utils import get_current_user
 
 MAX_POSTS_TO_FECTH = 20
 
+def get_post_id(db: _orm.Session):
+
+    return 0
+
 async def get_post_reviews(db: _orm.Session):
     """
     Retrieve all posts from the database.
@@ -68,9 +72,11 @@ async def create_post_review(
 async def update_post_review(
         post_review: schemas.PostReviewBase, 
         db: _orm.Session, 
-        access_token: str
+        access_token: str,
+        id: int
         ):
 
+    # needs a way to get the id of post instead
     user_id = get_current_user(access_token, db)
 
     try:
@@ -79,7 +85,7 @@ async def update_post_review(
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
 
-        db.query(_model.PostReviewModel).filter(_model.PostReviewModel.post_id == user_id).update({
+        db.query(_model.PostReviewModel).filter(_model.PostReviewModel.id == id).update({
             'food_name': post_review.food_name,
             'image': post_review.image,
             'restaurant_name': post_review.restaurant_name,
@@ -89,7 +95,7 @@ async def update_post_review(
         
         db.commit()
 
-        return {'message': f"Post {_model.PostReviewModel.post_id} updated"}
+        return {'message': f"Post {_model.PostReviewModel.id} updated"}
     
     except Exception as e:
         db.rollback()
