@@ -64,3 +64,35 @@ async def create_post_review(
         db.rollback()
         print(f"Error occurred: {e}")  # Log the error message
         raise HTTPException(status_code=400, detail=f"Post could not be added: {str(e)}")
+
+async def delete_post_review(post_id: int, 
+                             db: _orm.Session, 
+                             access_token: str):
+    """
+    Deletes a post review from the database.
+
+    :param post_id: Post review ID
+    :param db: Database session
+    :param access_token: User access token
+    :return: Message indicating whether the post was deleted successfully
+    """
+    user_id = get_current_user(access_token, db)
+
+    try:
+        user = db.query(user_model.UserModel).filter(user_model.UserModel.id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        post = db.query(_model.PostReviewModel).filter(_model.PostReviewModel.id == post_id).first()
+        if not post:
+            raise HTTPException(status_code=404, detail="Post not found")
+                
+        db.query(_model.PostReviewModel).filter(_model.PostReviewModel.id == post_id).delete()
+        db.commit()
+
+        return {'message': f"Post {post_id} deleted"}
+    
+    except Exception as e:
+        db.rollback()
+        print(f"Error occurred: {e}")  # Log the error message
+        raise HTTPException(status_code=400, detail=f"Post could not be deleted: {str(e)}")

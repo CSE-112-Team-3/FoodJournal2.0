@@ -6,7 +6,6 @@ from sqlalchemy.orm.session import Session
 import post_review.service as _service
 from post_review.model import PostReviewModel
 from service_database import get_db
-from sqlalchemy import Inspector, or_, and_, update, delete, insert, select
 
 router_post_review = APIRouter(
     prefix="/api/v1/post_review",
@@ -23,3 +22,14 @@ async def create_post_review(
     a JSON string with post review information.
     """
     return await _service.create_post_review(post_review, db, access_token)
+
+@router_post_review.post("/delete_post_review")
+async def delete_post_review(
+    post_id: int,
+    access_token: str,
+    db: Session = Depends(get_db)):
+    """ 
+    Delete a post review from the database. Endpoint receives an access token and
+    a post id.
+    """
+    return await _service.delete_post_review(post_id, db, access_token)
