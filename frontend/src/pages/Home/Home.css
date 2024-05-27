@@ -1,4 +1,8 @@
 
+body{
+  background-color: beige;
+}
+
 .home-container {
   display: flex;
   flex-direction: row;
@@ -13,7 +17,7 @@
 }
 
 .container{
-  postion:relative;
+  position:relative;
 }
 
 .circle-btn {
