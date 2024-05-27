@@ -1,7 +1,8 @@
-import './NavBar.css';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import './NavBar.css'
+import { Outlet, Link, useLocation } from 'react-router-dom'
+import { useState } from 'react';
 
-export default function NavBar() {
+export default function NavBar({ pictureNavbar }) {
     const location = useLocation();
     const { pathname } = location;
 
@@ -13,6 +14,11 @@ export default function NavBar() {
                     <p>My Food Journal</p>
                 </div>
                 <ul>
+                    <li>
+                        <Link to="/profile">
+                            <img className='profileImage' src={pictureNavbar || '../../public/images/default-pfp.png'} alt='Default Profile Picture' />
+                        </Link>
+                    </li>
                     <li className={pathname === '/' ? 'selected-page' : ''}>
                         <Link className={pathname === '/' ? 'selected-page' : ''} to='/'>HOME</Link>
                         {pathname === '/' && (

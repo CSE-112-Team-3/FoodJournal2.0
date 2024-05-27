@@ -1,14 +1,16 @@
 import './Home.css'
 import NavBar from '../../components/navbar'
+import { useState } from 'react';
 
 import MinimizedPost from '../../components/minimizedPost';
 import StaticStarRating from '../../components/staticStarRating';
 import ProfilePic from '../../components/profilePic';
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 
 
 export default function Home() {
+    const [pictureNavbar, setPictureNavbar] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png');
+    //TODO: Retrieve the image link from the database to replace the link in 'useState'.
     const posts = [
         {
           username: 'cctrunk',
@@ -39,7 +41,7 @@ export default function Home() {
 
     return(
         <div className='home-container'>
-            <NavBar/>
+            <NavBar pictureNavbar={pictureNavbar} />
             <div className='post-container reddit-sans-condensed'>
                 {posts ? posts.map((post, index) => (
                 <MinimizedPost
@@ -53,8 +55,14 @@ export default function Home() {
                 />
                 )) : null}
             </div>
-        
+
+        <div className="container">
+            <NavBar pictureNavbar={pictureNavbar} />
+            <Link to="/new-review">
+              <button className="circle-btn">+</button>
+            </Link>
         </div>
-        
+        </div>
+
     );
 }

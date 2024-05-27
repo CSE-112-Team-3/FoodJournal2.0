@@ -75,6 +75,11 @@
     text-decoration: underline;
 }
 
+
+.profileImage{
+    width:150px;
+    border-radius: 50%;
+
 .create-post-container {
     display: flex;
     justify-content: center;
