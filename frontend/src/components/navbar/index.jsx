@@ -14,17 +14,12 @@ export default function NavBar({ pictureNavbar }) {
                     <p>My Food Journal</p>
                 </div>
                 <ul>
-                    <li>
-                        <Link to="/profile">
-                            <img className='profileImage' src={pictureNavbar || '../../public/images/default-pfp.png'} alt='Default Profile Picture' />
-                        </Link>
-                    </li>
                     <li className={pathname === '/' ? 'selected-page' : ''}>
                         <Link className={pathname === '/' ? 'selected-page' : ''} to='/'>HOME</Link>
                         {pathname === '/' && (
                             <div className="create-post-container">
                                 <Link to="/new-review">
-                                    <button className="circle-btn">Create New Post</button>
+                                    <button className="circle-btn">Create Post</button>
                                 </Link>
                             </div>
                         )}
@@ -39,7 +34,9 @@ export default function NavBar({ pictureNavbar }) {
                 <div className='sign-in'>
                     <ul>
                         <li>
-                            <img src='../../public/images/default-pfp.png' alt='Default Profile Picture' />
+                            <Link to="/profile">
+                                <img src='../../public/images/default-pfp.png' alt='Default Profile Picture' />
+                            </Link>
                         </li>
                         <li>
                             <Link to='/signin'>Sign in?</Link>

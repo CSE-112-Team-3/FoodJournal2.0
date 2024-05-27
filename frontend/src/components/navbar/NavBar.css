@@ -79,25 +79,22 @@
 .profileImage{
     width:150px;
     border-radius: 50%;
+}
 
-.create-post-container {
+.create-post-container{
     display: flex;
     justify-content: center;
-
+    padding: -10px;
 }
 
 .circle-btn {
-    width: 130px;
-    height: 40px;
-    border-radius: 2%;
-    background-color: #007bff;
+    background-color: #36A7F9; 
     color: white;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    cursor: pointer;
+    width: 100px; 
+    height: 40px; 
+    border-radius: 10px; 
+    border: none; 
+    font-size: 16px;
 }
 
 .circle-btn:hover {
