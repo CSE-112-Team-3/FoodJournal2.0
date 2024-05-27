@@ -62,10 +62,7 @@ export default function Home() {
               <button className="circle-btn">+</button>
             </Link>
         </div>
-
-        
-
         </div>
-      </div>
+
     );
 }
