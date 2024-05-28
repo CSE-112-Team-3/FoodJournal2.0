@@ -22,9 +22,7 @@ async def get_post_reviews(db: _orm.Session):
         
         posts = posts[:MAX_POSTS_TO_FECTH]
         # Probably could be optimized
-        print(posts)
         post_user = [(post, await get_user_by_id(post.post_id, db)) for post in posts]
-        print(post_user)
         return post_user
     except Exception as e:
         print(e)
