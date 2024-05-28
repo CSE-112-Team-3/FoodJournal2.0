@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from post_review.model import PostReviewModel
-from post_review.service import get_posts
+from post_review.service import get_posts, delete_post_review
+from auth.utils import create_access_token
 from backend import database
 import os
 from dotenv import load_dotenv
@@ -47,6 +48,20 @@ class testPostModel():
         assert query_result.rating == 5
         assert query_result.review == 'super good tortilla'
         assert query_result.tags == 'mexican food'
+
+    def test_delete_post(self):
+        # Access token creds should be replaced with actual user creds
+        token = create_access_token(
+                            data={
+                                "email": 'test1@gmail.com',
+                                "user_id": str(1)
+                            },
+                        )
+
+        before = len(self.session.query(PostReviewModel).all())
+        delete_post_review(1, self.session, token)
+        posts = self.session.query(PostReviewModel).all()
+        assert len(posts) == before - 1
 
     def teardown_class(self):
         self.session.rollback()
