@@ -47,4 +47,3 @@ def get_current_user(token: str = Depends(oauth2_scheme),
         return payload.get("user_id")
     except Exception as e:
         raise credentials_exception
-
