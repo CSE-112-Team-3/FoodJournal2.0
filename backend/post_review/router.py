@@ -30,6 +30,6 @@ async def delete_post_review(
     db: Session = Depends(get_db)):
     """ 
     Delete a post review from the database. Endpoint receives an access token and
-    a post id.
+    a post id. The ID recevied in the post request is the ID of the post to remove.
     """
     return await _service.delete_post_review(id, db, access_token)
