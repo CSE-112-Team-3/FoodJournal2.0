@@ -23,3 +23,11 @@ async def create_post_review(
     a JSON string with post review information.
     """
     return await _service.create_post_review(post_review, db, access_token)
+  
+@router_post_review.get("/get_post_review")
+async def get_post_reviews(db: Session = Depends(get_db)):
+    """ 
+    Get all post reviews from the database.
+    Returns a list of tuples where each tuple contains a post review and the user who created it.
+    """
+    return await _service.get_post_reviews(db)

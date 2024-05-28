@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import or_, and_, update, delete, insert, select
 import sqlalchemy.orm as _orm
 import post_review.model as _model
+from auth.service import get_user_by_id
 from auth import model as user_model
 import schemas
 from auth.utils import get_current_user
@@ -14,15 +15,19 @@ async def get_post_reviews(db: _orm.Session):
     Retrieve all posts from the database.
 
     :param db: Database session
-    :return: List of all posts
+    :return: List of tuples where each tuple contains a post and the user who created it
     """
     try:
         posts = db.query(_model.PostReviewModel).all()
         if not posts:
             raise HTTPException(status_code=404, detail="No posts found")
         
-        return posts[:MAX_POSTS_TO_FECTH]
-    except:
+        posts = posts[:MAX_POSTS_TO_FECTH]
+        # Probably could be optimized
+        post_user = [(post, await get_user_by_id(post.post_id, db)) for post in posts]
+        return post_user
+    except Exception as e:
+        print(e)
         raise HTTPException(status_code=400, detail=f"Posts could not be retrieved")
 
 async def create_post_review(
