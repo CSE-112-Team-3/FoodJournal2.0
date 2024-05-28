@@ -21,6 +21,7 @@
 
 .nav-bar li {
     width: 100%;
+    position: relative; 
 }
 
 .nav-bar a {
@@ -29,6 +30,7 @@
     text-decoration: none;
     padding: 10px 15px;
     transition: color 0.2s;
+    display: block;
 }
 
 .nav-bar a:hover {
@@ -36,7 +38,7 @@
 }
 
 .selected-page {
-    background-color: white;
+    background-color: beige;
 }
 
 .selected-page a {
@@ -73,3 +75,28 @@
     text-decoration: underline;
 }
 
+
+.profileImage{
+    width:150px;
+    border-radius: 50%;
+}
+
+.create-post-container{
+    display: flex;
+    justify-content: center;
+    padding: -10px;
+}
+
+.circle-btn {
+    background-color: #36A7F9; 
+    color: white;
+    width: 100px; 
+    height: 40px; 
+    border-radius: 10px; 
+    border: none; 
+    font-size: 16px;
+}
+
+.circle-btn:hover {
+    background-color: #0056b3;
+}
