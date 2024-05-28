@@ -33,3 +33,11 @@ async def delete_post_review(
     a post id. The ID recevied in the post request is the ID of the post to remove.
     """
     return await _service.delete_post_review(id, db, access_token)
+  
+@router_post_review.get("/get_post_review")
+async def get_post_reviews(db: Session = Depends(get_db)):
+    """ 
+    Get all post reviews from the database.
+    Returns a list of tuples where each tuple contains a post review and the user who created it.
+    """
+    return await _service.get_post_reviews(db)
