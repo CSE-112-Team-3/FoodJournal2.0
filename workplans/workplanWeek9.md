@@ -5,7 +5,7 @@
 - fix profile page and interactions around it so it is ready for API call implementation next week
 - finish frontend and backend for recipe/discover pages
 - user authentication so only logged in users can access the site
-- use css tailwind for responsive design
+- use css bootstrap for responsive design
   
 ## Meetings 
 ### Tuesday (5/28): Sprint Planning Meeting ###
