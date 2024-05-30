@@ -5,7 +5,7 @@ import './NewReviewPage.css';
 function ReviewPage() {
     const [mealName, setMealName] = useState('');
     const [restaurant, setRestaurant] = useState('');
-    const [mealPics, setMealPics] = useState('');
+    const [mealPics, setMealPics] = useState(null);
     const [picsMode, setPicsMode] = useState('upload');
     const [stars, setStars] = useState(0);
     const [starSelected, setStarSelected] = useState(false);
@@ -30,56 +30,79 @@ function ReviewPage() {
 
       // send stuff to backend
       if (!showError) {
-        try {
             // Get the access token stored during signIn
            const token = localStorage.getItem('token'); 
       
-            /* if (!token) {
+            /*if (!token) {
               console.error('Access token not found');
               return;
             }*/
+
+            const imageBase64 = convertToBase64(mealPics);
       
             const reviewData = {
               food_name: mealName,
-              image: mealPics,
+              image: imageBase64,
               restaurant_name: restaurant,
               rating: stars,
               review: comments,
               tags: tag
             };
+
+            console.log('Review Data:', reviewData);
       
-            const response = await fetch('https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review', {
+            fetch('https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
               },
               body: JSON.stringify(reviewData)
-            });
-      
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message);
+            })
+            .then((response) => {
+            if (response.ok) {
+                
+              } else {
+                console.error('Error creating new entry:', response.status);
               }
-        
-              const data = await response.json();
-              console.log('Success:', data);
-          } catch (error) {
-            console.error('Error creating new review:', error);
+            })
+              .catch((error) => {
+                console.error('Error creating new entry:', error);
+              });
           }
+        };
+
+    const convertToBase64 = (file) => {
+      return new Promise((resolve, reject) => {
+        if (!(file instanceof Blob || file instanceof File)) {
+          reject(new Error('Provided value is not a Blob or File'));
+          return;
         }
-    }
+
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.onload = () => {
+          resolve(fileReader.result);
+        };
+        fileReader.onerror = (error) => {
+          reject(error);
+        };
+      });
+    };
 
     const handleImageUpload = (event) => {
-        setMealPics(event.target.files[0]);
-      };
+      const file = event.target.files[0];
+      if (file) {
+        setMealPics(file);
+      }
+    };
 
     const handleStarsHover = (ratingValue) => {
         setStars(ratingValue);
       };
 
     const handleCommentsChange = (comment) => {
-        setComments(comment);
+        setComments(comment.target.value);
         const starNotSet = stars === 0;
         setShowError(starNotSet);
       };
@@ -210,7 +233,7 @@ function ReviewPage() {
               <label htmlFor="comments">Comments</label>
               <input
                 id="comments"
-                text="text"
+                type="text"
                 value={comments}
                 onChange={handleCommentsChange}
                 required
