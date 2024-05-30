@@ -66,7 +66,8 @@ async def create_user(user, db: _orm.Session):
                                     last_name=user.last_name,
                                     username=user.username, 
                                     password=hash, 
-                                    email=user.email)
+                                    email=user.email,
+                                    profile_picture=user.profile_picture )
         db.add(user_obj)
         db.commit()
     except Exception as e:
