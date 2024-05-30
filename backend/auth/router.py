@@ -15,10 +15,15 @@ router_auth = APIRouter(
 
 @router_auth.post("/create_user")
 async def create_user(user: _schemas.UserBase, db: Session = Depends(get_db)):
-    """ 
-    Create a new user in the databse. Endpoint receives
-    a JSON string with user information. To test the endpoint you can create a JSON file
-    and run `curl -X POST http://0.0.0.0:6542/user -H "Content-Type: application/json" -d @<filename>`
+    """
+    Create a new user in the database. Endpoint receives a JSON string with user information. To test the endpoint, you can create a JSON file and run `curl -X POST http://0.0.0.0:6542/user -H "Content-Type: application/json" -d @<filename>`.
+
+    Args:
+        user (_schemas.UserBase): The user information to create.
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+
+    Returns:
+        Coroutine: A coroutine that returns the created user.
     """
     return await _service.create_user(user, db)
   
@@ -26,13 +31,55 @@ async def create_user(user: _schemas.UserBase, db: Session = Depends(get_db)):
 
 @router_auth.post("/login")
 async def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    """ 
-    Login endpoint receives a JSON string with user information. 
-    To test the endpoint you can create a JSON file    
-    and run `curl -X POST http://0.0.0.0:6542/user -H "Content-Type: application/json" -d @<filename>`
+    """
+    Endpoint for user login.
+
+    This endpoint receives a JSON string with user information and authenticates the user.
+    It expects a POST request with the following JSON payload:
+    {
+        "username": "string",
+        "password": "string"
+    }
+
+    Parameters:
+    - request (OAuth2PasswordRequestForm): The request object containing user credentials.
+    - db (Session): The database session.
+
+    Returns:
+    - A dictionary containing the user's access token, token type, user ID, and email upon successful authentication.
+    - An HTTPException with status code 401 and detail message "Invalid email or username, try again." if the user does not exist.
+    - An HTTPException with status code 401 and detail message "Invalid password, try again." if the provided password is incorrect.
+
+    Raises:
+    - None
     """
     return await _service.login(request, db)
 
 @router_auth.patch("/update_user")
 async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: Session = Depends(get_db)):
+    """
+    Updates a user's information in the database.
+
+    Args:
+        request (_schemas.UpdateUserBase): The updated user information.
+        accessToken (str): The user's access token.
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+
+    Returns:
+        Coroutine: A coroutine that returns a dictionary with a message indicating the success of the update.
+    """
     return await _service.update_user(request, accessToken, db)
+
+@router_auth.get("/get_user")
+async def get_user(accessToken: str, db: Session = Depends(get_db)):
+    """
+    Get the user information from the database based on the provided access token.
+
+    Args:
+        accessToken (str): The access token used to authenticate the user.
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+
+    Returns:
+        Coroutine: A coroutine that returns the user information from the database.
+    """
+    return await _service.get_user_by_access_token(accessToken, db)

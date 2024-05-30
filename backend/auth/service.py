@@ -169,3 +169,26 @@ async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _o
         return {"message":"User was updated"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"User could not be updated: {e}")
+
+
+async def get_user_by_access_token(access_token: str, db: _orm.Session):
+    """
+    Retrieves a user from the database based on their access token.
+
+    :param access_token: The access token of the user.
+    :param db: The database session.
+    :return: The user object.
+    """
+    user_id = get_current_user(access_token, db)
+    user = db.query(_models.UserModel).filter(_models.UserModel.id == user_id).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    del user.password
+    del user.created_at
+    
+    return user
