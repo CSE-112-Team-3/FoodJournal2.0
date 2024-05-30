@@ -53,20 +53,15 @@ async def create_user(user, db: _orm.Session):
     :param db: Database engine, will be converted to session
     :param user: User information to create, should be a dict
     :return: Created user, if an error is raised, return None"""
-    # Ensure email is not a duplicate
+
     if (email_exists(db, user.email)):
-        _HTTPException = HTTPException(status_code=400, detail=f"Email {user.email} already exists")
-        return _HTTPException.detail
+        raise HTTPException(status_code=400, detail=f"Email {user.email} already exists")
     elif (not validate_email(user.email)):
-        _HTTPException = HTTPException(status_code=400, detail=f"Invalid email address")
-        return _HTTPException.detail
-    
-    user_exists = await check_user(user.username, db)
-    if user_exists:
-        _HTTPException = HTTPException(status_code=400, detail=f"User {user.username} already exists")
-        return _HTTPException.detail
-    
-    # Add user to database
+        raise HTTPException(status_code=400, detail=f"Invalid email address")
+    elif (user_exists(user.username, db)):
+        print(user.username)
+        raise HTTPException(status_code=400, detail=f"User {user.username} already exists")
+
     try:
         hash = bcrypt(user.password)
         user_obj = model.UserModel( first_name=user.first_name, 
@@ -183,26 +178,16 @@ async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _o
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"User could not be updated: {e}")
 
-async def check_user(username: str, db: _orm.Session):
+def user_exists(username: str, db: _orm.Session):
     """
     Check if a user with the given username exists in the database.
-    
+
     Args:
         username (str): The username to check.
         db (_orm.Session): The database session.
-    
+
     Returns:
-        dict: A dictionary indicating whether the user exists.
-            - If the user exists, the dictionary will have the key "exists" with the value True.
-            - If the user does not exist, the dictionary will have the key "exists" with the value False.
+        bool: True if the user exists, False otherwise.
     """
-    try:
-        user = db.query(_models.UserModel).filter(_models.UserModel.username == username).first()
-        if not user:
-            return {"exists": False}
-        return {"exists": True}
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=e
-        )
+    result = db.query(_models.UserModel).filter(_models.UserModel.username == username).first()
+    return True if result is not None else False

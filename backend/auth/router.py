@@ -57,19 +57,3 @@ async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: Se
         Awaitable[dict]: A dictionary indicating whether the user was successfully updated.
     """
     return await _service.update_user(request, accessToken, db)
-
-@router_auth.get("/check_username")
-async def check_user(username: str, db: Session = Depends(get_db)):
-    """
-    Check if a user with the given username exists in the database.
-    
-    Args:
-        username (str): The username to check.
-        db (Session, optional): The database session. Defaults to the session obtained from the `get_db` dependency.
-    
-    Returns:
-        dict: A dictionary indicating whether the user exists.
-            - If the user exists, the dictionary will have the key "exists" with the value True.
-            - If the user does not exist, the dictionary will have the key "exists" with the value False.
-    """
-    return await _service.check_user(username, db)
