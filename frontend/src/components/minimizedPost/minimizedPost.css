@@ -68,3 +68,6 @@
     white-space: nowrap;
     width: 100%;
 }
+.postActionButtons{
+    align-items: right;
+}

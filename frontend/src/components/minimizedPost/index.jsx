@@ -15,6 +15,10 @@ export default function MinimizedPost({ username, profilePic, mealName, starRati
                 <img className='min-post-image' src={images[0]} alt={mealName} />
                 <p className='description'>{description}</p>
             </div>
+            <div className = 'postActionButtons'>
+                    <button className='update-button'>Update Post</button>
+                    <button className='delete-button'>Delete Post</button>
+            </div>
             <div className='interact-bar'>
                 {/* to add like button here in the future? */}
             </div>
