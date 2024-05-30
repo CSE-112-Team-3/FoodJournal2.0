@@ -55,10 +55,17 @@ async def create_user(user, db: _orm.Session):
     :return: Created user, if an error is raised, return None"""
     # Ensure email is not a duplicate
     if (email_exists(db, user.email)):
-        raise HTTPException(status_code=400, detail=f"Email {user.email} already exists")
+        _HTTPException = HTTPException(status_code=400, detail=f"Email {user.email} already exists")
+        return _HTTPException.detail
     elif (not validate_email(user.email)):
-        raise HTTPException(status_code=400, detail=f"Invalid email address")
-
+        _HTTPException = HTTPException(status_code=400, detail=f"Invalid email address")
+        return _HTTPException.detail
+    
+    user_exists = await check_user(user.username, db)
+    if user_exists:
+        _HTTPException = HTTPException(status_code=400, detail=f"User {user.username} already exists")
+        return _HTTPException.detail
+    
     # Add user to database
     try:
         hash = bcrypt(user.password)
@@ -138,9 +145,16 @@ async def get_user_by_id(user_id: int, db: _orm.Session):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User could not be retrieved"
         )
-        return None
 
 async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _orm.Session):
+    """
+    Update a user's information based on the provided request and access token.
+
+    :param request: An instance of the UpdateUserBase schema containing the updated user information.
+    :param accessToken: The access token of the user making the request.
+    :param db: The database session.
+    :return: A dictionary with a message indicating that the user was updated.
+    """
     try:
         user_id = get_current_user(accessToken, db)
         update_data = request.model_dump(exclude_unset=True)
@@ -168,3 +182,27 @@ async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _o
         return {"message":"User was updated"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"User could not be updated: {e}")
+
+async def check_user(username: str, db: _orm.Session):
+    """
+    Check if a user with the given username exists in the database.
+    
+    Args:
+        username (str): The username to check.
+        db (_orm.Session): The database session.
+    
+    Returns:
+        dict: A dictionary indicating whether the user exists.
+            - If the user exists, the dictionary will have the key "exists" with the value True.
+            - If the user does not exist, the dictionary will have the key "exists" with the value False.
+    """
+    try:
+        user = db.query(_models.UserModel).filter(_models.UserModel.username == username).first()
+        if not user:
+            return {"exists": False}
+        return {"exists": True}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=e
+        )

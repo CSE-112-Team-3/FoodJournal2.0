@@ -15,10 +15,15 @@ router_auth = APIRouter(
 
 @router_auth.post("/create_user")
 async def create_user(user: _schemas.UserBase, db: Session = Depends(get_db)):
-    """ 
-    Create a new user in the databse. Endpoint receives
-    a JSON string with user information. To test the endpoint you can create a JSON file
-    and run `curl -X POST http://0.0.0.0:6542/user -H "Content-Type: application/json" -d @<filename>`
+    """
+    Create a new user in the database.
+
+    Args:
+        user (_schemas.UserBase): The user information to create.
+        db (Session, optional): The database session. Defaults to the session obtained from the `get_db` dependency.
+
+    Returns:
+        Awaitable[dict]: A dictionary indicating whether the user was successfully created.
     """
     return await _service.create_user(user, db)
   
@@ -26,13 +31,45 @@ async def create_user(user: _schemas.UserBase, db: Session = Depends(get_db)):
 
 @router_auth.post("/login")
 async def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    """ 
-    Login endpoint receives a JSON string with user information. 
-    To test the endpoint you can create a JSON file    
-    and run `curl -X POST http://0.0.0.0:6542/user -H "Content-Type: application/json" -d @<filename>`
+    """
+    Endpoint for user login.
+
+    Args:
+        request (OAuth2PasswordRequestForm): The request object containing user credentials.
+        db (Session): The database session.
+
+    Returns:
+        The result of the login service function.
     """
     return await _service.login(request, db)
 
 @router_auth.patch("/update_user")
 async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: Session = Depends(get_db)):
+    """
+    Update the user information in the database.
+
+    Args:
+        request (_schemas.UpdateUserBase): The updated user information.
+        accessToken (str): The access token of the user making the request.
+        db (Session, optional): The database session. Defaults to the session obtained from the `get_db` dependency.
+
+    Returns:
+        Awaitable[dict]: A dictionary indicating whether the user was successfully updated.
+    """
     return await _service.update_user(request, accessToken, db)
+
+@router_auth.get("/check_username")
+async def check_user(username: str, db: Session = Depends(get_db)):
+    """
+    Check if a user with the given username exists in the database.
+    
+    Args:
+        username (str): The username to check.
+        db (Session, optional): The database session. Defaults to the session obtained from the `get_db` dependency.
+    
+    Returns:
+        dict: A dictionary indicating whether the user exists.
+            - If the user exists, the dictionary will have the key "exists" with the value True.
+            - If the user does not exist, the dictionary will have the key "exists" with the value False.
+    """
+    return await _service.check_user(username, db)

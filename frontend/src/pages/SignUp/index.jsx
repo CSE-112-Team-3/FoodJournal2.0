@@ -62,7 +62,8 @@ function SignUpPage() {
         email: email
       };
 
-      fetch('https://foodjournal20-production.up.railway.app/api/v1/auth/create_user', {
+      // fetch('https://foodjournal20-production.up.railway.app/api/v1/auth/create_user', {
+      fetch('localhost:6542/api/v1/auth/create_user', { // Use 'localhost:6542' if you are testing locally.app/api/v1/auth/create_user', {
         method: 'POST',
         body: JSON.stringify(userData),
         headers: {
