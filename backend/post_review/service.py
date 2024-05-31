@@ -72,7 +72,6 @@ async def update_post_review(
         id: int
         ):
 
-    # needs a way to get the id of post instead
     user_id = get_current_user(access_token, db)
 
     try:
