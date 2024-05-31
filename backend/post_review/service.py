@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import or_, and_, update, delete, insert, select
 import sqlalchemy.orm as _orm
 import post_review.model as _model
+from auth.service import get_user_by_id
 from auth import model as user_model
 import schemas
 from auth.utils import get_current_user
@@ -14,15 +15,19 @@ async def get_post_reviews(db: _orm.Session):
     Retrieve all posts from the database.
 
     :param db: Database session
-    :return: List of all posts
+    :return: List of tuples where each tuple contains a post and the user who created it
     """
     try:
         posts = db.query(_model.PostReviewModel).all()
         if not posts:
             raise HTTPException(status_code=404, detail="No posts found")
         
-        return posts[:MAX_POSTS_TO_FECTH]
-    except:
+        posts = posts[:MAX_POSTS_TO_FECTH]
+        # Probably could be optimized
+        post_user = [(post, await get_user_by_id(post.post_id, db)) for post in posts]
+        return post_user
+    except Exception as e:
+        print(e)
         raise HTTPException(status_code=400, detail=f"Posts could not be retrieved")
 
 async def create_post_review(
@@ -96,3 +101,35 @@ async def update_post_review(
         db.rollback()
         print(f"Error occurred: {e}")  # Log the error message
         raise HTTPException(status_code=400, detail=f"Post could not be updated: {str(e)}")
+
+async def delete_post_review(id: int, 
+                             db: _orm.Session, 
+                             access_token: str):
+    """
+    Deletes a post review from the database.
+
+    :param post_id: Post review ID
+    :param db: Database session
+    :param access_token: User access token
+    :return: Message indicating whether the post was deleted successfully
+    """
+    user_id = get_current_user(access_token, db)
+
+    try:
+        user = db.query(user_model.UserModel).filter(user_model.UserModel.id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        post = db.query(_model.PostReviewModel).filter(_model.PostReviewModel.id == id).first()
+        if not post:
+            raise HTTPException(status_code=404, detail="Post not found")
+                
+        db.query(_model.PostReviewModel).filter(_model.PostReviewModel.id == id).delete()
+        db.commit()
+
+        return {'message': f"Post {id} deleted"}
+    
+    except Exception as e:
+        db.rollback()
+        print(f"Error occurred: {e}")  # Log the error message
+        raise HTTPException(status_code=400, detail=f"Post could not be deleted: {str(e)}")

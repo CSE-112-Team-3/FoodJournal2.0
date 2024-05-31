@@ -12,6 +12,15 @@ class UserBase(BaseModel):
     username: str
     password: str
     email: str
+    profile_picture: Optional[str] = None
+
+class UpdateUserBase(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    username: Optional[str] = None
+    password: Optional[str] = None
+    email: Optional[str] = None
+    profile_picture: Optional[str] = None
 
 # ===============================================================
 # Post schema
