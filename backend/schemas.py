@@ -28,7 +28,7 @@ class UpdateUserBase(BaseModel):
 class PostReviewBase(BaseModel):
     food_name: str
     image: Optional[str] 
-    restaurant_name: Optional[str]
+    restaurant_name: Optional[str] = None
     rating: float
     review: str 
-    tags: Optional[str]
+    tags: Optional[str] = None
