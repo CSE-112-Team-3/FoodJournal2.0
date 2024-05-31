@@ -12,6 +12,7 @@ class UserBase(BaseModel):
     username: str
     password: str
     email: str
+    profile_picture: Optional[str] = None
 
 class UpdateUserBase(BaseModel):
     first_name: Optional[str] = None
@@ -19,14 +20,15 @@ class UpdateUserBase(BaseModel):
     username: Optional[str] = None
     password: Optional[str] = None
     email: Optional[str] = None
+    profile_picture: Optional[str] = None
 
 # ===============================================================
 # Post schema
 # ===============================================================
 class PostReviewBase(BaseModel):
     food_name: str
-    image: Optional[str] 
-    restaurant_name: Optional[str]
+    image: Optional[str] = None
+    restaurant_name: Optional[str] = None
     rating: float
     review: str 
-    tags: Optional[str]
+    tags: Optional[str] = None

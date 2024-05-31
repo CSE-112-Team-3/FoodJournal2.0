@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './NewReviewPage.css';
+import Cookies from  'js-cookie';
 
 function ReviewPage() {
     const [mealName, setMealName] = useState('');
@@ -30,16 +31,18 @@ function ReviewPage() {
 
       // send stuff to backend
       if (!showError) {
+        try {
             // Get the access token stored during signIn
-           const token = localStorage.getItem('token'); 
+           const token = Cookies.get('accessToken'); 
       
-            /*if (!token) {
+            if (!token) {
               console.error('Access token not found');
               return;
-            }*/
+            }
+            console.log('Access token found: ' + token);
 
             const imageBase64 = convertToBase64(mealPics);
-      
+            
             const reviewData = {
               food_name: mealName,
               image: imageBase64,
@@ -51,34 +54,33 @@ function ReviewPage() {
 
             console.log('Review Data:', reviewData);
       
-            fetch('https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review', {
+            const response = await fetch('https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
               },
               body: JSON.stringify(reviewData)
-            })
-            .then((response) => {
-            if (response.ok) {
-                
-              } else {
-                console.error('Error creating new entry:', response.status);
-              }
-            })
-              .catch((error) => {
-                console.error('Error creating new entry:', error);
-              });
-          }
-        };
+            });
+
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.message);
+            }
+
+            const data = await response.json();
+            console.log('Success:', data);  
+        } catch (error) {
+          console.error('Error creating new review:', error);
+        }
+      }
+    };
 
     const convertToBase64 = (file) => {
+      if (!(file instanceof Blob || file instanceof File)) {
+        return '';
+      } else {
       return new Promise((resolve, reject) => {
-        if (!(file instanceof Blob || file instanceof File)) {
-          reject(new Error('Provided value is not a Blob or File'));
-          return;
-        }
-
         const fileReader = new FileReader();
         fileReader.readAsDataURL(file);
         fileReader.onload = () => {
@@ -88,7 +90,8 @@ function ReviewPage() {
           reject(error);
         };
       });
-    };
+    }
+  };
 
     const handleImageUpload = (event) => {
       const file = event.target.files[0];
