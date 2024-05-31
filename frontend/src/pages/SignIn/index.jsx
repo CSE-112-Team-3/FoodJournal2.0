@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './SignInPage.css';
 import backgroundImage from '../../assets/background.jpg';
+import Cookies from  'js-cookie';
 
 function SignIn() {
   const [username, setUsername] = useState('');
@@ -53,7 +54,8 @@ function SignIn() {
       console.log('Success:', data);
 
       //SUCCESSFUL LOGIN YIPPEEEE
-      localStorage.setItem('token', data.token);
+      // localStorage.setItem('token', data.access_token);
+      Cookies.set('accessToken', data.access_token, { expires: 1, secure: true, sameSite: 'Strict' });
       navigate('/'); 
     } catch (error) {
       console.error('Error:', error);

@@ -23,6 +23,19 @@ async def create_post_review(
     """
     return await _service.create_post_review(post_review, db, access_token)
 
+
+@router_post_review.post("/update_post_review")
+async def update_post_review(
+    post_review: _schemas.PostReviewBase, 
+    access_token: str,
+    id: int,
+    db: Session = Depends(get_db)):
+    """ 
+    Create a new post review in the database. Endpoint receives an access token and
+    a JSON string with post review information.
+    """
+    return await _service.update_post_review(post_review, db, access_token, id)
+
 @router_post_review.post("/delete_post_review")
 async def delete_post_review(
     id: int,
@@ -41,3 +54,4 @@ async def get_post_reviews(db: Session = Depends(get_db)):
     Returns a list of tuples where each tuple contains a post review and the user who created it.
     """
     return await _service.get_post_reviews(db)
+
