@@ -18,9 +18,9 @@ CREATE TABLE if not exists post (
   post_id int not null,
   food_name varchar(64) not null,
   image blob,
-  restaurant_name varchar(64) not null,
+  restaurant_name varchar(64),
   rating float not null,
   review varchar(500) not null,
-  tags varchar(500) not null,
+  tags varchar(500),
   FOREIGN KEY (post_id) REFERENCES fd_users(id)
 );
