@@ -47,3 +47,18 @@ def get_current_user(token: str = Depends(oauth2_scheme),
         return payload.get("user_id")
     except Exception as e:
         raise credentials_exception
+    
+def invalidate(token: str = Depends(oauth2_scheme), 
+                     db: Session = Depends(get_db)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not invalidate logout",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        expire = datetime.now()
+        payload.update({"exp": expire})
+    except Exception as e:
+        raise credentials_exception
+    return payload
