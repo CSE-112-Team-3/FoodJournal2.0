@@ -24,8 +24,8 @@ export default function NavBar({ pictureNavbar }) {
                             </div>
                         )}
                     </li>
-                    <li className={pathname.includes('discover') ? 'selected-page' : ''}>
-                        <Link className={pathname.includes('discover') ? 'selected-page' : ''} to='/discover'>DISCOVER</Link>
+                    <li className={pathname.includes('recipes') ? 'selected-page' : ''}>
+                        <Link className={pathname.includes('recipes') ? 'recipes' : ''} to='/recipes'>RECIPES</Link>
                     </li>
                     <li className={pathname.includes('settings') ? 'selected-page' : ''}>
                         <Link className={pathname.includes('settings') ? 'selected-page' : ''} to='/settings'>SETTINGS</Link>

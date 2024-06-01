@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import Home from './pages/Home/index.jsx';
 import { Routes, Route } from 'react-router-dom'
-import Discover from './pages/Discover/index.jsx';
+import Recipes from './pages/Recipes/index.jsx';
 import Settings from './pages/Settings/index.jsx';
 import SignIn from './pages/SignIn/index.jsx';
 import SignUp from './pages/SignUp/index.jsx';
@@ -15,7 +15,7 @@ function App() {
     <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/discover" element={<Discover />} />
+          <Route path="/recipes" element={<Recipes />} />
           <Route path="/settings" element={<Settings/>}/>
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/signup" element={<SignUp/>}/>
