@@ -37,7 +37,7 @@ body {
   }
   
   .sign-up-box input {
-    width: 50%;
+    width: 95%;
     height: 35px;
     margin-bottom: 20px;
     border-radius: 5px;
@@ -61,6 +61,7 @@ body {
   
   .left-inputs {
     width: 100%;
+    text-align: center;
   }
   
   .submit {

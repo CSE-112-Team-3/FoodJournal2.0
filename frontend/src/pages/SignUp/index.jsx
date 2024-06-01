@@ -15,6 +15,8 @@ function SignUpPage() {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [popupVisibility, setPopupVisibility] = useState(false);
+  const [userNameErrorMessage, setUserNameErrorMessage] = useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const firstNameRef = useRef(null);
@@ -52,6 +54,8 @@ function SignUpPage() {
     setUserNameValid(isUserNameValid);
     setEmailValid(isEmailValid);
     setPasswordMatch(isPasswordMatch);
+    setUserNameErrorMessage('');
+    setEmailErrorMessage('');
 
     if (isUserNameValid && isEmailValid && isPasswordMatch) {
       const userData = {
@@ -63,30 +67,35 @@ function SignUpPage() {
       };
 
       fetch('https://foodjournal20-production.up.railway.app/api/v1/auth/create_user', {
-        method: 'POST',
-        body: JSON.stringify(userData),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            setShowSuccessMessage(true);
-            setPopupVisibility(true);
-            setTimeout(() => {
-              setPopupVisibility(false);
-              setShowSuccessMessage(false);
-              navigate('/signin');
-            }, 3000); 
-          } else {
-            console.error('Error creating user:', response.status);
+          method: 'POST',
+          body: JSON.stringify(userData),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(async (response) => {
+          if (!response.ok) {
+            const errorData = await response.json();
+            if (errorData.detail.includes('User')) {
+              setUserNameErrorMessage(errorData.detail);
+            } else if (errorData.detail.includes('Email') || errorData.detail.includes('Invalid email')) {
+              setEmailErrorMessage(errorData.detail);
+            }
+            throw new Error(errorData.detail || 'Network response was not ok');
           }
+          setShowSuccessMessage(true);
+          setPopupVisibility(true);
+          setTimeout(() => {
+            setPopupVisibility(false);
+            setShowSuccessMessage(false);
+            navigate('/signin');
+          }, 3000);
         })
         .catch((error) => {
           console.error('Error creating user:', error);
         });
-    }
-  };
+      }
+    };
 
   const popupCloseHandler = () => {
     setPopupVisibility(false);
@@ -128,6 +137,7 @@ function SignUpPage() {
                 required
               />
               {!userNameValid && <p>Username must be at least 5 characters long and contain at least 1 number.</p>}
+              {userNameErrorMessage && <p className="error-message">{userNameErrorMessage}</p>}
               <label htmlFor="email">Email</label>
               <input
                 id="email"
@@ -137,6 +147,7 @@ function SignUpPage() {
                 required
               />
               {!emailValid && <p>Invalid email address</p>}
+              {emailErrorMessage && <p className="error-message">{emailErrorMessage}</p>}
               <label htmlFor="password">Password</label>
               <input
                 id="password"
