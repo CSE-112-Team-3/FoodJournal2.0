@@ -6,9 +6,7 @@ import { useAuth } from '../../provider/AuthProvider.jsx';
 export default function NavBar({ pictureNavbar }) {
     const location = useLocation();
     const { pathname } = location;
-    const { isAuthenticated, accessToken, user } = useAuth();
-    console.log(accessToken, isAuthenticated, user);
-
+    const { isAuthenticated, user } = useAuth();
     const handleLogOut = (e) => {
         e.preventDefault();
     }
@@ -23,7 +21,7 @@ export default function NavBar({ pictureNavbar }) {
                 <ul>
                     <li className={pathname === '/' ? 'selected-page' : ''}>
                         <Link className={pathname === '/' ? 'selected-page' : ''} to='/'>HOME</Link>
-                        {pathname === '/' && (
+                        {isAuthenticated && pathname === '/' && (
                             <div className="create-post-container">
                                 <Link to="/new-review">
                                     <button className="circle-btn">Create Post</button>
@@ -44,11 +42,11 @@ export default function NavBar({ pictureNavbar }) {
                             <>
                                 <li>
                                     <Link to="/profile">
-                                        <img src={user.profile_picture ? user.profile_picture : '../../public/images/default-pfp.png'} alt='Default Profile Picture' />
+                                        <img src={user?.profile_picture ? user.profile_picture : '../../public/images/default-pfp.png'} alt='Default Profile Picture' />
                                     </Link>
                                 </li>
                                 <li>
-                                    <p>Hi, {user.username}!</p>
+                                    <p>Hi, {user?.username}!</p>
                                 </li>
                                 <li>
                                     <button className='circle-btn' onSubmit={handleLogOut}>Log out?</button>

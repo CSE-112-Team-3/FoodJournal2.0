@@ -55,13 +55,6 @@ export default function Home() {
                 />
                 )) : null}
             </div>
-
-        <div className="container">
-            <NavBar pictureNavbar={pictureNavbar} />
-            <Link to="/new-review">
-              <button className="circle-btn">+</button>
-            </Link>
-        </div>
         </div>
     );
 }
