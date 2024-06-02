@@ -138,7 +138,7 @@ async def get_posts_from_id(post_id: int, db: _orm.Session):
     """
     Retrieve a post review based on the provided post ID.
 
-    :param post_id: Post ID to retrieve
+    :param post_id: Post ID (AKA user id) to retrieve
     :param db: Database session
     :return: Post review information
     """
