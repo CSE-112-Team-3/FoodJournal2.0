@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Cookies from  'js-cookie';
 
 const AuthContext = createContext();
 
@@ -9,18 +11,82 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [accessToken, setAccessToken] = useState(null);
+    const [user, setUser] = useState(null);
+    const base_url = "https://foodjournal20-production.up.railway.app";
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem('access_token');
+        const token = Cookies.get('accessToken');
         if (token) {
             setIsAuthenticated(true);
             setAccessToken(token);
-            // console.log('token: ', token);
+            console.log(`Retrieved token from cookies: ${token}`);
         }
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        console.log(`isAuthenticated: ${isAuthenticated}, accessToken: ${accessToken}`);
+        if(isAuthenticated && accessToken) {
+            getUser();
+        }
+    }, [isAuthenticated, accessToken]);
+
+    const signin = async(username, password, {setError, setLoading}) => {
+        try {
+            const response = await fetch(`${base_url}/api/v1/auth/login`, {
+            method: 'POST',
+            headers: {
+                'accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                username: username,
+                password: password
+            }).toString(),
+            });
+    
+            if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message);
+            }
+    
+            const data = await response.json();
+    
+            Cookies.set('accessToken', data.access_token, { expires: 1, secure: true, sameSite: 'Strict' });
+            setAccessToken(data.accessToken);
+            setIsAuthenticated(true);
+            navigate('/');
+        } catch (error) {
+            console.error('Error:', error);
+            setIsAuthenticated(false);
+            setError(`Failed to sign in: ${error.message}`);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const getUser = async() => {
+        try {
+            const response = await fetch(`${base_url}/api/v1/auth/get_user?accessToken=${accessToken}`, {
+                method: 'GET',
+                headers: {
+                    'accept': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data');
+            }
+
+            const userData = await response.json();
+            setUser(userData);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, accessToken }}>
+        <AuthContext.Provider value={{ isAuthenticated, signin, accessToken, user, getUser }}>
             {children}
         </AuthContext.Provider>
     );

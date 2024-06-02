@@ -1,17 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './SignInPage.css';
 import backgroundImage from '../../assets/background.jpg';
-import Cookies from  'js-cookie';
+import { useAuth } from '../../provider/AuthProvider.jsx';
+
 
 function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const base_url = "https://foodjournal20-production.up.railway.app";
-  const navigate = useNavigate();
   const usernameInputRef = useRef(null);
+  const { signin } = useAuth();
 
   useEffect(() => {
     usernameInputRef.current.focus();
@@ -33,35 +33,9 @@ function SignIn() {
     setError(null);
 
     try {
-      const response = await fetch(`${base_url}/api/v1/auth/login`, {
-        method: 'POST',
-        headers: {
-          'accept': 'application/json',
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          username: username,
-          password: password
-        }).toString(),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
-      }
-
-      const data = await response.json();
-      console.log('Success:', data);
-
-      //SUCCESSFUL LOGIN YIPPEEEE
-      // localStorage.setItem('token', data.access_token);
-      Cookies.set('accessToken', data.access_token, { expires: 1, secure: true, sameSite: 'Strict' });
-      navigate('/'); 
-    } catch (error) {
-      console.error('Error:', error);
-      setError(`Failed to sign in: ${error.message}`);
-    } finally {
-      setLoading(false);
+      await signin(username, password, {setError, setLoading}); 
+    } catch(error) {
+      console.log('sign in failed: ', error);
     }
   };
 

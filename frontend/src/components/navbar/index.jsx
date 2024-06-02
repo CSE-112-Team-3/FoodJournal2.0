@@ -1,10 +1,17 @@
 import './NavBar.css'
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../../provider/AuthProvider.jsx';
 
 export default function NavBar({ pictureNavbar }) {
     const location = useLocation();
     const { pathname } = location;
+    const { isAuthenticated, accessToken, user } = useAuth();
+    console.log(accessToken, isAuthenticated, user);
+
+    const handleLogOut = (e) => {
+        e.preventDefault();
+    }
 
     return (
         <div className="nav-container">
@@ -33,14 +40,23 @@ export default function NavBar({ pictureNavbar }) {
                 </ul>
                 <div className='sign-in'>
                     <ul>
-                        <li>
-                            <Link to="/profile">
-                                <img src='../../public/images/default-pfp.png' alt='Default Profile Picture' />
-                            </Link>
-                        </li>
-                        <li>
+                        {isAuthenticated ? 
+                            <>
+                                <li>
+                                    <Link to="/profile">
+                                        <img src={user.profile_picture ? user.profile_picture : '../../public/images/default-pfp.png'} alt='Default Profile Picture' />
+                                    </Link>
+                                </li>
+                                <li>
+                                    <p>Hi, {user.username}!</p>
+                                </li>
+                                <li>
+                                    <button className='circle-btn' onSubmit={handleLogOut}>Log out?</button>
+                                </li>
+                            </>
+                        : <li>
                             <Link to='/signin'>Sign in?</Link>
-                        </li>
+                        </li> }
                     </ul>
                 </div>
             </nav>
