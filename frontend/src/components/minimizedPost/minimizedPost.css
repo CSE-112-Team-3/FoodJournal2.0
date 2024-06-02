@@ -1,15 +1,14 @@
 .min-post-container {
-    background-color: #FCBA3A;
-    border-radius: 15px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin: 20px;
     padding: 20px;
+    background-color: #FCBA3A; 
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    position: relative; 
 }
+
 
 .profile-section {
     display: flex;
@@ -68,6 +67,28 @@
     white-space: nowrap;
     width: 100%;
 }
-.postActionButtons{
-    align-items: right;
+.postActionButtons {
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px; 
+    bottom: 20px; 
+    right: 20px; 
+}
+
+.update-button, .delete-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.update-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.delete-button {
+    background-color: #FF5722;
+    color: white;
 }
