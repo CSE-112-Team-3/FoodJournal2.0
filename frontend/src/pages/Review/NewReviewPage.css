@@ -1,18 +1,6 @@
-* {
-    font-family: "Reddit Sans Condensed", sans-serif;
-    font-optical-sizing: auto;
-    font-style: normal;
-  }
 
-  body {
-    padding: 0;
-    background-image: url('../../assets/background.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 100vh; 
-  
-  }
-  
+
+
   .review-box {
     width: 500px; 
     padding: 20px; 

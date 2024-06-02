@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom'
 
 
 export default function Home() {
-    const [pictureNavbar, setPictureNavbar] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png');
     //TODO: Retrieve the image link from the database to replace the link in 'useState'.
     const posts = [
         {
@@ -41,7 +40,7 @@ export default function Home() {
 
     return(
         <div className='home-container'>
-            <NavBar pictureNavbar={pictureNavbar} />
+            <NavBar/>
             <div className='post-container reddit-sans-condensed'>
                 {posts ? posts.map((post, index) => (
                 <MinimizedPost

@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../provider/AuthProvider.jsx';
 
-export default function NavBar({ pictureNavbar }) {
+export default function NavBar() {
     const location = useLocation();
     const { pathname } = location;
     const { isAuthenticated, user } = useAuth();
