@@ -83,3 +83,8 @@ async def get_user(accessToken: str, db: Session = Depends(get_db)):
         Coroutine: A coroutine that returns the user information from the database.
     """
     return await _service.get_user_by_access_token(accessToken, db)
+
+@router_auth.post("/logout")
+async def logout(accessToken: str):
+
+    return await _service.logout(accessToken)

@@ -2,7 +2,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
-import jwt
+from jose import jwt, JWTError
 from typing import Annotated, Optional
 from sqlalchemy.orm import Session
 import os
@@ -48,17 +48,14 @@ def get_current_user(token: str = Depends(oauth2_scheme),
     except Exception as e:
         raise credentials_exception
     
-def invalidate(token: str = Depends(oauth2_scheme), 
-                     db: Session = Depends(get_db)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not invalidate logout",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        expire = datetime.now()
-        payload.update({"exp": expire})
-    except Exception as e:
-        raise credentials_exception
-    return payload
+def invalidate(token: str):
+    # Decode the token to get the payload
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+
+    # Set the token to expire in the past
+    payload['exp'] = datetime.now() - timedelta(seconds=1)
+
+    # Re-encode the token with the updated payload
+    invalidated_token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+
+    return invalidated_token

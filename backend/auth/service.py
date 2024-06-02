@@ -1,5 +1,5 @@
 from . import model
-from fastapi import HTTPException, status
+from fastapi import Depends, HTTPException, status
 from email_validator import validate_email
 from sqlalchemy.orm import Session
 from auth.utils import bcrypt
@@ -8,13 +8,13 @@ import sqlalchemy.orm as _orm
 import schemas as _schemas
 import datetime as _datetime
 import auth.model as _models
+import auth.utils as util
 from uuid import uuid4
 from sqlalchemy import or_, and_, update, delete, insert, select
-import auth.utils as util
 import random
 import os
 from datetime import timedelta
-from auth.utils import verify, create_access_token
+from auth.utils import verify, create_access_token, get_current_user
 
 def email_exists(db: _orm.Session, email: str):
     """ Check if a given email already exists in the database
@@ -34,7 +34,7 @@ def is_login(db: _orm.Session, email: str):
     rslt = db.query(model.UserModel).filter(model.UserModel.email == email).first()
     return True if rslt is not None else False
 
- 
+def get_next_id(db: _orm.Session):
     """ 
     Get the next usable ID from the database. Check
     the ID everytime instead of using local count to ensure that
@@ -54,27 +54,28 @@ async def create_user(user, db: _orm.Session):
     :param db: Database engine, will be converted to session
     :param user: User information to create, should be a dict
     :return: Created user, if an error is raised, return None"""
-    # Ensure email is not a duplicate
+
     if (email_exists(db, user.email)):
         raise HTTPException(status_code=400, detail=f"Email {user.email} already exists")
     elif (not validate_email(user.email)):
         raise HTTPException(status_code=400, detail=f"Invalid email address")
+    elif (user_exists(user.username, db)):
+        print(user.username)
+        raise HTTPException(status_code=400, detail=f"User {user.username} already exists")
 
-    # Add user to database
     try:
         hash = bcrypt(user.password)
-        user_obj = model.UserModel( id = get_next_id(db),
-                                    first_name=user.first_name, 
+        user_obj = model.UserModel( first_name=user.first_name, 
                                     last_name=user.last_name,
                                     username=user.username, 
                                     password=hash, 
-                                    email=user.email)
+                                    email=user.email,
+                                    profile_picture=user.profile_picture )
         db.add(user_obj)
         db.commit()
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"User could not be added")
-        return None
-    
+        raise HTTPException(status_code=400, detail=f"User could not be added: {e}")
+
     return {"user": user}
 
 async def login(request, db: _orm.Session):
@@ -112,6 +113,7 @@ async def login(request, db: _orm.Session):
         },
         expires_delta=timedelta(hours=24)
     )
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
@@ -119,5 +121,100 @@ async def login(request, db: _orm.Session):
         "email": user.email,
     }
 
-async def logout(token: str, db: _orm.Session):
-    return util.invalidate(token, db)
+async def get_user_by_id(user_id: int, db: _orm.Session):
+    """
+    Retrieve a user based on the provided user ID.
+
+    :param user_id: User ID to retrieve
+    :param db: Database session
+    :return: User information
+    """
+    try:
+        user = db.query(_models.UserModel).filter(_models.UserModel.id == user_id).first()
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+        return user.username
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User could not be retrieved"
+        )
+
+async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _orm.Session):
+    """
+    Update a user's information based on the provided request and access token.
+
+    :param request: An instance of the UpdateUserBase schema containing the updated user information.
+    :param accessToken: The access token of the user making the request.
+    :param db: The database session.
+    :return: A dictionary with a message indicating that the user was updated.
+    """
+    try:
+        user_id = get_current_user(accessToken, db)
+        update_data = request.model_dump(exclude_unset=True)
+        if not update_data:
+            raise HTTPException(status_code=400, detail=f"No fields to update")
+        if update_data.get("email"):
+            if (email_exists(db, update_data.get("email"))):
+                raise HTTPException(status_code=400, detail=f'Email {update_data.get("email")} already exists')
+            elif (not validate_email(update_data.get("email"))):
+                raise HTTPException(status_code=400, detail=f"Invalid email address")
+        if update_data.get("password"):
+            update_data["password"] = bcrypt(update_data.get("password"))
+        stmt = (
+            update(_models.UserModel).
+            where(_models.UserModel.id == user_id).
+            values(**update_data)
+        )
+        result = db.execute(stmt)
+        if result.rowcount == 0:
+            raise HTTPException (
+                status_code = status.HTTP_404_NOT_FOUND,
+                detail = "User not found"
+            )
+        db.commit()
+        return {"message":"User was updated"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"User could not be updated: {e}")
+
+def user_exists(username: str, db: _orm.Session):
+    """
+    Check if a user with the given username exists in the database.
+
+    Args:
+        username (str): The username to check.
+        db (_orm.Session): The database session.
+
+    Returns:
+        bool: True if the user exists, False otherwise.
+    """
+    result = db.query(_models.UserModel).filter(_models.UserModel.username == username).first()
+    return True if result is not None else False
+
+async def get_user_by_access_token(access_token: str, db: _orm.Session):
+    """
+    Retrieves a user from the database based on their access token.
+
+    :param access_token: The access token of the user.
+    :param db: The database session.
+    :return: The user object.
+    """
+    user_id = get_current_user(access_token, db)
+    user = db.query(_models.UserModel).filter(_models.UserModel.id == user_id).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    del user.password
+    del user.created_at
+    
+    return user
+
+async def logout(token: str):
+    return util.invalidate(token)
