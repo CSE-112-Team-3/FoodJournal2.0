@@ -133,3 +133,19 @@ async def delete_post_review(id: int,
         db.rollback()
         print(f"Error occurred: {e}")  # Log the error message
         raise HTTPException(status_code=400, detail=f"Post could not be deleted: {str(e)}")
+
+async def get_posts_from_id(post_id: int, db: _orm.Session):
+    """
+    Retrieve a post review based on the provided post ID.
+
+    :param post_id: Post ID to retrieve
+    :param db: Database session
+    :return: Post review information
+    """
+    try:
+        posts = db.query(_model.PostReviewModel).filter(_model.PostReviewModel.post_id == post_id).all()
+        if not posts:
+            raise HTTPException(status_code=404, detail="Post not found")
+        return posts[:MAX_POSTS_TO_FECTH]
+    except:
+        raise HTTPException(status_code=400, detail="Post could not be retrieved")
