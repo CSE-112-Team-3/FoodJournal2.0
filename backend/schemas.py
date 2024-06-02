@@ -12,6 +12,7 @@ class UserBase(BaseModel):
     username: str
     password: str
     email: str
+    profile_picture: Optional[str] = None
 
 class UpdateUserBase(BaseModel):
     first_name: Optional[str] = None
