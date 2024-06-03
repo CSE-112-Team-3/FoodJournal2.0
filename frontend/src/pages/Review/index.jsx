@@ -25,12 +25,20 @@ function ReviewPage() {
         mealNameRef.current.focus();
     }, []);
 
+    const handleCancel = () => {
+      navigate('/');
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (stars === 0) {
             setShowError(true);
             return;
+        }
+
+        if (picsMode === 'camera') {
+          stopCamera();
         }
 
         let imageBase64 = null;
@@ -57,28 +65,27 @@ function ReviewPage() {
         };
         console.log('Review Data:', reviewData); 
 
-        fetch('https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review', {
+        const url = `https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review?access_token=${token}`;
+        try {
+          const response = await fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/JSON',
-                'Authorization': `Bearer ${token}`
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
             },
-            body: JSON.stringify(reviewData)
-        })
-        .then(async (response) => {
-            if (response.ok) {
-                navigate('/'); 
-            } else {
-                const errorData = await response.json();
-                console.error('Error response creating new entry:', response.status, errorData);
-                console.log('Error details:', errorData.detail);
-                setErrorMessages(errorData.detail || ['Unknown error occurred.']);
-            }
-        })
-        .catch((error) => {
-            console.error('Error creating new entry:', error);
-            setErrorMessages(['Network error occurred.']);
-        });
+            body: JSON.stringify(reviewData),
+          });
+          if (response.ok) {
+            navigate('/');
+          } else {
+            const errorData = await response.json();
+            console.error('Error creating new entry:', response.status, errorData);
+            setErrorMessages(errorData.detail || ['Unknown error occurred.']);
+          }
+        } catch (error) {
+          console.error('Error creating new entry:', error);
+          setErrorMessages(['Network error occurred.']);
+        }
     };
 
     const convertToBase64 = (file) => {
@@ -264,6 +271,7 @@ function ReviewPage() {
                     </div>
                 )}
                 <button className="submit">Save Review</button>
+                <button className="cancel" onClick={handleCancel}>Cancel</button>
             </form>
         </div>
     );

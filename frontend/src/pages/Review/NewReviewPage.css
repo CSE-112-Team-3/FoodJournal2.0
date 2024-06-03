@@ -79,6 +79,11 @@
     width: 50%;
     color: #36A7F9;
   }
+
+  .review-box button.cancel {
+    width: 50%;
+    color: #36A7F9;
+  }
   
   .input-group {
     display: flex;
@@ -111,6 +116,15 @@
   }
   
   .submit {
+    margin-top: 10px;
+    height: 40px;
+    font-size: 18px;
+  }
+  p{
+    color:blue;
+  }
+
+  .cancel {
     margin-top: 10px;
     height: 40px;
     font-size: 18px;
