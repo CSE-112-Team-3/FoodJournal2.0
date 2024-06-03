@@ -13,6 +13,6 @@ export default function PrivateRoute() {
             color="black" 
         />
     }
-    return isAuthenticated ? <Outlet /> : <Navigate to="/signin" />;
+    return isAuthenticated ? <Outlet /> : <Navigate to="/error-403" />;
 }
 

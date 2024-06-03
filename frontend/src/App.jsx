@@ -25,7 +25,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/new-review" element={<Review />} />
           </Route>
-          <Route path="/403" element={<Error403/>}/>
+          <Route path="/error-403" element={<Error403/>}/>
           <Route path="*" element={<Error404/>}/>
 
         </Routes>
