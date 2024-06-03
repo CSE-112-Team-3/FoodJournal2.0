@@ -53,13 +53,15 @@ async def create_user(user, db: _orm.Session):
     :param db: Database engine, will be converted to session
     :param user: User information to create, should be a dict
     :return: Created user, if an error is raised, return None"""
-    # Ensure email is not a duplicate
+
     if (email_exists(db, user.email)):
         raise HTTPException(status_code=400, detail=f"Email {user.email} already exists")
     elif (not validate_email(user.email)):
         raise HTTPException(status_code=400, detail=f"Invalid email address")
+    elif (user_exists(user.username, db)):
+        print(user.username)
+        raise HTTPException(status_code=400, detail=f"User {user.username} already exists")
 
-    # Add user to database
     try:
         hash = bcrypt(user.password)
         user_obj = model.UserModel( first_name=user.first_name, 
@@ -139,9 +141,16 @@ async def get_user_by_id(user_id: int, db: _orm.Session):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User could not be retrieved"
         )
-        return None
 
 async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _orm.Session):
+    """
+    Update a user's information based on the provided request and access token.
+
+    :param request: An instance of the UpdateUserBase schema containing the updated user information.
+    :param accessToken: The access token of the user making the request.
+    :param db: The database session.
+    :return: A dictionary with a message indicating that the user was updated.
+    """
     try:
         user_id = get_current_user(accessToken, db)
         update_data = request.model_dump(exclude_unset=True)
@@ -170,6 +179,19 @@ async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _o
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"User could not be updated: {e}")
 
+def user_exists(username: str, db: _orm.Session):
+    """
+    Check if a user with the given username exists in the database.
+
+    Args:
+        username (str): The username to check.
+        db (_orm.Session): The database session.
+
+    Returns:
+        bool: True if the user exists, False otherwise.
+    """
+    result = db.query(_models.UserModel).filter(_models.UserModel.username == username).first()
+    return True if result is not None else False
 
 async def get_user_by_access_token(access_token: str, db: _orm.Session):
     """

@@ -44,6 +44,9 @@ function ReviewPage() {
             }
         }
 
+        const token = Cookies.get('accessToken');
+        console.log('token:', token); 
+
         const reviewData = {
             food_name: mealName,
             image: imageBase64,
@@ -52,16 +55,12 @@ function ReviewPage() {
             review: comments,
             tags: tag
         };
-
         console.log('Review Data:', reviewData); 
-
-        const token = Cookies.get('accessToken');
-        console.log('token:', token); 
 
         fetch('https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/JSON',
                 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(reviewData)
@@ -71,7 +70,8 @@ function ReviewPage() {
                 navigate('/'); 
             } else {
                 const errorData = await response.json();
-                console.error('Error creating new entry:', response.status, errorData);
+                console.error('Error response creating new entry:', response.status, errorData);
+                console.log('Error details:', errorData.detail);
                 setErrorMessages(errorData.detail || ['Unknown error occurred.']);
             }
         })
