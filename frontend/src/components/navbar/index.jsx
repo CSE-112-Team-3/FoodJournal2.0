@@ -1,13 +1,22 @@
 import './NavBar.css'
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react';
 import { useAuth } from '../../provider/AuthProvider.jsx';
+import 'ldrs/tailspin';
 
 export default function NavBar() {
     const location = useLocation();
     const { pathname } = location;
-    const { isAuthenticated, user } = useAuth();
-    console.log(user);
+    const { isAuthenticated, user, isLoading } = useAuth();
+
+    if (isLoading || !user) {
+        return <l-tailspin
+            size="50"
+            stroke="6"
+            speed="0.9"
+            color="black" 
+        />
+    }
+
     const handleLogOut = (e) => {
         e.preventDefault();
     }

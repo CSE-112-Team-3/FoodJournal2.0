@@ -21,13 +21,11 @@ export const AuthProvider = ({ children }) => {
         if (token) {
             setIsAuthenticated(true);
             setAccessToken(token);
-            console.log(`Retrieved token from cookies: ${token}`);
         }
         setIsLoading(false);
     }, []);
 
     useEffect(() => {
-        console.log(`isAuthenticated: ${isAuthenticated}, accessToken: ${accessToken}`);
         if(isAuthenticated && accessToken) {
             getUser();
         }
@@ -83,9 +81,10 @@ export const AuthProvider = ({ children }) => {
 
             const userData = await response.json();
             setUser(userData);
-            setIsLoading(false);
         } catch (error) {
             console.error('Error fetching user data:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
