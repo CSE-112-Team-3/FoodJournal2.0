@@ -1,10 +1,10 @@
 import React from 'react';
-import './profile.css';
+import './editProfile.css';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../provider/AuthProvider';
 import ProfilePic from '../profilePic';
 
-export default function ProfilePage({ setPictureNavbar }) {
+export default function EditProfile({ setPictureNavbar }) {
     const [profileImage, setProfileImage] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png'); //TODO: need to get the image from database
     const [firstName, setFirstName] = useState(''); //TODO: need to get the first name from the database.
     const [lastName, setLastName] = useState(''); //TODO: need to get the last name from the database.

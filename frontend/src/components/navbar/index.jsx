@@ -7,7 +7,17 @@ export default function NavBar() {
     const location = useLocation();
     const { pathname } = location;
     const { isAuthenticated, user, isLoading } = useAuth();
-
+    console.log(isAuthenticated, !isLoading, !user, isAuthenticated && (isLoading || !user))
+    // if (isAuthenticated) {
+    //     if(!user || isLoading) {
+    //         return <l-tailspin
+    //             size="50"
+    //             stroke="6"
+    //             speed="0.9"
+    //             color="black" 
+    //         />
+    //     }
+    // }
 
     const handleLogOut = (e) => {
         e.preventDefault();
@@ -34,9 +44,11 @@ export default function NavBar() {
                     <li className={pathname.includes('discover') ? 'selected-page' : ''}>
                         <Link className={pathname.includes('discover') ? 'selected-page' : ''} to='/discover'>DISCOVER</Link>
                     </li>
-                    <li className={pathname.includes('settings') ? 'selected-page' : ''}>
-                        <Link className={pathname.includes('settings') ? 'selected-page' : ''} to='/settings'>SETTINGS</Link>
-                    </li>
+                    {isAuthenticated && (
+                        <li className={pathname.includes('settings') ? 'selected-page' : ''}>
+                            <Link className={pathname.includes('settings') ? 'selected-page' : ''} to='/settings'>SETTINGS</Link>
+                        </li>
+                    )}
                 </ul>
                 <div className='sign-in'>
                     <ul>

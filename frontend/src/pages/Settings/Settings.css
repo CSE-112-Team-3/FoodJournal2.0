@@ -1,0 +1,14 @@
+.main {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    padding-bottom: 30px;
+    overflow: hidden; 
+}
+
+.profile-container {
+    margin-left: 200px; 
+    width: calc(100% - 200px);
+    padding: 20px; 
+}
+
