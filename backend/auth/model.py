@@ -13,5 +13,5 @@ class UserModel(Base):
     username = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
-#   profile_picture = Column(String, nullable=True)
+    profile_picture = Column(String, nullable=True)
     created_at = Column(DateTime, default=func.now())

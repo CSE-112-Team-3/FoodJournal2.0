@@ -40,7 +40,6 @@ def get_current_user(token: str = Depends(oauth2_scheme),
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        # TODO: check for time?
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("email")
         if username is None:
