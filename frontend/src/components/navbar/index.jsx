@@ -8,14 +8,6 @@ export default function NavBar() {
     const { pathname } = location;
     const { isAuthenticated, user, isLoading } = useAuth();
 
-    if (isLoading || !user) {
-        return <l-tailspin
-            size="50"
-            stroke="6"
-            speed="0.9"
-            color="black" 
-        />
-    }
 
     const handleLogOut = (e) => {
         e.preventDefault();
