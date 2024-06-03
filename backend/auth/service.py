@@ -217,4 +217,9 @@ async def get_user_by_access_token(access_token: str, db: _orm.Session):
     return user
 
 async def logout(token: str):
+    """
+    Invalidate the given access token.
+
+    :param access_token: The access token of the user.
+    """
     return util.invalidate(token)
