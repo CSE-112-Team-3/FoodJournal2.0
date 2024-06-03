@@ -60,7 +60,7 @@ export default function NavBar() {
                                     </Link>
                                 </li>
                                 <li>
-                                    <p>Hi, {user?.username}!</p>
+                                    <p>Hi {user?.username}!</p>
                                 </li>
                                 <li>
                                     <button className='circle-btn jockey-one-regular' onSubmit={handleLogOut}>Log out?</button>

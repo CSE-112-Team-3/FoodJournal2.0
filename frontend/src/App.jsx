@@ -6,7 +6,6 @@ import Discover from './pages/Discover/index.jsx';
 import Settings from './pages/Settings/index.jsx';
 import SignIn from './pages/SignIn/index.jsx';
 import SignUp from './pages/SignUp/index.jsx';
-import Profile from './pages/Settings/index.jsx';
 import Review from './pages/Review/index.jsx';
 import PrivateRoute from './components/privateRoute/index.jsx';
 import Error403 from './pages/Error/Error403.jsx';
@@ -21,7 +20,6 @@ function App() {
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/signup" element={<SignUp/>}/>
           <Route element={<PrivateRoute />}>
-            <Route path="/profile" element={<Profile />} />
             <Route path="/new-review" element={<Review />} />
             <Route path="/settings" element={<Settings/>}/>
           </Route>
