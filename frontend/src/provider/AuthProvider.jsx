@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [accessToken, setAccessToken] = useState(null);
     const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const base_url = "https://foodjournal20-production.up.railway.app";
     const navigate = useNavigate();
 
@@ -22,6 +23,7 @@ export const AuthProvider = ({ children }) => {
             setAccessToken(token);
             console.log(`Retrieved token from cookies: ${token}`);
         }
+        setIsLoading(false);
     }, []);
 
     useEffect(() => {
@@ -62,6 +64,7 @@ export const AuthProvider = ({ children }) => {
             setError(`Failed to sign in: ${error.message}`);
         } finally {
             setLoading(false);
+            setIsLoading(false);
         }
     }
 
@@ -80,6 +83,7 @@ export const AuthProvider = ({ children }) => {
 
             const userData = await response.json();
             setUser(userData);
+            setIsLoading(false);
         } catch (error) {
             console.error('Error fetching user data:', error);
         }
@@ -87,7 +91,7 @@ export const AuthProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, signin, accessToken, user, getUser }}>
+        <AuthContext.Provider value={{ isAuthenticated, signin, accessToken, user, getUser, isLoading }}>
             {children}
         </AuthContext.Provider>
     );

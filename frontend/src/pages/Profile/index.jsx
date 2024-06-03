@@ -7,9 +7,11 @@ export default function Profile() {
     const [pictureNavbar, setPictureNavbar] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png');
 
     return(
-        <div className='main'>
-            <NavBar pictureNavbar={pictureNavbar} />
-            <ProfilePage setPictureNavbar={setPictureNavbar} className='page'/>
+        <div className='main reddit-sans-condensed'>
+            <NavBar/>
+            <div className="profile-container">
+                <ProfilePage setPictureNavbar={setPictureNavbar} />
+            </div>        
         </div>
     );
 }

@@ -6,9 +6,11 @@ import Discover from './pages/Discover/index.jsx';
 import Settings from './pages/Settings/index.jsx';
 import SignIn from './pages/SignIn/index.jsx';
 import SignUp from './pages/SignUp/index.jsx';
-import NavBar from './components/navbar/index.jsx';
 import Profile from './pages/Profile/index.jsx';
 import Review from './pages/Review/index.jsx';
+import PrivateRoute from './components/privateRoute/index.jsx';
+import Error403 from './pages/Error/Error403.jsx';
+import Error404 from './pages/Error/Error404.jsx';
 
 function App() {
   return (
@@ -19,9 +21,12 @@ function App() {
           <Route path="/settings" element={<Settings/>}/>
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/signup" element={<SignUp/>}/>
-          <Route path="/profile" element={<Profile/>}/>
-          <Route path="/new-review" element={<Review/>}/>
-          <Route path="*" element={<h1>page not found</h1>}/>
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/new-review" element={<Review />} />
+          </Route>
+          <Route path="/403" element={<Error403/>}/>
+          <Route path="*" element={<Error404/>}/>
 
         </Routes>
     </div>

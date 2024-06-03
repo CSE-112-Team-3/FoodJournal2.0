@@ -7,6 +7,7 @@ export default function NavBar() {
     const location = useLocation();
     const { pathname } = location;
     const { isAuthenticated, user } = useAuth();
+    console.log(user);
     const handleLogOut = (e) => {
         e.preventDefault();
     }
@@ -24,7 +25,7 @@ export default function NavBar() {
                         {isAuthenticated && pathname === '/' && (
                             <div className="create-post-container">
                                 <Link to="/new-review">
-                                    <button className="circle-btn">Create Post</button>
+                                    <button className="circle-btn jockey-one-regular">Create Post</button>
                                 </Link>
                             </div>
                         )}
@@ -49,7 +50,7 @@ export default function NavBar() {
                                     <p>Hi, {user?.username}!</p>
                                 </li>
                                 <li>
-                                    <button className='circle-btn' onSubmit={handleLogOut}>Log out?</button>
+                                    <button className='circle-btn jockey-one-regular' onSubmit={handleLogOut}>Log out?</button>
                                 </li>
                             </>
                         : <li>
