@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import './SignUpPage.css';
 import CustomPopup from '../../components/popUp/index';
 import { useNavigate } from 'react-router-dom';
+import backgroundImage from '../../assets/background.jpg';
+
 
 function SignUpPage() {
   const [firstName, setFirstName] = useState('');
@@ -20,6 +22,16 @@ function SignUpPage() {
   const navigate = useNavigate();
 
   const firstNameRef = useRef(null);
+
+  useEffect(() => {
+    document.body.style.backgroundImage = `url(${backgroundImage})`;
+    document.body.style.backgroundSize = 'cover';
+
+    return () => {
+      document.body.style.backgroundImage = '';
+      document.body.style.backgroundSize = '';
+    };
+  }, [])
 
   useEffect(() => {
     firstNameRef.current.focus();

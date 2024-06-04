@@ -1,8 +1,10 @@
 import React from 'react';
-import './profile.css';
+import './editProfile.css';
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../provider/AuthProvider';
+import ProfilePic from '../profilePic';
 
-export default function ProfilePage({ setPictureNavbar }) {
+export default function EditProfile({ setPictureNavbar }) {
     const [profileImage, setProfileImage] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png'); //TODO: need to get the image from database
     const [firstName, setFirstName] = useState(''); //TODO: need to get the first name from the database.
     const [lastName, setLastName] = useState(''); //TODO: need to get the last name from the database.
@@ -16,6 +18,8 @@ export default function ProfilePage({ setPictureNavbar }) {
     const [invalidEmail, printEmailErrorMessage] = useState('');
     const [invalidPassword, printPasswordErrorMessage] = useState('');
     const [profileImage_copy, setImage] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png');
+
+    const { user } = useAuth();
 
     useEffect(() => {
         setPictureNavbar(profileImage);
@@ -87,47 +91,102 @@ export default function ProfilePage({ setPictureNavbar }) {
     return (
         <div className="profilePage">
             <div className="text-center">
-                <img src={profileImage_copy} className="profile_image" alt="avatar" />
+                <ProfilePic 
+                    username={user?.username} 
+                    imageAddress={profileImage_copy} 
+                    size='200px'
+                />
                 <h6>Upload Your Profile Picture</h6>
-                <input type="file" className="file-upload" onChange={handlePictureChange}/>
+                <input 
+                    type="file" 
+                    className="file-upload reddit-sans-condensed circle-btn" 
+                    onChange={handlePictureChange} 
+                    accept="image/png, image/jpeg"
+                />
             </div>
             <form className="form" id="registrationForm" onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="first_name"><h4>First name</h4></label>
-                    <input value = {firstName} onChange={handleFirstNameChange} type="text" className="form-control" name="first_name" id="first_name" placeholder="first name" />
+                    <input 
+                        value = {firstName} 
+                        onChange={handleFirstNameChange} 
+                        type="text" 
+                        className="form-control" 
+                        name="first_name" 
+                        id="first_name" 
+                        placeholder="first name" 
+                    />
                     <p>{''}</p>
                 </div>
                 <div>
                     <label htmlFor="last_name"><h4>Last name</h4></label>
-                    <input value = {lastName} onChange={handleLastNameChange} type="text" className="form-control" name="last_name" id="last_name" placeholder="last name" />
+                    <input 
+                        value = {lastName} 
+                        onChange={handleLastNameChange} 
+                        type="text" 
+                        className="form-control" 
+                        name="last_name" 
+                        id="last_name" 
+                        placeholder="last name" 
+                    />
                     <p>{''}</p>
                 </div>
                 <div>
                     <label htmlFor="username"><h4>Username</h4></label>
-                    <input value = {userName} onChange={handleUsernameChange} type="text" className="form-control" name="username" id="phone" placeholder="current username" />
+                    <input 
+                        value = {userName} 
+                        onChange={handleUsernameChange} 
+                        type="text" 
+                        className="form-control" 
+                        name="username" 
+                        id="phone" 
+                        placeholder="current username" 
+                    />
                     <p>{invalidUsername}</p>
                 </div>
 
                 <div>
                     <label htmlFor="email"><h4>Email</h4></label>
-                    <input value = {email} onChange={handleEmailChange} type="email" className="form-control" name="email" id="email" placeholder="you@email.com" />
+                    <input 
+                        value = {email} 
+                        onChange={handleEmailChange} 
+                        type="email" 
+                        className="form-control" 
+                        name="email" 
+                        id="email" 
+                        placeholder="you@email.com" 
+                    />
                     <p>{invalidEmail}</p>
                 </div>
 
                 <div>
                     <label htmlFor="password"><h4>New Password</h4></label>
-                    <input onChange={handlePasswordChange} type="password" className="form-control" name="password" id="password" placeholder="password" />
+                    <input 
+                        onChange={handlePasswordChange} 
+                        type="password" 
+                        className="form-control" 
+                        name="password" 
+                        id="password" 
+                        placeholder="password" 
+                    />
                     <p>{''}</p>
                 </div>
                 <div>
                     <label htmlFor="password2"><h4>Verify</h4></label>
-                    <input onChange={VerifyNewPassword} type="password" className="form-control" name="password2" id="password2" placeholder="verify password" />
+                    <input 
+                        onChange={VerifyNewPassword} 
+                        type="password" 
+                        className="form-control" 
+                        name="password2" 
+                        id="password2" 
+                        placeholder="verify password" 
+                    />
                     <p>{invalidPassword}</p>
                 </div>
                 <div>
                     <br/>
                     <button className="submitButton" type="submit"> Save</button>
-                    {/* <button className="resetButton" type="reset"> Reset</button> */}
+                    <button className="resetButton" type="reset"> Reset</button>
                 </div>
             </form>
         </div>

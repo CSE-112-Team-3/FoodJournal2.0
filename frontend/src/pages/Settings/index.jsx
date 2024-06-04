@@ -1,14 +1,17 @@
 import NavBar from "../../components/navbar";
+import EditProfile from "../../components/editProfile";
+import './Settings.css';
 import { useState } from 'react';
 
 export default function Settings() {
-    const [navbarPic, setNavbarPic] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png');
-    //TODO: Retrieve the image link from the database to replace the link in 'useState'.
+    const [pictureNavbar, setPictureNavbar] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png');
 
     return(
-        <>
-            <NavBar pictureNavbar = {navbarPic}/>
-            <h1>Settings</h1>
-        </>
+        <div className='main reddit-sans-condensed'>
+            <NavBar/>
+            <div className="profile-container">
+                <EditProfile setPictureNavbar={setPictureNavbar} />
+            </div>        
+        </div>
     );
 }
