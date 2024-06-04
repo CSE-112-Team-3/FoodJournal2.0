@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom'
 import './NewReviewPage.css';
+import backgroundImage from '../../assets/background.jpg';
+
 
 function ReviewPage() {
     const [mealName, setMealName] = useState('');
@@ -19,6 +21,16 @@ function ReviewPage() {
         mealNameRef.current.focus();
     
       }, []);
+
+    useEffect(() => {
+      document.body.style.backgroundImage = `url(${backgroundImage})`;
+      document.body.style.backgroundSize = 'cover';
+  
+      return () => {
+        document.body.style.backgroundImage = '';
+        document.body.style.backgroundSize = '';
+      };
+    }, [])
   
     const handleSubmit = (event) => {
       event.preventDefault();
@@ -77,7 +89,7 @@ function ReviewPage() {
         };
   
     return (
-      <div className="review-box">
+      <div className="review-box reddit-sans-condensed">
         <h1>New Entry</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-group">

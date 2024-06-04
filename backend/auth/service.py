@@ -8,6 +8,7 @@ import sqlalchemy.orm as _orm
 import schemas as _schemas
 import datetime as _datetime
 import auth.model as _models
+import auth.utils as util
 from uuid import uuid4
 from sqlalchemy import or_, and_, update, delete, insert, select
 import random
@@ -214,3 +215,11 @@ async def get_user_by_access_token(access_token: str, db: _orm.Session):
     del user.created_at
     
     return user
+
+async def logout(token: str):
+    """
+    Invalidate the given access token.
+
+    :param access_token: The access token of the user.
+    """
+    return util.invalidate(token)

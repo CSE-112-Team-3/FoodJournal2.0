@@ -1,11 +1,3 @@
-body {
-  padding: 0;
-  background-image: url('../../assets/background.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  height: 100vh; 
-} 
-
 .forgot{
   text-decoration: none;
   color: blue

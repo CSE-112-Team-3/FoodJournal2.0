@@ -1,10 +1,27 @@
 import './NavBar.css'
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { useState } from 'react';
+import { useAuth } from '../../provider/AuthProvider.jsx';
+import 'ldrs/tailspin';
 
-export default function NavBar({ pictureNavbar }) {
+export default function NavBar() {
     const location = useLocation();
     const { pathname } = location;
+    const { isAuthenticated, user, isLoading } = useAuth();
+    console.log(isAuthenticated, !isLoading, !user, isAuthenticated && (isLoading || !user))
+    // if (isAuthenticated) {
+    //     if(!user || isLoading) {
+    //         return <l-tailspin
+    //             size="50"
+    //             stroke="6"
+    //             speed="0.9"
+    //             color="black" 
+    //         />
+    //     }
+    // }
+
+    const handleLogOut = (e) => {
+        e.preventDefault();
+    }
 
     return (
         <div className="nav-container">
@@ -16,10 +33,10 @@ export default function NavBar({ pictureNavbar }) {
                 <ul>
                     <li className={pathname === '/' ? 'selected-page' : ''}>
                         <Link className={pathname === '/' ? 'selected-page' : ''} to='/'>HOME</Link>
-                        {pathname === '/' && (
+                        {isAuthenticated && pathname === '/' && (
                             <div className="create-post-container">
                                 <Link to="/new-review">
-                                    <button className="circle-btn">Create Post</button>
+                                    <button className="circle-btn jockey-one-regular">Create Post</button>
                                 </Link>
                             </div>
                         )}
@@ -27,20 +44,31 @@ export default function NavBar({ pictureNavbar }) {
                     <li className={pathname.includes('discover') ? 'selected-page' : ''}>
                         <Link className={pathname.includes('discover') ? 'selected-page' : ''} to='/discover'>DISCOVER</Link>
                     </li>
-                    <li className={pathname.includes('settings') ? 'selected-page' : ''}>
-                        <Link className={pathname.includes('settings') ? 'selected-page' : ''} to='/settings'>SETTINGS</Link>
-                    </li>
+                    {isAuthenticated && (
+                        <li className={pathname.includes('settings') ? 'selected-page' : ''}>
+                            <Link className={pathname.includes('settings') ? 'selected-page' : ''} to='/settings'>SETTINGS</Link>
+                        </li>
+                    )}
                 </ul>
                 <div className='sign-in'>
                     <ul>
-                        <li>
-                            <Link>
-                                <img src='../../public/images/default-pfp.png' alt='Default Profile Picture' />
-                            </Link>
-                        </li>
-                        <li>
+                        {isAuthenticated ? 
+                            <>
+                                <li>
+                                    <Link to="/profile">
+                                        <img src={user?.profile_picture ? user.profile_picture : '../../public/images/default-pfp.png'} alt='Default Profile Picture' />
+                                    </Link>
+                                </li>
+                                <li>
+                                    <p>Hi {user?.username}!</p>
+                                </li>
+                                <li>
+                                    <button className='circle-btn jockey-one-regular' onSubmit={handleLogOut}>Log out?</button>
+                                </li>
+                            </>
+                        : <li>
                             <Link to='/signin'>Sign in?</Link>
-                        </li>
+                        </li> }
                     </ul>
                 </div>
             </nav>

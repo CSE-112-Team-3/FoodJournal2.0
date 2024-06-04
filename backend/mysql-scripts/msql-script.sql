@@ -24,3 +24,8 @@ CREATE TABLE if not exists post (
   tags varchar(500),
   FOREIGN KEY (post_id) REFERENCES fd_users(id)
 );
+
+CREATE TABLE if not exists blacklist (
+  id int primary key auto_increment,
+  access_token varchar(500) not null
+);

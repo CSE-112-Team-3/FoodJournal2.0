@@ -60,7 +60,7 @@
 }
 
 .sign-in {
-    margin-bottom: 20px;
+    margin-bottom:20px;
 }
 
 .sign-in ul {
@@ -73,6 +73,10 @@
 
 .sign-in a {
     text-decoration: underline;
+}
+
+.sign-in p {
+    color: white;
 }
 
 
