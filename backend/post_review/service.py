@@ -23,7 +23,7 @@ async def get_post_reviews(db: _orm.Session):
             - 'restaurant_name' (str): The name of the restaurant.
             - 'rating' (int): The rating of the post.
             - 'review' (str): The review of the post.
-            - 'tags' (List[str]): The tags associated with the post.
+            - 'tags' (str): The tags associated with the post.
             - 'username' (str): The username of the user who created the post.
             - 'profile_pic' (str or None): The URL of the user's profile picture, or None if no profile picture is available.
 
@@ -40,10 +40,11 @@ async def get_post_reviews(db: _orm.Session):
         if not posts:
             raise HTTPException(status_code=404, detail="No posts found")
         
+        # Convert the SQLAlchemy query result to a list of dictionaries
         posts = [
             {**post.PostReviewModel.__dict__, 
              "username": post.UserModel.username,
-             "profile_pic": getattr(post, 'profile_picture', None) }
+             "profile_pic": getattr(post, 'profile_picture', None) } # Add 'profile_pic' key and assign None if not available otherwise assign the value
                  for post in posts
         ]
         return posts
