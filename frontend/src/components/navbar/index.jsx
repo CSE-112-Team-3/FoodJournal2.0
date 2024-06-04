@@ -1,7 +1,7 @@
 import './NavBar.css'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../provider/AuthProvider.jsx';
-import 'ldrs/tailspin';
+//import 'ldrs/tailspin';
 
 export default function NavBar() {
     const location = useLocation();
@@ -41,8 +41,8 @@ export default function NavBar() {
                             </div>
                         )}
                     </li>
-                    <li className={pathname.includes('discover') ? 'selected-page' : ''}>
-                        <Link className={pathname.includes('discover') ? 'selected-page' : ''} to='/discover'>DISCOVER</Link>
+                    <li className={pathname.includes('recipes') ? 'selected-page' : ''}>
+                        <Link className={pathname.includes('recipes') ? 'selected-page' : ''} to='/recipes'>RECIPES</Link>
                     </li>
                     {isAuthenticated && (
                         <li className={pathname.includes('settings') ? 'selected-page' : ''}>
