@@ -1,14 +1,15 @@
 import NavBar from "../../components/navbar";
+import ProfilePage from '../../components/profile_page'
+import './Settings.css'
 import { useState } from 'react';
 
-export default function Settings() {
-    const [navbarPic, setNavbarPic] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png');
-    //TODO: Retrieve the image link from the database to replace the link in 'useState'.
+export default function Profile() {
+    const [pictureNavbar, setPictureNavbar] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png');
 
     return(
-        <>
-            <NavBar pictureNavbar = {navbarPic}/>
-            <h1>Settings</h1>
-        </>
+        <div className='main'>
+            <NavBar pictureNavbar={pictureNavbar} />
+            <ProfilePage setPictureNavbar={setPictureNavbar} className='page'/>
+        </div>
     );
 }
