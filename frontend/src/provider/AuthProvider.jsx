@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const base_url = "https://foodjournal20-production.up.railway.app";
+    // const base_url = "http://127.0.0.1:6542";
     const navigate = useNavigate();
 
     useEffect(() => {
