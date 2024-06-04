@@ -34,7 +34,7 @@ export default function NavBar({ pictureNavbar }) {
                 <div className='sign-in'>
                     <ul>
                         <li>
-                            <Link to="/profile">
+                            <Link>
                                 <img src='../../public/images/default-pfp.png' alt='Default Profile Picture' />
                             </Link>
                         </li>
