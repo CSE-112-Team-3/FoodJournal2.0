@@ -39,10 +39,6 @@ export default function ProfilePage() {
         }
     }, []);
 
-    useEffect(() => {
-        setPictureNavbar(profileImage);
-    }, [profileImage, setPictureNavbar]);
-
     const handlePictureChange = (event)=>{
         const pic = event.target.files[0];
         if(pic){
@@ -111,6 +107,8 @@ export default function ProfilePage() {
         //TODO: submit the form, and store all the information in the database
         const accesToken = Cookies.get('accessToken');
         if(accesToken){
+            console.log("image is");
+            console.log(profileImage);
             const updateUrl = `https://foodjournal20-production.up.railway.app/api/v1/auth/update_user?accessToken=${accesToken}`;
             const updatedData = {
                 first_name: firstName,
@@ -120,7 +118,6 @@ export default function ProfilePage() {
                 email: email,
                 profile_picture: profileImage
             };
-        
             fetch(updateUrl, {
                 method: 'PATCH',
                 headers: {
@@ -129,12 +126,7 @@ export default function ProfilePage() {
                 },
                 body: JSON.stringify(updatedData)
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
             })
