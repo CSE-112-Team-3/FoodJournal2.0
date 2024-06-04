@@ -27,9 +27,6 @@ export default function NavBar({ pictureNavbar }) {
                     <li className={pathname.includes('recipes') ? 'selected-page' : ''}>
                         <Link className={pathname.includes('recipes') ? 'recipes' : ''} to='/recipes'>RECIPES</Link>
                     </li>
-                    <li className={pathname.includes('settings') ? 'selected-page' : ''}>
-                        <Link className={pathname.includes('settings') ? 'selected-page' : ''} to='/settings'>SETTINGS</Link>
-                    </li>
                 </ul>
                 <div className='sign-in'>
                     <ul>

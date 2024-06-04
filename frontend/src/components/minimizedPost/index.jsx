@@ -47,10 +47,6 @@ export default function MinimizedPost({ postId, username, profilePic, mealName, 
                 {images && images[0] && <img className='min-post-image' src={images[0].src || images[0]} alt={mealName} />}
                 <p className='description'>{description}</p>
             </div>
-            <div className='postActionButtons'>
-                <button className='update-button' onClick={handleUpdateClick}>Update Post</button>
-                <button className='delete-button' onClick={handleDeleteClick}>Delete Post</button>
-            </div>
         </div>
     );
 }
