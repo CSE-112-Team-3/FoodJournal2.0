@@ -9,7 +9,7 @@ export default function Profile() {
     return(
         <div className='main'>
             <NavBar pictureNavbar={pictureNavbar} />
-            <ProfilePage setPictureNavbar={setPictureNavbar} className='page'/>
+            <ProfilePage className='page'/>
         </div>
     );
 }

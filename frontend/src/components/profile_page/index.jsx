@@ -3,7 +3,7 @@ import './profile.css';
 import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
-export default function ProfilePage({ setPictureNavbar }) {
+export default function ProfilePage() {
     const [profileImage, setProfileImage] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png'); //TODO: need to get the image from database
     const [firstName, setFirstName] = useState('Dylan'); //TODO: need to get the first name from the database.
     const [lastName, setLastName] = useState('Zhang'); //TODO: need to get the last name from the database.
@@ -16,7 +16,7 @@ export default function ProfilePage({ setPictureNavbar }) {
     const [invalidUsername, printUsernameErrorMessage] = useState('');
     const [invalidEmail, printEmailErrorMessage] = useState('');
     const [invalidPassword, printPasswordErrorMessage] = useState('');
-    const [profileImage_copy, setImage] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png');
+
 
     useEffect(() => {
         const accesToken = Cookies.get('accessToken');
@@ -39,17 +39,13 @@ export default function ProfilePage({ setPictureNavbar }) {
         }
     }, []);
 
-    useEffect(() => {
-        setPictureNavbar(profileImage);
-    }, [profileImage, setPictureNavbar]);
-
     const handlePictureChange = (event)=>{
         const pic = event.target.files[0];
         if(pic){
             const reader = new FileReader();
             reader.readAsDataURL(pic);
             reader.onload = function(e) {
-                setImage(e.target.result);
+                setProfileImage(e.target.result);
             };
         }
     }
@@ -107,7 +103,6 @@ export default function ProfilePage({ setPictureNavbar }) {
             printUsernameErrorMessage('Username must be at least 5 characters long and contain at least 1 number');
             return;
         }
-        setProfileImage(profileImage_copy);
 
         //TODO: submit the form, and store all the information in the database
         const accesToken = Cookies.get('accessToken');
@@ -122,26 +117,20 @@ export default function ProfilePage({ setPictureNavbar }) {
                 profile_picture: profileImage
             };
         
-            fetch(updateUrl, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${accesToken}`
-                },
-                body: JSON.stringify(updatedData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                fetch(updateUrl, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedData)
+                })
+                .then(response =>response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
     }
 
@@ -150,7 +139,7 @@ export default function ProfilePage({ setPictureNavbar }) {
             <div className = "padding-left"></div>
             <div className = "profilePage">
                 <div className="text-center">
-                    <img src={profileImage_copy} className="profile_image" alt="avatar" />
+                    <img src={profileImage} className="profile_image" alt="avatar" />
                     <h6>Upload Your Profile Picture</h6>
                     <input type="file" className="file-upload" onChange={handlePictureChange}/>
                 </div>
