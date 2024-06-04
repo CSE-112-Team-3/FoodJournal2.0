@@ -1,0 +1,36 @@
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.error-container {
+    background-color: #FCBA3A;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+}
+.error-message {
+    text-align: center;
+    font-size: 60px;
+    color: whitesmoke;
+    text-shadow: 2px 1px 4px rgba(101, 101, 101, 1);
+}
+.link {
+    font-size: 30px;
+    color: white;
+    text-decoration: underline;
+    padding: 10px 15px;
+    transition: color 0.2s;
+    display: block;
+}
+.link:hover {
+    color: #636060;
+}

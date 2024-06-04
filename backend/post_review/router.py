@@ -55,3 +55,10 @@ async def get_post_reviews(db: Session = Depends(get_db)):
     """
     return await _service.get_post_reviews(db)
 
+@router_post_review.get("/get_posts_by_id")
+async def get_posts_by_id(post_id: int, db: Session = Depends(get_db)):
+    """ 
+    Get all post reviews from the database for a specific user.
+    Returns a list of posts from the specified user (post_id).
+    """
+    return await _service.get_posts_from_id(post_id, db)

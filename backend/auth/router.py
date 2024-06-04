@@ -16,14 +16,14 @@ router_auth = APIRouter(
 @router_auth.post("/create_user")
 async def create_user(user: _schemas.UserBase, db: Session = Depends(get_db)):
     """
-    Create a new user in the database. Endpoint receives a JSON string with user information. To test the endpoint, you can create a JSON file and run `curl -X POST http://0.0.0.0:6542/user -H "Content-Type: application/json" -d @<filename>`.
+    Create a new user in the database.
 
     Args:
         user (_schemas.UserBase): The user information to create.
-        db (Session, optional): The database session. Defaults to Depends(get_db).
+        db (Session, optional): The database session. Defaults to the session obtained from the `get_db` dependency.
 
     Returns:
-        Coroutine: A coroutine that returns the created user.
+        Awaitable[dict]: A dictionary indicating whether the user was successfully created.
     """
     return await _service.create_user(user, db)
   
@@ -49,9 +49,6 @@ async def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = De
     - A dictionary containing the user's access token, token type, user ID, and email upon successful authentication.
     - An HTTPException with status code 401 and detail message "Invalid email or username, try again." if the user does not exist.
     - An HTTPException with status code 401 and detail message "Invalid password, try again." if the provided password is incorrect.
-
-    Raises:
-    - None
     """
     return await _service.login(request, db)
 
@@ -86,5 +83,13 @@ async def get_user(accessToken: str, db: Session = Depends(get_db)):
 
 @router_auth.post("/logout")
 async def logout(accessToken: str):
+    """
+    Get the user information from the database based on the provided access token.
 
+    Args:
+        accessToken (str): The access token used to authenticate the user.
+         
+    Returns:
+        Coroutine: A coroutine that invalidates the given accessToken.
+    """
     return await _service.logout(accessToken)
