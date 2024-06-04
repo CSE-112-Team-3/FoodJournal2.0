@@ -13,7 +13,6 @@ export default function Home() {
 
     useEffect(() => {
         const url = 'https://foodjournal20-production.up.railway.app/api/v1/post_review/get_post_review';
-        // const url = 'http://127.0.0.1:6542/api/v1/post_review/get_post_review';
         fetch(url, {
             method: 'GET',
             headers: {
@@ -22,14 +21,7 @@ export default function Home() {
         })
         .then(response => response.json())
         .then(data => {
-            // setPosts(data);
-            console.log(data);
-            const formattedData = data.map(([post, userename]) => ({
-                ...post,
-                username: userename,
-                profile_pic: 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png'
-            }))
-            setPosts(formattedData);
+            setPosts(data);
         })
         .catch(error => console.error('Error fetching data:', error));
     }, []);
