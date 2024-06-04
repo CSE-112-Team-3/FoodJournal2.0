@@ -6,11 +6,12 @@ import { useAuth } from '../../provider/AuthProvider';
 import ProfilePic from '../profilePic';
 
 export default function EditProfile() {
+    const [initialState, setInitialState] = useState({});
     const [profileImage, setProfileImage] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png'); //TODO: need to get the image from database
-    const [firstName, setFirstName] = useState('Dylan'); //TODO: need to get the first name from the database.
-    const [lastName, setLastName] = useState('Zhang'); //TODO: need to get the last name from the database.
-    const [userName, setUserName] = useState('yuz'); //TODO: need to get the username from the database.
-    const [email, setEmail] = useState('123@mail.com'); //TODO: need to get the email from the database.
+    const [firstName, setFirstName] = useState(''); //TODO: need to get the first name from the database.
+    const [lastName, setLastName] = useState(''); //TODO: need to get the last name from the database.
+    const [userName, setUserName] = useState(''); //TODO: need to get the username from the database.
+    const [email, setEmail] = useState(''); //TODO: need to get the email from the database.
     const [newPassword, setPassword] = useState('');
 
     const [isreadOnly, setIsReadOnly] = useState(true);
@@ -34,6 +35,14 @@ export default function EditProfile() {
                 })
                 .then(response => response.json())
                 .then(data => {
+                    setInitialState({
+                        firstName: data.first_name || '',
+                        lastName: data.last_name || '',
+                        userName: data.username || '',
+                        email: data.email || '',
+                        profileImage: data.profile_picture || 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png'
+                    }, [firstName, lastName, userName, email, profileImage]);
+
                     setFirstName(data.first_name);
                     setLastName(data.last_name);
                     setUserName(data.username);
@@ -84,9 +93,9 @@ export default function EditProfile() {
         return regex.test(username) && ((username.length) >= 5);
     };
 
-    const handleSubmit = (event)=>{
+    const handleSubmit = async (event)=>{
         event.preventDefault();
-        setIsReadOnly(true);
+        // setIsReadOnly(true);
         printPasswordErrorMessage('');
         printEmailErrorMessage('');
         printUsernameErrorMessage('');
@@ -108,35 +117,71 @@ export default function EditProfile() {
             return;
         }
         
+        setIsReadOnly(true);
+
         //TODO: submit the form, and store all the information in the database
         const accesToken = Cookies.get('accessToken');
         if(accesToken){
             console.log("image is");
             console.log(profileImage);
             const updateUrl = `https://foodjournal20-production.up.railway.app/api/v1/auth/update_user?accessToken=${accesToken}`;
-            const updatedData = {
-                first_name: firstName,
-                last_name: lastName,
-                username: userName,
-                password: newPassword,
+            // const updatedData = {
+            //     first_name: firstName,
+            //     last_name: lastName,
+            //     username: userName,
+            //     password: newPassword,
+            //     email: email,
+            //     profile_picture: profileImage
+            // };
+            const updatedData = {};
+            if (firstName !== initialState.firstName) updatedData.first_name = firstName;
+            if (lastName !== initialState.lastName) updatedData.last_name = lastName;
+            if (userName !== initialState.userName) updatedData.username = userName;
+            if (newPassword) updatedData.password = newPassword;
+            if (email !== initialState.email) updatedData.email = email;
+            if (profileImage !== initialState.profileImage) updatedData.profile_picture = profileImage;
+            console.log(initialState);
+            console.log(updatedData);
+
+            setInitialState({
+                firstName: firstName,
+                lastName: lastName,
+                userName: userName,
                 email: email,
-                profile_picture: profileImage
-            };
-            fetch(updateUrl, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    //'Authorization': `Bearer ${accesToken}`
-                },
-                body: JSON.stringify(updatedData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
+                profileImage: profileImage
             });
+            console.log(initialState);
+            console.log(updatedData);
+
+            try {
+                const response = await fetch(updateUrl, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        //'Authorization': `Bearer ${accesToken}`
+                    },
+                    body: JSON.stringify(updatedData)
+                });
+                const data = await response.json();
+                console.log('Success:', data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+            // fetch(updateUrl, {
+            //     method: 'PATCH',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         //'Authorization': `Bearer ${accesToken}`
+            //     },
+            //     body: JSON.stringify(updatedData)
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     console.log('Success:', data);
+            // })
+            // .catch(error => {
+            //     console.error('Error:', error);
+            // });
         }
     }
 
@@ -209,11 +254,11 @@ export default function EditProfile() {
                     disabled={isreadOnly}
                 />
             </div>
+
             <form className="form" id="registrationForm" onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="first_name"><h4>First name</h4></label>
+                    <label htmlFor="first_name"><h4>First name: {firstName}</h4></label>
                     <input 
-                        value = {firstName} 
                         onChange={handleFirstNameChange} 
                         type="text" 
                         className="form-control" 
@@ -225,9 +270,8 @@ export default function EditProfile() {
                     <p>{''}</p>
                 </div>
                 <div>
-                    <label htmlFor="last_name"><h4>Last name</h4></label>
+                    <label htmlFor="last_name"><h4>Last name: {lastName}</h4></label>
                     <input 
-                        value = {lastName} 
                         onChange={handleLastNameChange} 
                         type="text" 
                         className="form-control" 
@@ -239,9 +283,8 @@ export default function EditProfile() {
                     <p>{''}</p>
                 </div>
                 <div>
-                    <label htmlFor="username"><h4>Username</h4></label>
+                    <label htmlFor="username"><h4>Username: {userName}</h4></label>
                     <input 
-                        value = {userName} 
                         onChange={handleUsernameChange} 
                         type="text" 
                         className="form-control" 
@@ -254,9 +297,8 @@ export default function EditProfile() {
                 </div>
 
                 <div>
-                    <label htmlFor="email"><h4>Email</h4></label>
+                    <label htmlFor="email"><h4>Email: {email}</h4></label>
                     <input 
-                        value = {email} 
                         onChange={handleEmailChange} 
                         type="email" 
                         className="form-control" 

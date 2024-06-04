@@ -1,7 +1,7 @@
 import './NavBar.css'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../provider/AuthProvider.jsx';
-import 'ldrs/tailspin';
+// import 'ldrs/tailspin';
 
 export default function NavBar() {
     const location = useLocation();
