@@ -32,7 +32,7 @@ export default function Home() {
         <div className='home-container'>
             <NavBar pictureNavbar={pictureNavbar} />
             <div className='post-container reddit-sans-condensed'>
-                {posts.length > 0 ? posts.map(post => (
+                {posts.length > 0 ? posts.slice().reverse().map(post => (
                     <MinimizedPost
                         key={post.id}
                         id={post.id}
