@@ -1,23 +1,12 @@
 import './NavBar.css'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../provider/AuthProvider.jsx';
-//import 'ldrs/tailspin';
+import ProfilePic from '../profilePic/index.jsx';
 
 export default function NavBar() {
     const location = useLocation();
     const { pathname } = location;
     const { isAuthenticated, user, isLoading } = useAuth();
-    console.log(isAuthenticated, !isLoading, !user, isAuthenticated && (isLoading || !user))
-    // if (isAuthenticated) {
-    //     if(!user || isLoading) {
-    //         return <l-tailspin
-    //             size="50"
-    //             stroke="6"
-    //             speed="0.9"
-    //             color="black" 
-    //         />
-    //     }
-    // }
 
     const handleLogOut = (e) => {
         e.preventDefault();
@@ -55,9 +44,11 @@ export default function NavBar() {
                         {isAuthenticated ? 
                             <>
                                 <li>
-                                    <Link to="/profile">
-                                        <img src={user?.profile_picture ? user.profile_picture : '../../public/images/default-pfp.png'} alt='Default Profile Picture' />
-                                    </Link>
+                                    <ProfilePic 
+                                        username={user?.username} 
+                                        imageAddress={user?.profile_picture || '../../public/images/default-pfp.png'} 
+                                        size={100} 
+                                    />
                                 </li>
                                 <li>
                                     <p>Hi {user?.username}!</p>
