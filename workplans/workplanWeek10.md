@@ -128,7 +128,7 @@ MSCW- must, should, could, won't
 |5|Finish up the update user API|Marc, Raul| Must |
 |5|Authentication Check & Restricting User Views| Cecilia | Must |
 |5|Create user page, Utilize get post by user id | Raul, Yuhao| Must|
-|5|Implement update and delete post in user page| Adithi | Could |
+|5|Implement update and delete post in user page| Adithi | Must |
 |5|Finish up the Recipe page, Implement external API | Adithi | Must |
 |5|Finish up the Create post functionality | Summer, Adithi | Must |
 |5|Create unit tests| Ethan, Satya | Must |
