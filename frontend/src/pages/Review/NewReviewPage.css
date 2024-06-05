@@ -13,6 +13,7 @@
   }
   
   .review-box h1 {
+    text-align: center;
     font-size: 300%;
     margin-bottom: 20px; 
   }
@@ -37,21 +38,29 @@
   }
   
   .review-box .rating .star {
-    color: #ccc;
-    font-size: 24px;
+    color: rgb(96, 92, 92);
+    font-size: 40px;
     cursor: pointer;
   }
   
   .review-box .rating .star.on {
     color: #f90;
   }
+
+  #comments {
+    width: 95%;
+    height: calc(1em * 4); /* Assuming 1em is the height of one line of text */
+    resize: none; /* Disable resizing */
+    overflow-y: auto; /* Add vertical scroll if needed */
+}
+
   
   .review-box .rating input[type='radio'] {
     display: none;
   }
   
   .review-box input {
-    width: 50%; 
+    width: 95%; 
     height: 35px;
     margin-bottom: 20px; 
     border-radius: 5px;
@@ -77,6 +86,13 @@
     width: 100%;
   }
 
+  #meal-pic {
+    outline: none;
+    border: none;
+    color: black;
+    
+  }
+
   .camera-preview {
     position: relative;
     width: 320px;
@@ -96,21 +112,25 @@
     object-fit: contain;
 
   }
-  
-  .submit {
-    margin: 10px;
-    height: 40px;
-    font-size: 18px;
 
-  }
-  .cancel {
+  button {
+    cursor: pointer;
+    border-radius: 10px;
+    border: 1px solid #000000;
     margin: 10px;
     height: 40px;
     font-size: 18px;
-    width: 30%;
     color: #36A7F9;
+    width: 30%;
+    font-weight: bold;
   }
+  
   p{
     color:blue;
+  }
+
+  #button-group {
+    display: flex;
+    justify-content: space-evenly;
   }
   

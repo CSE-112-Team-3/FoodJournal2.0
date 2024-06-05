@@ -187,7 +187,7 @@ function ReviewPage() {
                             <option value="camera">Take a Photo</option>
                         </select>
                         {picsMode === 'upload' && (
-                            <input type="file" accept="image/*" onChange={handleImageUpload} />
+                            <input id="meal-pic" type="file" accept="image/*" onChange={handleImageUpload} />
                         )}
                         {picsMode === 'camera' && (
                             <>
@@ -213,7 +213,7 @@ function ReviewPage() {
                                 )}
                             </>
                         )}
-                        <label htmlFor="mealName">Meal Name</label>
+                        <label htmlFor="mealName">Meal Name*</label>
                         <input
                             id="mealName"
                             type="text"
@@ -229,7 +229,7 @@ function ReviewPage() {
                             value={restaurant}
                             onChange={(e) => setRestaurant(e.target.value)}
                         />
-                        <label htmlFor="stars">Rating</label>
+                        <label htmlFor="stars">Rating*</label>
                         <div className="rating">
                             <div className="star-rating">
                                 {[...Array(5)].map((star, index) => {
@@ -257,11 +257,11 @@ function ReviewPage() {
                             </div>
                             {showError && <p>Please select a rating.</p>}
                         </div>
-                        <label htmlFor="comments">Comments</label>
-                        <input
+                        <label htmlFor="comments">Comments*</label>
+                        <textarea
                             id="comments"
                             type="text"
-                            value={comments}
+                            placeholder="Comments"
                             onChange={handleCommentsChange}
                             required
                         />
@@ -281,8 +281,10 @@ function ReviewPage() {
                         ))}
                     </div>
                 )}
-                <button type="submit" className="submit">Save Review</button>
-                <button type="button" className="cancel" onClick={handleCancel}>Cancel</button>
+                <div id="button-group">
+                    <button type="submit" className="submit">Save Review</button>
+                    <button type="button" className="cancel" onClick={handleCancel}>Cancel</button>
+                </div>
             </form>
         </div>
     );
