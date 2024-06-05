@@ -64,10 +64,14 @@ function SignIn() {
               required
             />
             {error && <div className="error-message">{error}</div>}
-            <button className="submit" disabled={loading}>
+            <div>
+              <a href="https://youtu.be/b3rNUhDqciM" className="forgot">Forgot Password?</a>
+            </div>
+            <div>
+            <button className="submit1" disabled={loading}>
               {loading ? 'Signing In...' : 'Sign In'}
-            </button>
-            <a href = "https://youtu.be/b3rNUhDqciM" className = "forgot">Forgot Password?</a>
+              </button>
+            </div>
           </div>
           <div className="right-text">
             <div className="sign-up-text">
