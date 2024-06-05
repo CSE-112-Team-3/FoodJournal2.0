@@ -7,11 +7,11 @@ import ProfilePic from '../profilePic';
 
 export default function EditProfile() {
     const [initialState, setInitialState] = useState({});
-    const [profileImage, setProfileImage] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png'); //TODO: need to get the image from database
-    const [firstName, setFirstName] = useState(''); //TODO: need to get the first name from the database.
-    const [lastName, setLastName] = useState(''); //TODO: need to get the last name from the database.
-    const [userName, setUserName] = useState(''); //TODO: need to get the username from the database.
-    const [email, setEmail] = useState(''); //TODO: need to get the email from the database.
+    const [profileImage, setProfileImage] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [userName, setUserName] = useState('');
+    const [email, setEmail] = useState('');
     const [newPassword, setPassword] = useState('');
 
     const [isreadOnly, setIsReadOnly] = useState(true);
@@ -119,20 +119,11 @@ export default function EditProfile() {
         
         setIsReadOnly(true);
 
-        //TODO: submit the form, and store all the information in the database
         const accesToken = Cookies.get('accessToken');
         if(accesToken){
             console.log("image is");
             console.log(profileImage);
             const updateUrl = `https://foodjournal20-production.up.railway.app/api/v1/auth/update_user?accessToken=${accesToken}`;
-            // const updatedData = {
-            //     first_name: firstName,
-            //     last_name: lastName,
-            //     username: userName,
-            //     password: newPassword,
-            //     email: email,
-            //     profile_picture: profileImage
-            // };
             const updatedData = {};
             if (firstName !== initialState.firstName) updatedData.first_name = firstName;
             if (lastName !== initialState.lastName) updatedData.last_name = lastName;
@@ -158,7 +149,6 @@ export default function EditProfile() {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
-                        //'Authorization': `Bearer ${accesToken}`
                     },
                     body: JSON.stringify(updatedData)
                 });
@@ -167,75 +157,8 @@ export default function EditProfile() {
             } catch (error) {
                 console.error('Error:', error);
             }
-            // fetch(updateUrl, {
-            //     method: 'PATCH',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         //'Authorization': `Bearer ${accesToken}`
-            //     },
-            //     body: JSON.stringify(updatedData)
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     console.log('Success:', data);
-            // })
-            // .catch(error => {
-            //     console.error('Error:', error);
-            // });
         }
     }
-
-    // return (
-    //     <div className="main">
-    //         <div className = "padding-left"></div>
-    //         <div className = "profilePage">
-    //             <div className="text-center">
-    //                 <img src={profileImage} className="profile_image" alt="avatar" />
-    //                 <h6>Upload Your Profile Picture</h6>
-    //                 <input type="file" className="file-upload" onChange={handlePictureChange}/>
-    //             </div>
-    //             <form className="form" id="registrationForm">
-    //                 <div>
-    //                     <label htmlFor="first_name"><h4>First name : {firstName}</h4></label>
-    //                     <input onChange={handleFirstNameChange} type="text" className="form-control" name="first_name" id="first_name" readOnly={isreadOnly}/>
-    //                     <p>{''}</p>
-    //                 </div>
-    //                 <div>
-    //                     <label htmlFor="last_name"><h4>Last name : {lastName}</h4></label>
-    //                     <input onChange={handleLastNameChange} type="text" className="form-control" name="last_name" id="last_name" readOnly={isreadOnly}/>
-    //                     <p>{''}</p>
-    //                 </div>
-    //                 <div>
-    //                     <label htmlFor="username"><h4>Username : {userName}</h4></label>
-    //                     <input onChange={handleUsernameChange} type="text" className="form-control" name="username" id="phone" readOnly={isreadOnly}/>
-    //                     <p>{invalidUsername}</p>
-    //                 </div>
-
-    //                 <div>
-    //                     <label htmlFor="email"><h4>Email : {email}</h4></label>
-    //                     <input onChange={handleEmailChange} type="email" className="form-control" name="email" id="email" readOnly={isreadOnly}/>
-    //                     <p>{invalidEmail}</p>
-    //                 </div>
-
-    //                 <div>
-    //                     <label htmlFor="password"><h4>New Password</h4></label>
-    //                     <input onChange={handlePasswordChange} type="password" className="form-control" name="password" id="password" placeholder="password" readOnly={isreadOnly}/>
-    //                     <p>{''}</p>
-    //                 </div>
-    //                 <div>
-    //                     <label htmlFor="password2"><h4>Verify</h4></label>
-    //                     <input onChange={VerifyNewPassword} type="password" className="form-control" name="password2" id="password2" placeholder="verify password" readOnly={isreadOnly}/>
-    //                     <p>{invalidPassword}</p>
-    //                 </div>
-    //                 <div>
-    //                     <br/>
-    //                     <button className="submitButton" onClick={isreadOnly? handleEditButton:handleSubmit}> {isreadOnly? 'Edit':'Save'}</button>
-    //                     {/* <button className="resetButton" type="reset"> Reset</button> */}
-    //                 </div>
-    //             </form>
-    //         </div>
-    //     </div>
-    // );
 
     return (
         <div className="profilePage">

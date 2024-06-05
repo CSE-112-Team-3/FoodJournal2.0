@@ -56,7 +56,11 @@ export default function NavBar() {
                             <>
                                 <li>
                                     <Link to="/profile">
-                                        <img src={user?.profile_picture ? user.profile_picture : '../../public/images/default-pfp.png'} alt='Default Profile Picture' />
+                                        <img 
+                                            src={user?.profile_picture ? user.profile_picture : '../../public/images/default-pfp.png'} 
+                                            alt='Default Profile Picture' 
+                                            style={{width: '100px', borderRadius: '50%'}}
+                                        />
                                     </Link>
                                 </li>
                                 <li>
