@@ -1,6 +1,7 @@
 import './NavBar.css'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../provider/AuthProvider.jsx';
+import ProfilePic from '../profilePic/index.jsx';
 
 export default function NavBar() {
     const location = useLocation();
@@ -43,13 +44,11 @@ export default function NavBar() {
                         {isAuthenticated ? 
                             <>
                                 <li>
-                                    <Link to="/profile">
-                                        <img 
-                                            src={user?.profile_picture ? user.profile_picture : '../../public/images/default-pfp.png'} 
-                                            alt='Default Profile Picture' 
-                                            style={{width: '100px', borderRadius: '50%'}}
-                                        />
-                                    </Link>
+                                    <ProfilePic 
+                                        username={user?.username} 
+                                        imageAddress={user?.profile_picture || '../../public/images/default-pfp.png'} 
+                                        size={100} 
+                                    />
                                 </li>
                                 <li>
                                     <p>Hi {user?.username}!</p>
