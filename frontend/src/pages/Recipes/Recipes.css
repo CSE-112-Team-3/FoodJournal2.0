@@ -1,0 +1,102 @@
+body{
+    background-color: beige;
+    font-family: jockey-one-regular;
+  }
+.recipes-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 20px;
+}
+  
+.recipe-post-container {
+    display: table-row;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+    margin-left: 220px;
+  }
+  
+  .recipe-of-the-week {
+    margin-bottom: 20px;
+}
+
+.recipe-of-the-week h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.recipe-card {
+    display: flex;
+    background-color: #FCBA3A;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.recipe-image-placeholder {
+    width: 200px;
+    height: 150px;
+    background-color: #ccc;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+
+.recipe-info h3 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.recipe-info p {
+    font-size: 1em;
+    margin: 10px 0 0 0;
+}
+
+.tags-section h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.tags {
+    display: flex;
+    gap: 10px;
+}
+
+.tag {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.vegetarian {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.high-protein {
+    background-color: #FF5722;
+    color: #fff;
+}
+
+.quick {
+    background-color: #9C27B0;
+    color: #fff;
+}
+.other-recipes {
+    width: 100%;
+}
+
+.other-recipes h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.recipe-grid .recipe-card {
+    flex-direction: column;
+    align-items: center;
+}

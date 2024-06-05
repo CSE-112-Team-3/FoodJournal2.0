@@ -12,23 +12,44 @@ MAX_POSTS_TO_FECTH = 20
 
 async def get_post_reviews(db: _orm.Session):
     """
-    Retrieve all posts from the database.
+    Retrieves a list of posts from the database.
 
-    :param db: Database session
-    :return: List of tuples where each tuple contains a post and the user who created it
+    Args: db (_orm.Session): The database session.
+
+    Returns:
+        List[Dict[str, Union[str, int, None]]]: A list of dictionaries representing the posts. Each dictionary contains the following keys:
+            - 'food_name' (str): The name of the food.
+            - 'image' (str): The URL of the image.
+            - 'restaurant_name' (str): The name of the restaurant.
+            - 'rating' (int): The rating of the post.
+            - 'review' (str): The review of the post.
+            - 'tags' (str): The tags associated with the post.
+            - 'username' (str): The username of the user who created the post.
+            - 'profile_pic' (str or None): The URL of the user's profile picture, or None if no profile picture is available.
+
+    Raises:
+        HTTPException: If no posts are found in the database.
+        HTTPException: If there is an error retrieving the posts from the database.
     """
+
     try:
-        posts = db.query(_model.PostReviewModel).all()
+        posts = db.query(_model.PostReviewModel, user_model.UserModel)\
+            .join(user_model.UserModel, _model.PostReviewModel.post_id == user_model.UserModel.id)\
+            .limit(MAX_POSTS_TO_FECTH)\
+            .all()
         if not posts:
             raise HTTPException(status_code=404, detail="No posts found")
         
-        posts = posts[:MAX_POSTS_TO_FECTH]
-        # Probably could be optimized
-        post_user = [(post, await get_user_by_id(post.post_id, db)) for post in posts]
-        return post_user
+        # Convert the SQLAlchemy query result to a list of dictionaries
+        posts = [
+            {**post.PostReviewModel.__dict__, 
+             "username": post.UserModel.username,
+             "profile_pic": getattr(post, 'profile_picture', None) } # Add 'profile_pic' key and assign None if not available otherwise assign the value
+                 for post in posts
+        ]
+        return posts
     except Exception as e:
-        print(e)
-        raise HTTPException(status_code=400, detail=f"Posts could not be retrieved")
+        raise HTTPException(status_code=400, detail=f"Posts could not be retrieved: {e}")
 
 async def create_post_review(
         post_review: schemas.PostReviewBase, 
