@@ -1,7 +1,15 @@
 import './NavBar.css'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../provider/AuthProvider.jsx';
+<<<<<<< HEAD
 import ProfilePic from '../profilePic/index.jsx';
+=======
+<<<<<<< 81-frontend-profile-page-settings
+// import 'ldrs/tailspin';
+=======
+//import 'ldrs/tailspin';
+>>>>>>> main
+>>>>>>> 2bddea3317a613545cabb30e54acda096339d928
 
 export default function NavBar() {
     const location = useLocation();
