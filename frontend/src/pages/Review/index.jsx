@@ -23,6 +23,16 @@ function ReviewPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        document.body.style.backgroundImage = `url(${backgroundImage})`;
+        document.body.style.backgroundSize = 'cover';
+    
+        return () => {
+          document.body.style.backgroundImage = '';
+          document.body.style.backgroundSize = '';
+        };
+      }, [])
+      
+    useEffect(() => {
         mealNameRef.current.focus();
     }, []);
 
@@ -163,7 +173,7 @@ function ReviewPage() {
     };
 
     return (
-        <div className="review-box">
+        <div className  ="review-box">
             <h1>New Entry</h1>
             <form onSubmit={handleSubmit}>
                 <div className="input-group">

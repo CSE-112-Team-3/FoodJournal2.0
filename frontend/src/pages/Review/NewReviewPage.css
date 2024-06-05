@@ -1,7 +1,7 @@
-
-
+@import url('https://fonts.googleapis.com/css2?family=Jockey+One&display=swap');
 
   .review-box {
+    font-family: 'Jockey One', sans-serif;
     width: 500px; 
     padding: 20px; 
     border-radius: 20px; 
@@ -9,10 +9,10 @@
     border: 4px solid #36A7F9; 
     margin: 0 auto; 
     margin-top: 50px; 
+    text-align: left;
   }
   
   .review-box h1 {
-    text-align: center;
     font-size: 300%;
     margin-bottom: 20px; 
   }
@@ -33,7 +33,7 @@
 
   .review-box .rating .star-rating {
     display: inline-flex;
-    align-items: center;
+
   }
   
   .review-box .rating .star {
@@ -64,7 +64,7 @@
   
   
   .review-box button.submit {
-    width: 50%;
+    width: 30%;
     color: #36A7F9;
   }
   
@@ -84,8 +84,7 @@
     margin-top: 10px;
     margin-bottom: 10px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+
 }
   
   .camera-preview video,
@@ -99,9 +98,17 @@
   }
   
   .submit {
-    margin-top: 10px;
+    margin: 10px;
     height: 40px;
     font-size: 18px;
+
+  }
+  .cancel {
+    margin: 10px;
+    height: 40px;
+    font-size: 18px;
+    width: 30%;
+    color: #36A7F9;
   }
   p{
     color:blue;
