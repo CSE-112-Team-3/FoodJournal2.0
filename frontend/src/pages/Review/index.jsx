@@ -187,7 +187,7 @@ function ReviewPage() {
                             <option value="camera">Take a Photo</option>
                         </select>
                         {picsMode === 'upload' && (
-                            <input id="meal-pic" type="file" accept="image/*" onChange={handleImageUpload} />
+                            <input id="meal-pic" type="file" accept="image/*" onChange={handleImageUpload} required />
                         )}
                         {picsMode === 'camera' && (
                             <>
@@ -282,8 +282,9 @@ function ReviewPage() {
                     </div>
                 )}
                 <div id="button-group">
-                    <button type="submit" className="submit">Save Review</button>
+                    
                     <button type="button" className="cancel" onClick={handleCancel}>Cancel</button>
+                    <button type="submit" className="submit">Submit</button>
                 </div>
             </form>
         </div>
