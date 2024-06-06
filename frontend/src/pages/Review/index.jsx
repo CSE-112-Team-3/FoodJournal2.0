@@ -76,7 +76,8 @@ function ReviewPage() {
         };
         console.log('Review Data:', reviewData);
 
-        const url = `https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review?access_token=${token}`;
+        // const url = `https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review?access_token=${token}`;
+        const url = `http://127.0.0.1:6542/api/v1/post_review/create_post_review?access_token=${token}`;
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -119,6 +120,11 @@ function ReviewPage() {
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
+            if (file.size > 60 * 1024) { // 60 KB
+                alert('File is too big! Please upload an image smaller than 60 KB.');
+                event.target.value=""; // clear the file
+                return;
+            }
             setMealPics(file);
         }
     };
@@ -136,6 +142,7 @@ function ReviewPage() {
     const handlePicsModeChange = (mode) => {
         setPicsMode(mode);
         if (mode === 'camera') {
+            setMealPics(null);
             startCamera();
         } else {
             stopCamera();

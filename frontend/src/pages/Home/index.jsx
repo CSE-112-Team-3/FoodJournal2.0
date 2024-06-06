@@ -43,6 +43,7 @@ export default function Home() {
                         starRating={<StaticStarRating rating={post.rating} />}
                         description={post.review}
                         images={post.image}
+                        tags={post.tags}
                     />
                 )) : <p>No posts available.</p>}
             </div>
