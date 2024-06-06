@@ -44,7 +44,8 @@
   
   .sign-up-box button.submit {
     width: 50%;
-    color: #36A7F9;
+    background-color: #36A7F9; 
+    color: white;
   }
   
   .input-group {
