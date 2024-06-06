@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import MinimizedPost from '../../components/minimizedPost';
 import StaticStarRating from '../../components/staticStarRating';
 import ProfilePic from '../../components/profilePic';
-import { Link } from 'react-router-dom'
+import noImage from '../../assets/noImage.png';
 
 export default function Home() {
     const [posts, setPosts] = useState([]);
@@ -41,7 +41,7 @@ export default function Home() {
                         mealName={post.food_name}
                         starRating={<StaticStarRating rating={post.rating} />}
                         description={post.review}
-                        images={post.image}
+                        images={post.image || noImage}
                         tags={post.tags}
                     />
                 )) : <p>No posts available.</p>}

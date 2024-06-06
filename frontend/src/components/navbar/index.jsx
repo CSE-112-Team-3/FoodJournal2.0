@@ -2,6 +2,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../provider/AuthProvider.jsx';
 import './NavBar.css'
 import ProfilePic from '../profilePic/index.jsx';
+import defaultPicture from '../../assets/blankProfile.png';
 
 export default function NavBar() {
     const location = useLocation();
@@ -49,7 +50,7 @@ export default function NavBar() {
                                 <li>
                                     <ProfilePic 
                                         username={user?.username} 
-                                        imageAddress={user?.profile_picture || '../../public/images/default-pfp.png'} 
+                                        imageAddress={user?.profile_picture || defaultPicture} 
                                         size={100} 
                                     />
                                 </li>
