@@ -162,6 +162,10 @@ async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _o
                 raise HTTPException(status_code=400, detail=f'Email {update_data.get("email")} already exists')
             elif (not validate_email(update_data.get("email"))):
                 raise HTTPException(status_code=400, detail=f"Invalid email address")
+        if update_data.get("username"):
+            username = update_data.get("username")
+            if (user_exists(username, db)):
+                raise HTTPException(status_code=400, detail=f'User {username} already exists')
         if update_data.get("password"):
             update_data["password"] = bcrypt(update_data.get("password"))
         stmt = (
@@ -177,8 +181,11 @@ async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _o
             )
         db.commit()
         return {"message":"User was updated"}
+    except HTTPException as http_exception:
+        raise http_exception  # Re-raise HTTPException with custom message and status code
+
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"User could not be updated: {e}")
+        raise HTTPException(status_code=500, detail="An unexpected error occurred", success=False)
 
 def user_exists(username: str, db: _orm.Session):
     """

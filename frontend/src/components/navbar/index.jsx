@@ -1,15 +1,18 @@
-import './NavBar.css'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../provider/AuthProvider.jsx';
+import './NavBar.css'
 import ProfilePic from '../profilePic/index.jsx';
 
 export default function NavBar() {
     const location = useLocation();
     const { pathname } = location;
-    const { isAuthenticated, user, isLoading } = useAuth();
-
-    const handleLogOut = (e) => {
+    const { isAuthenticated, user, logout } = useAuth();
+    const handleLogOut = async(e) => {
         e.preventDefault();
+        try {
+            await logout();
+        } catch(error) {
+        }
     }
 
     return (
@@ -54,7 +57,7 @@ export default function NavBar() {
                                     <p>Hi {user?.username}!</p>
                                 </li>
                                 <li>
-                                    <button className='circle-btn jockey-one-regular' onSubmit={handleLogOut}>Log out?</button>
+                                    <button className='circle-btn jockey-one-regular' onClick={handleLogOut}>Log out?</button>
                                 </li>
                             </>
                         : <li>

@@ -8,7 +8,6 @@ import StaticStarRating from '../../components/staticStarRating';
 import ProfilePic from '../../components/profilePic';
 
 export default function Home() {
-    const [pictureNavbar, setPictureNavbar] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png'); 
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
 
@@ -34,7 +33,7 @@ export default function Home() {
     return (
         
         <div className='home-container'>
-            <NavBar pictureNavbar={pictureNavbar} />
+            <NavBar/>
             <div className='post-container reddit-sans-condensed'>
                 {posts.length > 0 ? posts.slice().reverse().map(post => (
                     <div key={post.id} onClick={() => handlePostClick(post)} className='post-link'>
@@ -48,6 +47,7 @@ export default function Home() {
                             starRating={<StaticStarRating rating={post.rating} />}
                             description={post.review}
                             images={post.image}
+                            tags={post.tags}
                         />
                     </div>
                 )) : <p>No posts available.</p>}

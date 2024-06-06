@@ -20,13 +20,13 @@ export default function EditProfile() {
     const [invalidEmail, printEmailErrorMessage] = useState('');
     const [invalidPassword, printPasswordErrorMessage] = useState('');
 
-
+    const baseUrl = 'https://foodjournal20-production.up.railway.app';
     const { user } = useAuth();
 
     useEffect(() => {
         const accesToken = Cookies.get('accessToken');
         if(accesToken){
-            const url = `https://foodjournal20-production.up.railway.app/api/v1/auth/get_user?accessToken=${accesToken}`;
+            const url = `${baseUrl}/api/v1/auth/get_user?accessToken=${accesToken}`;
                 fetch(url, {
                     method: 'GET',
                     headers: {
@@ -88,14 +88,9 @@ export default function EditProfile() {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     }
-    const isValidUsername = (username) => {
-        const regex = /\d/; 
-        return regex.test(username) && ((username.length) >= 5);
-    };
 
     const handleSubmit = async (event)=>{
         event.preventDefault();
-        // setIsReadOnly(true);
         printPasswordErrorMessage('');
         printEmailErrorMessage('');
         printUsernameErrorMessage('');
@@ -110,12 +105,6 @@ export default function EditProfile() {
             printEmailErrorMessage('Invalid email address');
             return;
         }
-
-        if(!isValidUsername(userName)){
-            console.log(userName);
-            printUsernameErrorMessage('Username must be at least 5 characters long and contain at least 1 number');
-            return;
-        }
         
         setIsReadOnly(true);
 
@@ -123,7 +112,7 @@ export default function EditProfile() {
         if(accesToken){
             console.log("image is");
             console.log(profileImage);
-            const updateUrl = `https://foodjournal20-production.up.railway.app/api/v1/auth/update_user?accessToken=${accesToken}`;
+            const updateUrl = `${baseUrl}/api/v1/auth/update_user?accessToken=${accesToken}`;
             const updatedData = {};
             if (firstName !== initialState.firstName) updatedData.first_name = firstName;
             if (lastName !== initialState.lastName) updatedData.last_name = lastName;
@@ -153,11 +142,22 @@ export default function EditProfile() {
                     body: JSON.stringify(updatedData)
                 });
                 const data = await response.json();
-                console.log('Success:', data);
+
+                if (data.detail) {
+                    alert(`User could not be updated. ${data.detail}. Please try again.`);
+                    setFirstName(initialState.firstName);
+                    setLastName(initialState.lastName);
+                    setUserName(initialState.userName);
+                    setEmail(initialState.email);
+                    setProfileImage(initialState.profileImage);
+                    setIsReadOnly(true);
+                }
             } catch (error) {
                 console.error('Error:', error);
             }
         }
+        const form = document.getElementById('registrationForm');
+        form.reset();
     }
 
     return (
@@ -171,7 +171,7 @@ export default function EditProfile() {
                 <h6>Upload Your Profile Picture</h6>
                 <input 
                     type="file" 
-                    className="file-upload reddit-sans-condensed circle-btn" 
+                    className={isreadOnly ? "file-upload reddit-sans-condensed circle-btn-disabled" : "file-upload reddit-sans-condensed circle-btn"}
                     onChange={handlePictureChange} 
                     accept="image/png, image/jpeg"
                     disabled={isreadOnly}
@@ -213,10 +213,12 @@ export default function EditProfile() {
                         className="form-control" 
                         name="username" 
                         id="phone" 
-                        placeholder="current username" 
+                        placeholder="your username"
+                        maxLength={20}
+                        minLength={3} 
                         readOnly={isreadOnly}
                     />
-                    <p>{invalidUsername}</p>
+                    {/* <p>{invalidUsername}</p> */}
                 </div>
 
                 <div>
