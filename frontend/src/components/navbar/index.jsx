@@ -1,26 +1,18 @@
-import './NavBar.css'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../provider/AuthProvider.jsx';
-//import 'ldrs/tailspin';
+import './NavBar.css'
+import ProfilePic from '../profilePic/index.jsx';
 
 export default function NavBar() {
     const location = useLocation();
     const { pathname } = location;
-    const { isAuthenticated, user, isLoading } = useAuth();
-    console.log(isAuthenticated, !isLoading, !user, isAuthenticated && (isLoading || !user))
-    // if (isAuthenticated) {
-    //     if(!user || isLoading) {
-    //         return <l-tailspin
-    //             size="50"
-    //             stroke="6"
-    //             speed="0.9"
-    //             color="black" 
-    //         />
-    //     }
-    // }
-
-    const handleLogOut = (e) => {
+    const { isAuthenticated, user, logout } = useAuth();
+    const handleLogOut = async(e) => {
         e.preventDefault();
+        try {
+            await logout();
+        } catch(error) {
+        }
     }
 
     return (
@@ -55,15 +47,17 @@ export default function NavBar() {
                         {isAuthenticated ? 
                             <>
                                 <li>
-                                    <Link to="/profile">
-                                        <img src={user?.profile_picture ? user.profile_picture : '../../public/images/default-pfp.png'} alt='Default Profile Picture' />
-                                    </Link>
+                                    <ProfilePic 
+                                        username={user?.username} 
+                                        imageAddress={user?.profile_picture || '../../public/images/default-pfp.png'} 
+                                        size={100} 
+                                    />
                                 </li>
                                 <li>
                                     <p>Hi {user?.username}!</p>
                                 </li>
                                 <li>
-                                    <button className='circle-btn jockey-one-regular' onSubmit={handleLogOut}>Log out?</button>
+                                    <button className='circle-btn jockey-one-regular' onClick={handleLogOut}>Log out?</button>
                                 </li>
                             </>
                         : <li>

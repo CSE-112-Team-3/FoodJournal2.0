@@ -17,7 +17,7 @@ body{
     margin-left: 220px;
   }
   
-  .recipe-of-the-week {
+.recipe-of-the-week {
     margin-bottom: 20px;
 }
 
@@ -49,6 +49,9 @@ body{
 .recipe-info p {
     font-size: 1em;
     margin: 10px 0 0 0;
+}
+.recipe-info{
+    flex:1;
 }
 
 .tags-section h3 {
@@ -99,4 +102,21 @@ body{
 .recipe-grid .recipe-card {
     flex-direction: column;
     align-items: center;
+}
+.shallotPasta{
+    color: black;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.recipe-info h3 a {
+    text-decoration: none;
+    color: black; 
+}
+
+.recipe-info h3 a:visited {
+    color: black; 
+}
+
+.recipe-info h3 a:hover {
+    text-decoration: underline; 
 }

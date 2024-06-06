@@ -1,6 +1,7 @@
 import './minimizedPost.css'
 
-export default function MinimizedPost({ id, userId, username, profilePic, mealName, starRating, description, images }) {
+
+export default function MinimizedPost({ id, userId, username, profilePic, mealName, starRating, description, images, tags }) {
     const handlePostClick = () => {
         // TODO: Expand this post to display all the details
         console.log({
@@ -10,7 +11,8 @@ export default function MinimizedPost({ id, userId, username, profilePic, mealNa
             mealName,
             starRating,
             description,
-            images
+            images,
+            tags
         });
     };
 
