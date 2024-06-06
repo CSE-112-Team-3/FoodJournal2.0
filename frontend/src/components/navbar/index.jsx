@@ -1,26 +1,20 @@
 import './NavBar.css'
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../provider/AuthProvider.jsx';
 import 'ldrs/tailspin';
+import Cookies from 'js-cookie';
 
 export default function NavBar() {
     const location = useLocation();
     const { pathname } = location;
-    const { isAuthenticated, user, isLoading } = useAuth();
-    console.log(isAuthenticated, !isLoading, !user, isAuthenticated && (isLoading || !user))
-    // if (isAuthenticated) {
-    //     if(!user || isLoading) {
-    //         return <l-tailspin
-    //             size="50"
-    //             stroke="6"
-    //             speed="0.9"
-    //             color="black" 
-    //         />
-    //     }
-    // }
-
-    const handleLogOut = (e) => {
+    const { isAuthenticated, user, logout } = useAuth();
+    const handleLogOut = async(e) => {
         e.preventDefault();
+        try {
+            await logout();
+        } catch(error) {
+        }
     }
 
     return (
@@ -63,7 +57,7 @@ export default function NavBar() {
                                     <p>Hi {user?.username}!</p>
                                 </li>
                                 <li>
-                                    <button className='circle-btn jockey-one-regular' onSubmit={handleLogOut}>Log out?</button>
+                                    <button className='circle-btn jockey-one-regular' onClick={handleLogOut}>Log out?</button>
                                 </li>
                             </>
                         : <li>

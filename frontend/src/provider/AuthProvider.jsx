@@ -18,16 +18,14 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const token = Cookies.get('accessToken');
-        if (token) {
-            setIsAuthenticated(true);
-            setAccessToken(token);
-        }
+        setIsAuthenticated(!!token);
+        setAccessToken(token);
         setIsLoading(false);
     }, []);
 
     useEffect(() => {
         if(isAuthenticated && accessToken) {
-            getUser();
+            getUser(accessToken);
         }
     }, [isAuthenticated, accessToken]);
 
@@ -53,7 +51,8 @@ export const AuthProvider = ({ children }) => {
             const data = await response.json();
     
             Cookies.set('accessToken', data.access_token, { expires: 1, secure: true, sameSite: 'Strict' });
-            setAccessToken(data.accessToken);
+            await getUser(data.access_token);
+            setAccessToken(data.access_token);
             setIsAuthenticated(true);
             navigate('/');
         } catch (error) {
@@ -66,9 +65,10 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const getUser = async() => {
+    const getUser = async(token) => {
         try {
-            const response = await fetch(`${base_url}/api/v1/auth/get_user?accessToken=${accessToken}`, {
+            setIsLoading(true);
+            const response = await fetch(`${base_url}/api/v1/auth/get_user?accessToken=${token}`, {
                 method: 'GET',
                 headers: {
                     'accept': 'application/json',
@@ -88,9 +88,35 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const logout = async() => {
+        try {
+            setIsLoading(true);
+            const response = await fetch(`${base_url}/api/v1/auth/logout?accessToken=${accessToken}`, {
+                method: 'POST',
+                headers: {
+                    'accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to logout');
+            }
+
+            Cookies.remove('accessToken');
+            setAccessToken(null);
+            setIsAuthenticated(false);
+            setUser(null);
+            navigate('/');
+        } catch (error) {
+            console.error('Error logging out:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, signin, accessToken, user, getUser, isLoading }}>
+        <AuthContext.Provider value={{ isAuthenticated, signin, accessToken, user, getUser, isLoading, setIsLoading, logout }}>
             {children}
         </AuthContext.Provider>
     );
