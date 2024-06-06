@@ -3,6 +3,7 @@ import './SignUpPage.css';
 import CustomPopup from '../../components/popUp/index';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../../assets/background.jpg';
+import { Outlet, Link, useLocation } from 'react-router-dom'
 
 
 function SignUpPage() {
@@ -119,6 +120,7 @@ function SignUpPage() {
     <div className='sign-up-container reddit-sans-condensed'>
       <div className="sign-up-box">
         <h1>Food Journal</h1>
+        <p>Already have an account? Click <Link to='/signin'> here </Link> to login!</p>
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
