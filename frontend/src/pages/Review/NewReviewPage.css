@@ -53,7 +53,6 @@
     resize: none; /* Disable resizing */
     overflow-y: auto; /* Add vertical scroll if needed */
 }
-
   
   .review-box .rating input[type='radio'] {
     display: none;
