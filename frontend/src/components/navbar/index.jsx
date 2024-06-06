@@ -1,9 +1,6 @@
-import './NavBar.css'
-import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../provider/AuthProvider.jsx';
-import 'ldrs/tailspin';
-import Cookies from 'js-cookie';
+import './NavBar.css'
 import ProfilePic from '../profilePic/index.jsx';
 
 export default function NavBar() {

@@ -8,7 +8,6 @@ import ProfilePic from '../../components/profilePic';
 import { Link } from 'react-router-dom'
 
 export default function Home() {
-    const [pictureNavbar, setPictureNavbar] = useState('http://ssl.gstatic.com/accounts/ui/avatar_2x.png'); 
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
@@ -30,7 +29,7 @@ export default function Home() {
     return (
         
         <div className='home-container'>
-            <NavBar pictureNavbar={pictureNavbar} />
+            <NavBar/>
             <div className='post-container reddit-sans-condensed'>
                 {posts.length > 0 ? posts.slice().reverse().map(post => (
                     <MinimizedPost
