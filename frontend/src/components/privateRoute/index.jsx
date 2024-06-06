@@ -1,6 +1,6 @@
 import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../../provider/AuthProvider.jsx';
-import 'ldrs/tailspin'
+//import 'ldrs/tailspin'
 
 
 export default function PrivateRoute() {

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './NewReviewPage.css';
-import Cookies from  'js-cookie';
+import Cookies from 'js-cookie';
+import backgroundImage from '../../assets/background.jpg';
 
 function ReviewPage() {
     const [mealName, setMealName] = useState('');
@@ -22,12 +23,22 @@ function ReviewPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        document.body.style.backgroundImage = `url(${backgroundImage})`;
+        document.body.style.backgroundSize = 'cover';
+    
+        return () => {
+          document.body.style.backgroundImage = '';
+          document.body.style.backgroundSize = '';
+        };
+      }, [])
+      
+    useEffect(() => {
         mealNameRef.current.focus();
     }, []);
 
     const handleCancel = () => {
-      navigate('/');
-    }
+        navigate('/');
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -38,14 +49,14 @@ function ReviewPage() {
         }
 
         if (picsMode === 'camera') {
-          stopCamera();
+            stopCamera();
         }
 
         let imageBase64 = null;
         if (mealPics) {
             try {
                 imageBase64 = await convertToBase64(mealPics);
-                console.log('Base64 Image:', imageBase64); 
+                console.log('Base64 Image:', imageBase64);
             } catch (error) {
                 console.error('Error converting image to base64:', error);
                 return;
@@ -53,57 +64,58 @@ function ReviewPage() {
         }
 
         const token = Cookies.get('accessToken');
-        console.log('token:', token); 
+        console.log('token:', token);
 
         const reviewData = {
             food_name: mealName,
             image: imageBase64,
             restaurant_name: restaurant,
-            rating: parseInt(stars, 10), 
+            rating: parseInt(stars, 10),
             review: comments,
             tags: tag
         };
-        console.log('Review Data:', reviewData); 
+        console.log('Review Data:', reviewData);
+        console.log('Review Data:', JSON.stringify(reviewData, null, 2));
 
         const url = `https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review?access_token=${token}`;
         try {
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(reviewData),
-          });
-          if (response.ok) {
-            navigate('/');
-          } else {
-            const errorData = await response.json();
-            console.error('Error creating new entry:', response.status, errorData);
-            setErrorMessages(errorData.detail || ['Unknown error occurred.']);
-          }
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(reviewData),
+            });
+            if (response.ok) {
+                navigate('/');
+            } else {
+                const errorData = await response.json();
+                console.error('Error creating new entry:', response.status, errorData);
+                setErrorMessages(errorData.detail || ['Unknown error occurred.']);
+            }
         } catch (error) {
-          console.error('Error creating new entry:', error);
-          setErrorMessages(['Network error occurred.']);
+            console.error('Error creating new entry:', error);
+            setErrorMessages(['Network error occurred.']);
         }
     };
 
     const convertToBase64 = (file) => {
-      if (!(file instanceof Blob || file instanceof File)) {
-        return '';
-      } else {
-      return new Promise((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(file);
-        fileReader.onload = () => {
-          resolve(fileReader.result);
-        };
-        fileReader.onerror = (error) => {
-          reject(error);
-        };
-      });
-    }
-  };
+        if (!(file instanceof Blob || file instanceof File)) {
+            return '';
+        } else {
+            return new Promise((resolve, reject) => {
+                const fileReader = new FileReader();
+                fileReader.readAsDataURL(file);
+                fileReader.onload = () => {
+                    resolve(fileReader.result);
+                };
+                fileReader.onerror = (error) => {
+                    reject(error);
+                };
+            });
+        }
+    };
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -162,7 +174,7 @@ function ReviewPage() {
     };
 
     return (
-        <div className="review-box">
+        <div className  ="review-box">
             <h1>New Entry</h1>
             <form onSubmit={handleSubmit}>
                 <div className="input-group">
@@ -176,7 +188,7 @@ function ReviewPage() {
                             <option value="camera">Take a Photo</option>
                         </select>
                         {picsMode === 'upload' && (
-                            <input type="file" accept="image/*" onChange={handleImageUpload} />
+                            <input id="meal-pic" type="file" accept="image/*" onChange={handleImageUpload} />
                         )}
                         {picsMode === 'camera' && (
                             <>
@@ -202,7 +214,7 @@ function ReviewPage() {
                                 )}
                             </>
                         )}
-                        <label htmlFor="mealName">Meal Name</label>
+                        <label htmlFor="mealName">Meal Name*</label>
                         <input
                             id="mealName"
                             type="text"
@@ -218,7 +230,7 @@ function ReviewPage() {
                             value={restaurant}
                             onChange={(e) => setRestaurant(e.target.value)}
                         />
-                        <label htmlFor="stars">Rating</label>
+                        <label htmlFor="stars">Rating*</label>
                         <div className="rating">
                             <div className="star-rating">
                                 {[...Array(5)].map((star, index) => {
@@ -246,11 +258,11 @@ function ReviewPage() {
                             </div>
                             {showError && <p>Please select a rating.</p>}
                         </div>
-                        <label htmlFor="comments">Comments</label>
-                        <input
+                        <label htmlFor="comments">Comments*</label>
+                        <textarea
                             id="comments"
                             type="text"
-                            value={comments}
+                            placeholder="Comments"
                             onChange={handleCommentsChange}
                             required
                         />
@@ -266,12 +278,14 @@ function ReviewPage() {
                 {errorMessages.length > 0 && (
                     <div className="error-messages">
                         {errorMessages.map((error, index) => (
-                            <p key={index}>{error.msg}</p>
+                            <p key={index}>{error}</p>
                         ))}
                     </div>
                 )}
-                <button className="submit">Save Review</button>
-                <button className="cancel" onClick={handleCancel}>Cancel</button>
+                <div id="button-group">
+                    <button type="submit" className="submit">Save Review</button>
+                    <button type="button" className="cancel" onClick={handleCancel}>Cancel</button>
+                </div>
             </form>
         </div>
     );

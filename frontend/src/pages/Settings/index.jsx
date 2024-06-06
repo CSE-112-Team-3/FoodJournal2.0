@@ -10,7 +10,7 @@ export default function Settings() {
         <div className='main reddit-sans-condensed'>
             <NavBar/>
             <div className="profile-container">
-                <EditProfile setPictureNavbar={setPictureNavbar} />
+                <EditProfile />
             </div>        
         </div>
     );
