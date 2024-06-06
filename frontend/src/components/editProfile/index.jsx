@@ -171,7 +171,7 @@ export default function EditProfile() {
                 <h6>Upload Your Profile Picture</h6>
                 <input 
                     type="file" 
-                    className="file-upload reddit-sans-condensed circle-btn" 
+                    className={isreadOnly ? "file-upload reddit-sans-condensed circle-btn-disabled" : "file-upload reddit-sans-condensed circle-btn"}
                     onChange={handlePictureChange} 
                     accept="image/png, image/jpeg"
                     disabled={isreadOnly}

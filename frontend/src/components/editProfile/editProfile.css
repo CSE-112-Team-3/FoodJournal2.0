@@ -162,3 +162,15 @@ input[type=file] {
 .circle-btn::-webkit-file-upload-button:hover {
     background-color: #0056b3;
 }
+
+.circle-btn-disabled::-webkit-file-upload-button {
+    width: 200px;
+    height: 40px; 
+    background-color: grey;
+    border-radius: 10px; 
+    border: none; 
+    color: white;
+    font-family: "Reddit Sans Condensed", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
