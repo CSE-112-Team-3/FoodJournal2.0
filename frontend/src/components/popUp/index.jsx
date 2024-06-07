@@ -4,6 +4,7 @@ import './popUp.css';
 
 const CustomPopup = (props) => {
   const [show, setShow] = useState(false);
+  const [popupClassName, setPopupClassName] = useState('popup');
 
   const closeHandler = () => {
     setShow(false);
@@ -12,8 +13,12 @@ const CustomPopup = (props) => {
 
   useEffect(() => {
     setShow(props.show);
-  }, [props.show]);
 
+    if (props.customClass) {
+      setPopupClassName(props.customClass);
+    }
+  }, [props.show]);
+  
   return (
     <div
       style={{
@@ -22,7 +27,7 @@ const CustomPopup = (props) => {
       }}
       className="overlay"
     >
-      <div className="popup">
+      <div className={popupClassName}>
         <h2>{props.title}</h2>
         <span className="close" onClick={closeHandler}>
           &times;
@@ -36,7 +41,8 @@ const CustomPopup = (props) => {
 CustomPopup.propTypes = {
   title: PropTypes.string.isRequired,
   show: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  customClass: PropTypes.string
 };
 
 export default CustomPopup;

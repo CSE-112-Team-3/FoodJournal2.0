@@ -7,11 +7,11 @@ import MinimizedPost from '../../components/minimizedPost';
 import StaticStarRating from '../../components/staticStarRating';
 import ProfilePic from '../../components/profilePic';
 import CustomPopup from '../../components/popUp/index';
+import ReviewDetail from '../ReviewDetail/index.jsx';
 
 export default function Home() {
     const [posts, setPosts] = useState([]);
-    // const navigate = useNavigate();
-    const [showPopup, setShowPopup] = useState(false);
+    const [popupVisibility, setPopupVisibility] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
 
     useEffect(() => {
@@ -34,11 +34,11 @@ export default function Home() {
     // };
     const handlePostClick = (post) => {
         setSelectedPost(post);
-        setShowPopup(true);
+        setPopupVisibility(true);
     };
 
-    const handleClosePopup = () => {
-        setShowPopup(false);
+    const closePopupHandler = () => {
+        setPopupVisibility(false);
         setSelectedPost(null);
     };
     
@@ -64,24 +64,9 @@ export default function Home() {
                     </div>
                 )) : <p>No posts available.</p>}
             </div>
-
-            {showPopup && selectedPost && (
-                <CustomPopup
-                    title={selectedPost.food_name}
-                    show={showPopup}
-                    onClose={handleClosePopup}
-                >
-                    <div>
-                        <ProfilePic username={selectedPost.username} imageAddress={selectedPost.profile_pic} size='100px' />
-                        <p>Username: {selectedPost.username}</p>
-                        <StaticStarRating rating={selectedPost.rating} />
-                        <p>Description: {selectedPost.review}</p>
-                        <img src={selectedPost.image} alt={selectedPost.food_name} />
-                        <p>Tags: {selectedPost.tags}</p>
-                    </div>
-                </CustomPopup>
-            )}
-
+            <CustomPopup title="Review Detail" show={popupVisibility} onClose={closePopupHandler} customClass="wide-popup">
+                {selectedPost && <ReviewDetail post={selectedPost} />}
+            </CustomPopup>
         </div>
     );
 };
