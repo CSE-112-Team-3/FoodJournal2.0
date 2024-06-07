@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import MinimizedPost from '../../components/minimizedPost';
 import StaticStarRating from '../../components/staticStarRating';
 import ProfilePic from '../../components/profilePic';
+import noImage from '../../assets/noImage.png';
 import CustomPopup from '../../components/popUp/index';
 import ReviewDetail from '../ReviewDetail/index.jsx';
 
