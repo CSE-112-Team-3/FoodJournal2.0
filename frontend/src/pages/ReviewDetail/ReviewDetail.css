@@ -1,4 +1,16 @@
+/* Hide scrollbar for webkit browsers */
+::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+/* Show scrollbar for Firefox */
+* {
+    scrollbar-width: none; /* For Firefox */
+}
+
 .review-detail-container {
+    display: flex;
+    flex-direction: column;
     width: 80%;
     border-radius: 20px;
     background: beige; 
@@ -30,20 +42,24 @@
     width: 100%;
     max-width: 600px;
     border-radius: 10px;
+    margin: 0 auto;
 }
 
 .food-name {
     font-size: 24px;
     margin-bottom: 10px;
+    padding-left: 20px;
 }
 
 .star-rating {
     margin: 10px 0;
+    padding-left: 10px;
 }
 
 .detail-text {
     margin: 10px 0;
     color: black;
+    padding-left: 20px;
 }
 
 #button {
