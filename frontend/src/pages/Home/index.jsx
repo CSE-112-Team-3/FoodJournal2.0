@@ -6,10 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import MinimizedPost from '../../components/minimizedPost';
 import StaticStarRating from '../../components/staticStarRating';
 import ProfilePic from '../../components/profilePic';
+import CustomPopup from '../../components/popUp/index';
+import ReviewDetail from '../ReviewDetail/index.jsx';
 
 export default function Home() {
     const [posts, setPosts] = useState([]);
-    const navigate = useNavigate();
+    const [popupVisibility, setPopupVisibility] = useState(false);
+    const [selectedPost, setSelectedPost] = useState(null);
 
     useEffect(() => {
         const url = 'https://foodjournal20-production.up.railway.app/api/v1/post_review/get_post_review';
@@ -27,7 +30,13 @@ export default function Home() {
     }, []);
 
     const handlePostClick = (post) => {
-      navigate(`/review/${post.id}`, { state: { post } });
+        setSelectedPost(post);
+        setPopupVisibility(true);
+    };
+
+    const closePopupHandler = () => {
+        setPopupVisibility(false);
+        setSelectedPost(null);
     };
     
     return (
@@ -52,6 +61,9 @@ export default function Home() {
                     </div>
                 )) : <p>No posts available.</p>}
             </div>
+            <CustomPopup title="Review Detail" show={popupVisibility} onClose={closePopupHandler} customClass="wide-popup">
+                {selectedPost && <ReviewDetail post={selectedPost} />}
+            </CustomPopup>
         </div>
     );
 };

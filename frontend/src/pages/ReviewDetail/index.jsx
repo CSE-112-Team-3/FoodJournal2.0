@@ -1,28 +1,10 @@
-import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
 import './ReviewDetail.css';
 
 import StaticStarRating from '../../components/staticStarRating';
-import backgroundImage from '../../assets/background.jpg';
 
-const ReviewDetail = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const { post } = location.state;
-
-    useEffect(() => {
-        document.body.style.backgroundImage = `url(${backgroundImage})`;
-        document.body.style.backgroundSize = 'cover';
-    
-        return () => {
-          document.body.style.backgroundImage = '';
-          document.body.style.backgroundSize = '';
-        };
-      }, [])
-
-    const handleReturnClick = () => {
-        navigate('/');
-    };
+const ReviewDetail = ({ post }) => {
+    if (!post) return null;
 
     return (
         <div className='review-detail-container'>
@@ -38,11 +20,6 @@ const ReviewDetail = () => {
             {post.review && post.review.trim() !== '' && <p className='detail-text'>{post.review}</p>}
             {post.restaurant_name && post.restaurant_name.trim() !== '' && <p className='detail-text'><strong>Restaurant:</strong> {post.restaurant_name}</p>}
             {post.tags && post.tags.trim() !== '' && <p className='detail-text'><strong>Tags:</strong> {post.tags}</p>}
-            <div id="button">
-                <button className='return' onClick={handleReturnClick}>
-                    Return to Home
-                </button>
-            </div>
         </div>
     );
 };

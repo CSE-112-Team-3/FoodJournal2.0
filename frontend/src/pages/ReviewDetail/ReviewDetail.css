@@ -1,12 +1,11 @@
-/* ReviewDetail.css */
 .review-detail-container {
-    width: 500px;
-    padding: 20px;
+    width: 80%;
     border-radius: 20px;
-    background-color: #FCCE76;
-    border: 4px solid #36A7F9;
+    background: beige; 
     margin: 0 auto;
-    margin-top: 50px;
+    margin-top: 40px;
+    max-height: calc(80vh - 120px);
+    overflow-y: auto;
 }
 
 .review-detail-header {
