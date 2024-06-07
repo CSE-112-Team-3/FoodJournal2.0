@@ -10,6 +10,8 @@ import Review from './pages/Review/index.jsx';
 import PrivateRoute from './components/privateRoute/index.jsx';
 import Error403 from './pages/Error/Error403.jsx';
 import Error404 from './pages/Error/Error404.jsx';
+import UserPage from './pages/UserPage/index.jsx';
+import MyPage from './pages/Profile/index.jsx';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/signup" element={<SignUp/>}/>
           <Route element={<PrivateRoute />}>
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/userpage" element={<UserPage />} />
             <Route path="/new-review" element={<Review />} />
             <Route path="/settings" element={<Settings/>}/>
           </Route>

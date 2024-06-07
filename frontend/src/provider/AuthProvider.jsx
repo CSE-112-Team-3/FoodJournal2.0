@@ -49,7 +49,8 @@ export const AuthProvider = ({ children }) => {
             }
     
             const data = await response.json();
-    
+            
+            Cookies.set('userId', data.user_id, { expires: 1, secure: true, sameSite: 'Strict' });
             Cookies.set('accessToken', data.access_token, { expires: 1, secure: true, sameSite: 'Strict' });
             await getUser(data.access_token);
             setAccessToken(data.access_token);

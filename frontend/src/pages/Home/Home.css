@@ -9,11 +9,9 @@
   gap: 20px;
   padding: 20px;
   margin-left: 220px;
+  width: 100%;
 }
 
-.container{
-  position:relative;
-}
 
 .circle-btn {
       width: 130px;

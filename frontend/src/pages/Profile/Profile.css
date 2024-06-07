@@ -1,1 +1,23 @@
 
+.create-button {
+    position: fixed;
+    bottom: 50px; /* Adjust the distance from the bottom */
+    right: 120px; /* Adjust the distance from the right */
+    font-size: 1.5rem; /* Adjust the font size */
+    padding: 10px 20px; /* Adjust padding to increase button size */
+    border: none;
+    width: 120px;
+    height: auto;
+    border-radius: 10%;
+    background-color: #36A7F9;
+    color: white;
+    cursor: pointer;
+    box-shadow: black 5px 5px 10px;
+    /* box-shadow: inset 0 0 0 0 #47B2FF; */
+    transition: ease-out 0.3s;
+    outline: white;
+}
+
+.create-button:hover {
+    background-color: #2386c3; /* Change color on hover */
+}
