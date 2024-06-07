@@ -1,5 +1,7 @@
 import React from 'react';
 import './ReviewDetail.css';
+import noImage from '../../assets/noImage.png';
+import defaulPicture from '../../assets/blankProfile.png';
 
 import StaticStarRating from '../../components/staticStarRating';
 
@@ -9,10 +11,10 @@ const ReviewDetail = ({ post }) => {
     return (
         <div className='review-detail-container'>
             <div className='review-detail-header'>
-                <img src={post.profile_pic} alt={`${post.username}'s profile`} className='profile-pic' />
+                <img src={post.profile_pic || defaulPicture } alt={`${post.username}'s profile`} className='profile-pic' />
                 <span className='username'>{post.username}</span>
             </div>
-            {post.image && post.image.trim() !== '' && <img src={post.image} alt={`${post.food_name}`} className='food-pic' />}
+            {post.image && post.image.trim() !== '' && <img src={post.image || noImage} alt={`${post.food_name}`} className='food-pic' />}
             <h1 className='food-name'>{post.food_name}</h1>
             <div className='star-rating'>
                 <StaticStarRating rating={post.rating} />

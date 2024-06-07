@@ -59,7 +59,7 @@ export default function Home() {
                             mealName={post.food_name}
                             starRating={<StaticStarRating rating={post.rating} />}
                             description={post.review}
-                            images={post.image}
+                            images={post.image || noImage}
                             tags={post.tags}
                         />
                     </div>
