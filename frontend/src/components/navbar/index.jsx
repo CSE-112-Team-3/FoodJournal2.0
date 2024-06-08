@@ -2,6 +2,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../provider/AuthProvider.jsx';
 import './NavBar.css'
 import ProfilePic from '../profilePic/index.jsx';
+import defaultPicture from '../../assets/blankProfile.png';
 import { useNavigate } from 'react-router-dom';
 
 export default function NavBar() {
@@ -57,7 +58,7 @@ export default function NavBar() {
                                 <li id='profile-pic'onClick={handleProfileClick}>
                                     <ProfilePic 
                                         username={user?.username} 
-                                        imageAddress={user?.profile_picture || '../../public/images/default-pfp.png'} 
+                                        imageAddress={user?.profile_picture || defaultPicture} 
                                         size={100} 
                                     />
                                 </li>

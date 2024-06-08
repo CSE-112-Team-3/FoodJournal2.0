@@ -26,3 +26,19 @@
       margin-right: 10px;
   
 }
+
+.post-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  display: block;
+}
+
+.post-link:hover {
+  background-color: #f0f0f0;
+  transition: background-color 0.3s;
+}
+
+.post-link .minimized-post {
+  margin-bottom: 15px;
+}

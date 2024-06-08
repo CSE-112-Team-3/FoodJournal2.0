@@ -120,8 +120,6 @@ export default function EditProfile() {
             if (newPassword) updatedData.password = newPassword;
             if (email !== initialState.email) updatedData.email = email;
             if (profileImage !== initialState.profileImage) updatedData.profile_picture = profileImage;
-            console.log(initialState);
-            console.log(updatedData);
 
             setInitialState({
                 firstName: firstName,

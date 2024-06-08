@@ -75,6 +75,7 @@ function ReviewPage() {
             tags: tag
         };
         console.log('Review Data:', reviewData);
+        console.log('Review Data:', JSON.stringify(reviewData, null, 2));
 
         // const url = `https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review?access_token=${token}`;
         const url = `http://127.0.0.1:6542/api/v1/post_review/create_post_review?access_token=${token}`;
