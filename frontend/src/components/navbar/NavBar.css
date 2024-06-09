@@ -85,6 +85,10 @@
     border-radius: 50%;
 }
 
+#profile-pic {
+    cursor: pointer;
+}
+
 .create-post-container{
     display: flex;
     justify-content: center;
