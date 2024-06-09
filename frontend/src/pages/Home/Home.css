@@ -6,10 +6,10 @@
 .post-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 40px;
   padding: 20px;
   margin-left: 220px;
-  width: 100%;
+  width: 75%;
 }
 
 
@@ -31,7 +31,7 @@
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  display: block;
+  display: inline-block;
 }
 
 .post-link:hover {

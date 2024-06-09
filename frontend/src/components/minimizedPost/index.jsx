@@ -5,7 +5,10 @@ import { useAuth } from '../../provider/AuthProvider.jsx';
 export default function MinimizedPost({ id, userId, username, profilePic, mealName, starRating, description, images, tags }) {
     const navigate = useNavigate();
     const { user } = useAuth();
-    const currentUserId = user.userId;
+    let currentUserId = null;
+    if (user) {
+        currentUserId = user.userId;
+    }
     const handlePostClick = () => {
         // TODO: Expand this post to display all the details
         console.log({
@@ -22,11 +25,12 @@ export default function MinimizedPost({ id, userId, username, profilePic, mealNa
 
     const handleUsernameClick = (e) => {
         // TODO: navigate to this user's page where all their posts will be displayed
+        e.stopPropagation();
         const profilePicUrl = profilePic.props.imageAddress;
-        setRefreshKey(prevKey => prevKey + 1);
+        // setRefreshKey(prevKey => prevKey + 1);
         navigate('/userpage', { state: { username, userId, profilePicUrl} });
 
-        e.stopPropagation();
+        
     };
 
     const handleUpdateClick = (e) => {
