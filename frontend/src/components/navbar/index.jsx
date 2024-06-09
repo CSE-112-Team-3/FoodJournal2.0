@@ -21,7 +21,8 @@ export default function NavBar() {
 
     const handleProfileClick = (e) => {
         e.preventDefault();
-        navigate('/mypage');
+        // console.log(user)
+        navigate('/mypage', { state: { username: user.username, userId: user.id, profile_picture: user.profile_picture } });
     }
 
     return (

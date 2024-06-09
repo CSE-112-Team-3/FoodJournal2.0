@@ -2,22 +2,32 @@ import React from 'react';
 import UserPage from '../UserPage';
 import { useAuth } from '../../provider/AuthProvider';
 import './Profile.css';
+import PostList from '../../components/postList';
+import NavBar from '../../components/navbar';
+import { useLocation } from 'react-router-dom';
+import UpdatePost from '../../components/updatePopUp';
 
 export default function MyPage() {
     const { user } = useAuth();
+    const location = useLocation();
+    const { username, userId, profile_picture } = location.state;
 
     const initialState = {
-        username: user.username,
-        userId: user.userId,
-        profilePic: user.profile_picture
+        username: username,
+        userId: userId,
+        profilePic: profile_picture
     };
 
-    const isCurrentUser = user.userId === initialState.userId;
+    console.log(initialState);
+
+    const isCurrentUser = user ? user.id === initialState.userId : false;
     console.log(isCurrentUser);
 
     return (
         <div>
             <UserPage initialState={initialState} />
+            {/* <NavBar/>
+            <PostList isUserPage={isCurrentUser} username={initialState.username} profilePic={initialState.profilePic} userId={initialState.userId} /> */}
             {isCurrentUser && (
                 <button className='create-button'>Create Post</button>
             )}

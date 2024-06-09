@@ -6,12 +6,13 @@ import ProfilePic from '../profilePic';
 import noImage from '../../assets/noImage.png';
 import CustomPopup from '../popUp/index';
 import ReviewDetail from '../../pages/ReviewDetail/index.jsx';
+import UpdatePopup from '../updatePopUp/index.jsx';
 
 export default function PostList({ fetchUrl, isUserPage, username, profilePic, userId }) {
     const [posts, setPosts] = useState([]);
     const [popupVisibility, setPopupVisibility] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
     useEffect(() => {
         if (!fetchUrl) return;
 
@@ -24,7 +25,7 @@ export default function PostList({ fetchUrl, isUserPage, username, profilePic, u
         .then(response => response.json())
         .then(data => setPosts(data))
         .catch(error => console.error('Error fetching data:', error));
-    }, [fetchUrl]);
+    }, [fetchUrl, isUserPage]);
 
     const handlePostClick = (post) => {
         setSelectedPost(post);
@@ -35,6 +36,17 @@ export default function PostList({ fetchUrl, isUserPage, username, profilePic, u
         setPopupVisibility(false);
         setSelectedPost(null);
     };
+
+    const handleEditClick = (post) => {
+        setSelectedPost(post);
+        setIsModalOpen(true);
+        // post.stopPropagation();
+    }
+
+    const handleModalclose = () => {
+        setIsModalOpen(false);
+        setSelectedPost(null);
+    }
 
     return (
         <div className='post-container reddit-sans-condensed'>
@@ -61,12 +73,14 @@ export default function PostList({ fetchUrl, isUserPage, username, profilePic, u
                         description={post.review}
                         images={post.image || noImage}
                         tags={post.tags}
+                        onEditClick={handleEditClick}
                     />
                 </div>
             )) : <p>No posts available.</p>}
             <CustomPopup title="Review Detail" show={popupVisibility} onClose={closePopupHandler} customClass="wide-popup">
                 {selectedPost && <ReviewDetail post={selectedPost} />}
             </CustomPopup>
+            {/* <UpdatePopup isOpen ={isModalOpen} onClose={handleModalclose} post={selectedPost} /> */}
         </div>
     );
 }
