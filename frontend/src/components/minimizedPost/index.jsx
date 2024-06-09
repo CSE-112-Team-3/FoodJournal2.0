@@ -1,9 +1,9 @@
 import './minimizedPost.css'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../provider/AuthProvider.jsx';
-import UpdatePost from '../../components/updatePopUp';
+import Cookies from 'js-cookie';
 
-export default function MinimizedPost({ id, userId, username, profilePic, mealName, starRating, description, images, tags, onEditClick}) {
+export default function MinimizedPost({ id, userId, username, profilePic, mealName, starRating, description, images, tags}) {
     const navigate = useNavigate();
     const { user } = useAuth();
     const isMyPage = location.pathname === '/mypage';
@@ -11,43 +11,46 @@ export default function MinimizedPost({ id, userId, username, profilePic, mealNa
     if (user) {
         currentUserId = user.id;
     }
-    const handlePostClick = () => {
-        // TODO: Expand this post to display all the details
-        console.log({
-            id,
-            userId,
-            username,
-            mealName,
-            starRating,
-            description,
-            images,
-            tags
-        });
-    };
+    const base_url = 'https://foodjournal20-production.up.railway.app';
 
     const handleUsernameClick = (e) => {
         // TODO: navigate to this user's page where all their posts will be displayed
         e.stopPropagation();
         const profilePicUrl = profilePic.props.imageAddress;
-        // setRefreshKey(prevKey => prevKey + 1);
         navigate('/userpage', { state: { username, userId, profilePicUrl} });
-
-        
     };
 
-    const handleEditClick = (e) => {
+    const handleDeleteClick = async (e) => {
         // TODO: 
         e.stopPropagation();
-        onEditClick();
-    };
+        console.log('Post ID:', id);
+        try {
+            const accessToken = Cookies.get('accessToken');
+            console.log('Access Token:', accessToken);
+            const url = `${base_url}/api/v1/post_review/delete_post_review?id=${id}&access_token=${accessToken}`;
+            const response = await fetch(`${url}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id }) 
+            });
 
-    const handleDeleteClick = (e) => {
-        // TODO: 
-        e.stopPropagation();
+            if (response.ok) {
+                console.log('Post deleted successfully');
+                navigate("/mypage", { state: { username: user.username, userId: user.id, profile_picture: user.profile_picture } });
+                window.location.reload();
+            } 
+            else {
+                console.error('Failed to delete post');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
     
     return(
-        <div className='min-post-container' onClick={handlePostClick}>
+        <div className='min-post-container' >
             <div className='profile-section'>
                 {profilePic}
                 <div className='user-info'>
@@ -63,7 +66,6 @@ export default function MinimizedPost({ id, userId, username, profilePic, mealNa
             <div className='interact-bar'>
                 {userId === currentUserId && isMyPage && (
                     <div className="post-actions">
-                        <button className="action-button update-button" onClick={handleEditClick}>Edit</button>
                         <button className="action-button delete-button" onClick={handleDeleteClick}>Delete</button>
                     </div>
                 )}

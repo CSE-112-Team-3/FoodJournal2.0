@@ -2,15 +2,14 @@ import React from 'react';
 import UserPage from '../UserPage';
 import { useAuth } from '../../provider/AuthProvider';
 import './Profile.css';
-import PostList from '../../components/postList';
-import NavBar from '../../components/navbar';
 import { useLocation } from 'react-router-dom';
-import UpdatePost from '../../components/updatePopUp';
+import { useNavigate } from 'react-router-dom';
 
 export default function MyPage() {
     const { user } = useAuth();
     const location = useLocation();
     const { username, userId, profile_picture } = location.state;
+    const navigate = useNavigate();
 
     const initialState = {
         username: username,
@@ -23,13 +22,15 @@ export default function MyPage() {
     const isCurrentUser = user ? user.id === initialState.userId : false;
     console.log(isCurrentUser);
 
+    const handleCreateClick = () => {
+        navigate('/new-review')
+    };
+
     return (
         <div>
             <UserPage initialState={initialState} />
-            {/* <NavBar/>
-            <PostList isUserPage={isCurrentUser} username={initialState.username} profilePic={initialState.profilePic} userId={initialState.userId} /> */}
             {isCurrentUser && (
-                <button className='create-button'>Create Post</button>
+                <button className='create-button' onClick={handleCreateClick}>Create Post</button>
             )}
         </div>
     );
