@@ -35,7 +35,6 @@ describe('Sign In Page Tests', () => {
     });
 
     it('forgot password link should link to YouTube url', () => {
-      // Mock the click event
       cy.get('.forgot').then(($a) => {
         const href = $a.prop('href');
         expect(href).to.include('/b3rNUhDqciM');

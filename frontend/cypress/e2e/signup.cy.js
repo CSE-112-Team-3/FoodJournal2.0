@@ -49,103 +49,107 @@ describe('Sign Up Page Tests', () => {
     }).as('signupRequest');
   });
 
-  it('should display an error if the first name is empty', () => {
-    cy.get('#firstName').focus().blur();
-    cy.get('#firstName').then($input => {
-      expect($input[0].validationMessage).to.eq('Please fill out this field.');
+  describe('Success Scenarios', () => {
+    it('should display a success popup and route to /signin aftering closing popup', () => {
+      cy.get('#firstName').type('John');
+      cy.get('#lastName').type('Doe');
+      cy.get('#userName').type('newuser1');
+      cy.get('#email').type('valid@example.com');
+      cy.get('#password').type('password123');
+      cy.get('#confirmPassword').type('password123');
+      cy.get('.submit').click();
+      cy.wait('@signupRequest').then((interception) => {
+        if (interception.response.statusCode === 400) {
+          cy.log('Response body:', interception.response.body);
+        }
+        expect(interception.response.statusCode).to.eq(200);
+      });
+      cy.get('.popup').should('exist');
+      cy.get('.popup').get('.close').click();
+      cy.url().should('include', '/signin');
+    });
+
+    it('should display a success popup and automatically route to /signin after a delay', () => {
+      cy.get('#firstName').type('John');
+      cy.get('#lastName').type('Doe');
+      cy.get('#userName').type('newuser2');
+      cy.get('#email').type('valid2@example.com');
+      cy.get('#password').type('password123');
+      cy.get('#confirmPassword').type('password123');
+      cy.get('.submit').click();
+      cy.wait('@signupRequest').its('response.statusCode').should('eq', 200);
+      cy.get('.popup').should('exist');
+      cy.wait(3000);
+      cy.url().should('include', '/signin');
     });
   });
 
-  it('should display an error if the last name is empty', () => {
-    cy.get('#lastName').focus().blur();
-    cy.get('#lastName').then($input => {
-      expect($input[0].validationMessage).to.eq('Please fill out this field.');
+  describe('Fail Scenarios',() => {
+    it('should display an error if the first name is empty', () => {
+      cy.get('#firstName').focus().blur();
+      cy.get('#firstName').then($input => {
+        expect($input[0].validationMessage).to.eq('Please fill out this field.');
+      });
     });
-  });
 
-  it('should display an error if username is not at least 5 characters long & contains at least 1 number', () => {
-    cy.get('#firstName').type('John');
-    cy.get('#lastName').type('Doe');
-    cy.get('#userName').type('user');
-    cy.get('.error-message').should('contain', 'Username must be at least 5 characters long and contain at least 1 number.');
-  });
-
-  it('should display an error if username already exists', () => {
-    cy.get('#firstName').type('John');
-    cy.get('#lastName').type('Doe');
-    cy.get('#userName').type('existinguser1');
-    cy.get('#email').type('valid@example.com');
-    cy.get('#password').type('password123');
-    cy.get('#confirmPassword').type('password123');
-    cy.get('.submit').click();
-    cy.wait('@signupRequest').its('response.statusCode').should('eq', 400);
-    cy.get('.error-message').should('contain', 'Username already exists');
-  });
-
-  it('should display an error if email is invalid', () => {
-    cy.get('#firstName').type('John');
-    cy.get('#lastName').type('Doe');
-    cy.get('#userName').type('validuser1');
-    cy.get('#email').type('invalidemail');
-    cy.get('#password').type('password123');
-    cy.get('#confirmPassword').type('password123');
-    cy.get('.error-message').should('contain', 'Invalid email address');
-  });
-
-  it('should display an error if email already exists', () => {
-    cy.get('#firstName').type('John');
-    cy.get('#lastName').type('Doe');
-    cy.get('#userName').type('validuser1');
-    cy.get('#email').type('existing@example.com');
-    cy.get('#password').type('password123');
-    cy.get('#confirmPassword').type('password123');
-    cy.get('.submit').click();
-    cy.wait('@signupRequest').its('response.statusCode').should('eq', 400);
-    cy.get('.error-message').should('contain', 'Email already exists');
-  });
-
-  it('should display an error if passwords do not match', () => {
-    cy.get('#firstName').type('John');
-    cy.get('#lastName').type('Doe');
-    cy.get('#userName').type('validuser1');
-    cy.get('#email').type('valid@example.com');
-    cy.get('#password').type('password123');
-    cy.get('#confirmPassword').type('password321');
-    cy.get('.submit').click();
-    cy.get('.error-message').should('contain', 'Passwords do not match');
-  });
-
-  it('should display a success popup and route to /signin aftering closing popup', () => {
-    cy.get('#firstName').type('John');
-    cy.get('#lastName').type('Doe');
-    cy.get('#userName').type('newuser1');
-    cy.get('#email').type('valid@example.com');
-    cy.get('#password').type('password123');
-    cy.get('#confirmPassword').type('password123');
-    cy.get('.submit').click();
-    cy.wait('@signupRequest').then((interception) => {
-      if (interception.response.statusCode === 400) {
-        cy.log('Response body:', interception.response.body);
-      }
-      expect(interception.response.statusCode).to.eq(200);
+    it('should display an error if the last name is empty', () => {
+      cy.get('#lastName').focus().blur();
+      cy.get('#lastName').then($input => {
+        expect($input[0].validationMessage).to.eq('Please fill out this field.');
+      });
     });
-    cy.get('.popup').should('exist');
-    cy.get('.popup').get('.close').click();
-    cy.url().should('include', '/signin');
-  });
 
-  it('should display a success popup and automatically route to /signin after a delay', () => {
-    cy.get('#firstName').type('John');
-    cy.get('#lastName').type('Doe');
-    cy.get('#userName').type('newuser2');
-    cy.get('#email').type('valid2@example.com');
-    cy.get('#password').type('password123');
-    cy.get('#confirmPassword').type('password123');
-    cy.get('.submit').click();
-    cy.wait('@signupRequest').its('response.statusCode').should('eq', 200);
-    cy.get('.popup').should('exist');
-    cy.wait(3000);
-    cy.url().should('include', '/signin');
+    it('should display an error if username is not at least 5 characters long & contains at least 1 number', () => {
+      cy.get('#firstName').type('John');
+      cy.get('#lastName').type('Doe');
+      cy.get('#userName').type('user');
+      cy.get('.error-message').should('contain', 'Username must be at least 5 characters long and contain at least 1 number.');
+    });
+
+    it('should display an error if username already exists', () => {
+      cy.get('#firstName').type('John');
+      cy.get('#lastName').type('Doe');
+      cy.get('#userName').type('existinguser1');
+      cy.get('#email').type('valid@example.com');
+      cy.get('#password').type('password123');
+      cy.get('#confirmPassword').type('password123');
+      cy.get('.submit').click();
+      cy.wait('@signupRequest').its('response.statusCode').should('eq', 400);
+      cy.get('.error-message').should('contain', 'Username already exists');
+    });
+
+    it('should display an error if email is invalid', () => {
+      cy.get('#firstName').type('John');
+      cy.get('#lastName').type('Doe');
+      cy.get('#userName').type('validuser1');
+      cy.get('#email').type('invalidemail');
+      cy.get('#password').type('password123');
+      cy.get('#confirmPassword').type('password123');
+      cy.get('.error-message').should('contain', 'Invalid email address');
+    });
+
+    it('should display an error if email already exists', () => {
+      cy.get('#firstName').type('John');
+      cy.get('#lastName').type('Doe');
+      cy.get('#userName').type('validuser1');
+      cy.get('#email').type('existing@example.com');
+      cy.get('#password').type('password123');
+      cy.get('#confirmPassword').type('password123');
+      cy.get('.submit').click();
+      cy.wait('@signupRequest').its('response.statusCode').should('eq', 400);
+      cy.get('.error-message').should('contain', 'Email already exists');
+    });
+
+    it('should display an error if passwords do not match', () => {
+      cy.get('#firstName').type('John');
+      cy.get('#lastName').type('Doe');
+      cy.get('#userName').type('validuser1');
+      cy.get('#email').type('valid@example.com');
+      cy.get('#password').type('password123');
+      cy.get('#confirmPassword').type('password321');
+      cy.get('.submit').click();
+      cy.get('.error-message').should('contain', 'Passwords do not match');
+    });
   });
 });
 
