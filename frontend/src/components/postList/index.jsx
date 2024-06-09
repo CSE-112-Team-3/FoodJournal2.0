@@ -28,7 +28,7 @@ export default function PostList({ fetchUrl, isUserPage, username, profilePic, u
     }, [fetchUrl, isUserPage]);
 
     const handlePostClick = (post) => {
-        setSelectedPost(post);
+        setSelectedPost({...post, username: post.username || username});
         setPopupVisibility(true);
     };
 
@@ -36,6 +36,12 @@ export default function PostList({ fetchUrl, isUserPage, username, profilePic, u
         setPopupVisibility(false);
         setSelectedPost(null);
     };
+
+    const handleDelete = (id) => {
+        // Filter out the deleted post from the posts array
+        const updatedPosts = posts.filter(post => post.id !== id);
+        setPosts(updatedPosts); // Update the state with the filtered posts
+      };
 
     return (
         <div className='post-container reddit-sans-condensed'>
@@ -62,6 +68,7 @@ export default function PostList({ fetchUrl, isUserPage, username, profilePic, u
                         description={post.review}
                         images={post.image || noImage}
                         tags={post.tags}
+                        onDelete={handleDelete}
                     />
                 </div>
             )) : <p>No posts available.</p>}

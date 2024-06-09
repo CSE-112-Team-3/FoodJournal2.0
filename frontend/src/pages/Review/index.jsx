@@ -56,7 +56,6 @@ function ReviewPage() {
         if (mealPics) {
             try {
                 imageBase64 = await convertToBase64(mealPics);
-                console.log('Base64 Image:', imageBase64);
             } catch (error) {
                 console.error('Error converting image to base64:', error);
                 return;
@@ -64,7 +63,6 @@ function ReviewPage() {
         }
 
         const token = Cookies.get('accessToken');
-        console.log('token:', token);
 
         const reviewData = {
             food_name: mealName,
@@ -74,11 +72,9 @@ function ReviewPage() {
             review: comments,
             tags: tag
         };
-        console.log('Review Data:', reviewData);
-        console.log('Review Data:', JSON.stringify(reviewData, null, 2));
 
         const url = `https://foodjournal20-production.up.railway.app/api/v1/post_review/create_post_review?access_token=${token}`;
-        // const url = `http://127.0.0.1:6542/api/v1/post_review/create_post_review?access_token=${token}`;
+        
         try {
             const response = await fetch(url, {
                 method: 'POST',
