@@ -56,34 +56,37 @@ describe('Home Page Tests', () => {
     });
 
     describe('Authorized user scenarios', () => {    
-        it('there should be a create post button on the navbar & routes to /new-review upon click', () => {
+        beforeEach(() => {
             cy.manualSignIn('cypress1', '1');
+        });
+        it('there should be a create post button on the navbar & routes to /new-review upon click', () => {
+             
             cy.get('.create-post-container .circle-btn').should('exist');
             cy.get('.create-post-container .circle-btn').click();
             cy.url().should('contain', '/new-review');
         });
 
         it('there should be a settings link on the navbar & routes to /settings upon click', () => {
-            cy.manualSignIn('cypress1', '1');
+             
             cy.get('.nav-bar').should('contain', 'SETTINGS');
             cy.get('.nav-bar').contains('SETTINGS').click();
             cy.url().should('contain', '/settings');
         });
 
         it('there should be a profile pic on the navbar & routes to /mypage upon click', () => {
-            cy.manualSignIn('cypress1', '1');
+             
             cy.get('.nav-bar .profile-pic').should('exist');
             cy.get('.nav-bar .profile-pic').click();
             cy.url().should('contain', '/mypage');
         });
 
         it('there should be a button on the navbar that says Log out?', () => {
-            cy.manualSignIn('cypress1', '1');
+             
             cy.get('.nav-bar .sign-in').contains('Log out?').should('exist');
         });
 
         it('there should be no link on the navbar that says Sign in?', () => {
-            cy.manualSignIn('cypress1', '1');
+             
             cy.get('.nav-bar .sign-in').contains('Sign in?').should('not.exist');
         });
     });
