@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             console.error('Error:', error);
             setIsAuthenticated(false);
-            setError(`Failed to sign in: ${error.message}`);
+            setError(`Failed to sign in. ${error.message}`);
         } finally {
             setLoading(false);
             setIsLoading(false);
