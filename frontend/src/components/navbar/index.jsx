@@ -2,17 +2,27 @@ import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../provider/AuthProvider.jsx';
 import './NavBar.css'
 import ProfilePic from '../profilePic/index.jsx';
+import defaultPicture from '../../assets/blankProfile.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function NavBar() {
     const location = useLocation();
     const { pathname } = location;
     const { isAuthenticated, user, logout } = useAuth();
+    const navigate = useNavigate();
+
     const handleLogOut = async(e) => {
         e.preventDefault();
         try {
             await logout();
         } catch(error) {
         }
+    }
+
+    const handleProfileClick = (e) => {
+        e.preventDefault();
+        // console.log(user)
+        navigate('/mypage', { state: { username: user.username, userId: user.id, profile_picture: user.profile_picture } });
     }
 
     return (
@@ -46,10 +56,10 @@ export default function NavBar() {
                     <ul>
                         {isAuthenticated ? 
                             <>
-                                <li>
+                                <li id='profile-pic'onClick={handleProfileClick}>
                                     <ProfilePic 
                                         username={user?.username} 
-                                        imageAddress={user?.profile_picture || '../../public/images/default-pfp.png'} 
+                                        imageAddress={user?.profile_picture || defaultPicture} 
                                         size={100} 
                                     />
                                 </li>

@@ -1,0 +1,81 @@
+/* Hide scrollbar for webkit browsers */
+::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+/* Show scrollbar for Firefox */
+* {
+    scrollbar-width: none; /* For Firefox */
+}
+
+.review-detail-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    border-radius: 20px;
+    background: beige; 
+    margin: 0 auto;
+    margin-top: 40px;
+    max-height: calc(80vh - 120px);
+    overflow-y: auto;
+}
+
+.review-detail-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    font-size: 18px;
+    color: #36A7F9;
+}
+
+.food-pic {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+.food-name {
+    font-size: 24px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+}
+
+.star-rating {
+    margin: 10px 0;
+    padding-left: 10px;
+}
+
+.detail-text {
+    margin: 10px 0;
+    color: black;
+    padding-left: 20px;
+}
+
+#button {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+.return{
+    cursor: pointer;
+    border-radius: 10px;
+    border: 1px solid #000000;
+    margin-top: 10px;
+    margin-right: 10px;
+    height: 40px;
+    font-size: 18px;
+    color: #36A7F9;
+    width: 30%;
+    font-weight: bold;
+  }

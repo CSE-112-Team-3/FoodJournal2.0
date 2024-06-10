@@ -56,3 +56,37 @@
         width: 70%;
     }
 }
+
+.wide-popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: beige; 
+    border-radius: 5px;
+    width: 50%;
+    position: relative;
+    transition: all 5s ease-in-out;
+    max-height: 80vh;
+    overflow: hidden;
+}
+
+.wide-popup h2 {
+    margin-top: 0;
+    color: #333;
+    color: darkgreen;
+}
+
+.wide-popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+
+.wide-popup .close:hover {
+    cursor: pointer;
+    color: #000;
+}

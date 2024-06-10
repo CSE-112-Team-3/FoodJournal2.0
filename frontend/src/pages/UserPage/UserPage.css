@@ -1,0 +1,5 @@
+#profile-section {
+    font-size: 1.5rem;
+    font-weight: bold;
+    grid-column: 1 / 3;
+}

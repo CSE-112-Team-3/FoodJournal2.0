@@ -6,14 +6,12 @@
 .post-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 40px;
   padding: 20px;
   margin-left: 220px;
+  width: 75%;
 }
 
-.container{
-  position:relative;
-}
 
 .circle-btn {
       width: 130px;
@@ -27,4 +25,20 @@
       margin-bottom: 10px;
       margin-right: 10px;
   
+}
+
+.post-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.post-link:hover {
+  background-color: #f0f0f0;
+  transition: background-color 0.3s;
+}
+
+.post-link .minimized-post {
+  margin-bottom: 15px;
 }
