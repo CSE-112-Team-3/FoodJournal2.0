@@ -70,21 +70,32 @@ export default function EditProfile() {
     }
     const handleUsernameChange = (event)=>{
         const name = event.target.value;
-        setUserName(name);
-        if (name.length < 3 || name.length > 20) {
-            setInvalidUsernameMessage('Username must be between 3 and 20 characters long');
-        }else{
+        if (!name){
             setInvalidUsernameMessage('');
+        }else{
+            if (name.length < 3 || name.length > 20) {
+                setInvalidUsernameMessage('Username must be between 3 and 20 characters long');
+                setUserName(initialState.userName);
+            }else{
+                setUserName(name);
+                setInvalidUsernameMessage('');
+            }
         }
+
     }
     const handleEmailChange = (event)=>{
         const email = event.target.value;
 
-        if (!validateEmail(email)) {
-            setInvalidEmailMessage('Invalid email address');
-        }else{
-            setEmail(email);
+        if (!email) {
             setInvalidEmailMessage('');
+            setEmail(initialState.email);
+        } else {
+            if (!validateEmail(email)) {
+                setInvalidEmailMessage('Invalid email address');
+            } else {
+                setEmail(email);
+                setInvalidEmailMessage('');
+            }
         }
     }
     const handlePasswordChange = (event)=>{
@@ -286,8 +297,7 @@ export default function EditProfile() {
                         onClick={isreadOnly? handleEditButton:handleSubmit}
                         disabled={
                             !!invalidUsernameMessage || 
-                            !!invalidEmailMessage || 
-                            !!invalidPasswordMessage}> 
+                            !!invalidEmailMessage}> 
                         {isreadOnly? 'Edit':'Save'}
                     </button>
                     {!isreadOnly && (
