@@ -15,6 +15,7 @@ import UserPage from './pages/UserPage/index.jsx';
 import MyPage from './pages/Profile/index.jsx';
 
 function App() {
+
   return (
     <div className="App">
         <Routes>
