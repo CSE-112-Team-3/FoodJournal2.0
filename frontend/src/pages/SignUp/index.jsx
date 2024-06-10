@@ -4,6 +4,7 @@ import CustomPopup from '../../components/popUp/index';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../../assets/background.jpg';
 import { Outlet, Link, useLocation } from 'react-router-dom'
+import { useAuth } from '../../provider/AuthProvider';
 
 
 function SignUpPage() {
@@ -20,6 +21,7 @@ function SignUpPage() {
   const [popupVisibility, setPopupVisibility] = useState(false);
   const [userNameErrorMessage, setUserNameErrorMessage] = useState('');
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const firstNameRef = useRef(null);
@@ -58,7 +60,7 @@ function SignUpPage() {
     setEmailValid(validateEmail(e.target.value));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const isUserNameValid = validateUserName(userName);
     const isEmailValid = validateEmail(email);
@@ -79,34 +81,11 @@ function SignUpPage() {
         email: email
       };
 
-      fetch('https://foodjournal20-production.up.railway.app/api/v1/auth/create_user', {
-          method: 'POST',
-          body: JSON.stringify(userData),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then(async (response) => {
-          if (!response.ok) {
-            const errorData = await response.json();
-            if (errorData.detail.includes('User')) {
-              setUserNameErrorMessage(errorData.detail);
-            } else if (errorData.detail.includes('Email') || errorData.detail.includes('Invalid email')) {
-              setEmailErrorMessage(errorData.detail);
-            }
-            throw new Error(errorData.detail || 'Network response was not ok');
-          }
-          setShowSuccessMessage(true);
-          setPopupVisibility(true);
-          setTimeout(() => {
-            setPopupVisibility(false);
-            setShowSuccessMessage(false);
-            navigate('/signin');
-          }, 3000);
-        })
-        .catch((error) => {
-          console.error('Error creating user:', error);
-        });
+        try {
+          await signup(userData, {setPopupVisibility, setShowSuccessMessage});
+        } catch(error) {
+          console.log('sign up failed: ', error);
+        }
       }
     };
 
