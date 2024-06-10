@@ -30,7 +30,7 @@ export default function NavBar() {
         <div className="nav-container">
             <nav className='nav-bar jockey-one-regular'>
                 <div className='logo'>
-                    <img src="../../public/images/nav-logo.png" alt='Food Journal Logo' />
+                    <img src={logo} alt='Food Journal Logo' />
                     <p>My Food Journal</p>
                 </div>
                 <ul>
