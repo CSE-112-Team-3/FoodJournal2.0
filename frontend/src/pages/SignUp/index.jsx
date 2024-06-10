@@ -128,7 +128,9 @@ function SignUpPage() {
                 onChange={handleUserNameChange}
                 required
               />
+
               {!userNameValid && <p>Username must be between 3 to 20 characters long.</p>}
+
               {userNameErrorMessage && <p className="error-message">{userNameErrorMessage}</p>}
               <label htmlFor="email">Email</label>
               <input
@@ -138,7 +140,7 @@ function SignUpPage() {
                 onChange={handleEmailChange}
                 required
               />
-              {!emailValid && <p>Invalid email address</p>}
+              {!emailValid && <p className='error-message'>Invalid email address</p>}
               {emailErrorMessage && <p className="error-message">{emailErrorMessage}</p>}
               <label htmlFor="password">Password</label>
               <input
@@ -156,7 +158,7 @@ function SignUpPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
-              {!passwordMatch && <p>Passwords do not match</p>}
+              {!passwordMatch && <p className='error-message'>Passwords do not match</p>}
               <button className="submit" type="submit">Sign Up</button>
             </div>
           </div>
