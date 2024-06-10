@@ -189,7 +189,7 @@ export default function EditProfile() {
         form.reset();
     }
 
-    return (
+   return (
         <div className="profilePage">
             <div className="text-center">
                 <ProfilePic 
@@ -209,8 +209,9 @@ export default function EditProfile() {
 
             <form className="form" id="registrationForm" onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="first_name"><h4>First name: {firstName}</h4></label>
+                    <label htmlFor="first_name"><h4>First name: </h4></label>
                     <input 
+                        defaultValue={firstName}
                         onChange={handleFirstNameChange} 
                         type="text" 
                         className="form-control" 
@@ -222,8 +223,9 @@ export default function EditProfile() {
                     <output className="output">{''}</output>
                 </div>
                 <div>
-                    <label htmlFor="last_name"><h4>Last name: {lastName}</h4></label>
+                    <label htmlFor="last_name"><h4>Last name: </h4></label>
                     <input 
+                        defaultValue={lastName}
                         onChange={handleLastNameChange} 
                         type="text" 
                         className="form-control" 
@@ -235,8 +237,9 @@ export default function EditProfile() {
                     <output className="output">{''}</output>
                 </div>
                 <div>
-                    <label htmlFor="username"><h4>Username: {userName}</h4></label>
+                    <label htmlFor="username"><h4>Username: </h4></label>
                     <input 
+                        defaultValue={userName}
                         onChange={handleUsernameChange} 
                         type="text" 
                         className="form-control" 
@@ -251,8 +254,9 @@ export default function EditProfile() {
                 </div>
 
                 <div>
-                    <label htmlFor="email"><h4>Email: {email}</h4></label>
+                    <label htmlFor="email"><h4>Email:</h4></label>
                     <input 
+                        defaultValue= {email}
                         onChange={handleEmailChange} 
                         type="email" 
                         className="form-control" 
