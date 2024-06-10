@@ -1,7 +1,4 @@
 # Team 3
-
-
-# Team 3
 TA: Jason Au
 
 ## Team Lead: Kim Lim
