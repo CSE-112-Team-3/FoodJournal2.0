@@ -26,6 +26,11 @@ jobs:
           cd frontend
           npm install
 
+      - name: Install Cypress
+        run: |
+          cd frontend
+          npx cypress install
+
       - name: Start application
         run: |
           cd frontend
