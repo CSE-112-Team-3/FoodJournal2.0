@@ -29,6 +29,37 @@ export const AuthProvider = ({ children }) => {
         }
     }, [isAuthenticated, accessToken]);
 
+    const signup = async(userData, {setPopupVisibility, setShowSuccessMessage}) => {
+        fetch('https://foodjournal20-production.up.railway.app/api/v1/auth/create_user', {
+            method: 'POST',
+            body: JSON.stringify(userData),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            })
+            .then(async (response) => {
+            if (!response.ok) {
+                const errorData = await response.json();
+                if (errorData.detail.includes('User')) {
+                setUserNameErrorMessage(errorData.detail);
+                } else if (errorData.detail.includes('Email') || errorData.detail.includes('Invalid email')) {
+                setEmailErrorMessage(errorData.detail);
+                }
+                throw new Error(errorData.detail || 'Network response was not ok');
+            }
+            setShowSuccessMessage(true);
+            setPopupVisibility(true);
+            setTimeout(() => {
+                setPopupVisibility(false);
+                setShowSuccessMessage(false);
+                navigate('/signin');
+            }, 3000);
+            })
+            .catch((error) => {
+            console.error('Error creating user:', error);
+            });
+    };
+
     const signin = async(username, password, {setError, setLoading}) => {
         try {
             const response = await fetch(`${base_url}/api/v1/auth/login`, {
@@ -117,7 +148,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, signin, accessToken, user, getUser, isLoading, setIsLoading, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, signin, signup, accessToken, user, getUser, isLoading, setIsLoading, logout }}>
             {children}
         </AuthContext.Provider>
     );
