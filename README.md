@@ -1,5 +1,8 @@
 # FoodJournal2.0
 
+## Access the Web Page
+- Link: https://foodjournal2.netlify.app/
+
 ## About
 - Create and share food journal entries
 ![Create food journal post](./images_readme/create-post.png)
