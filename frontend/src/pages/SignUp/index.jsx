@@ -39,8 +39,7 @@ function SignUpPage() {
   }, []);
 
   const validateUserName = (userName) => {
-    const userNameRegex = /^(?=.*\d)[a-zA-Z\d]{5,}$/;
-    return userNameRegex.test(userName);
+    return userName.length >= 3 && userName.length <= 20;
   };
 
   const validateEmail = (email) => {
@@ -150,7 +149,7 @@ function SignUpPage() {
                 onChange={handleUserNameChange}
                 required
               />
-              {!userNameValid && <p>Username must be at least 5 characters long and contain at least 1 number.</p>}
+              {!userNameValid && <p>Username must be between 3 to 20 characters long.</p>}
               {userNameErrorMessage && <p className="error-message">{userNameErrorMessage}</p>}
               <label htmlFor="email">Email</label>
               <input

@@ -16,9 +16,9 @@ export default function EditProfile() {
 
     const [isreadOnly, setIsReadOnly] = useState(true);
     const [verifyPassword, comfirmPassword] = useState('');
-    const [invalidUsername, printUsernameErrorMessage] = useState('');
-    const [invalidEmail, printEmailErrorMessage] = useState('');
-    const [invalidPassword, printPasswordErrorMessage] = useState('');
+    const [invalidUsernameMessage, setInvalidUsernameMessage] = useState('');
+    const [invalidEmailMessage, setInvalidEmailMessage] = useState('');
+    const [invalidPasswordMessage, setInvalidPasswordMessage] = useState('');
 
     const baseUrl = 'https://foodjournal20-production.up.railway.app';
     const { user } = useAuth();
@@ -69,10 +69,23 @@ export default function EditProfile() {
         setLastName(event.target.value);
     }
     const handleUsernameChange = (event)=>{
-        setUserName(event.target.value);
+        const name = event.target.value;
+        setUserName(name);
+        if (name.length < 3 || name.length > 20) {
+            setInvalidUsernameMessage('Username must be between 3 and 20 characters long');
+        }else{
+            setInvalidUsernameMessage('');
+        }
     }
     const handleEmailChange = (event)=>{
-        setEmail(event.target.value);
+        const email = event.target.value;
+
+        if (!validateEmail(email)) {
+            setInvalidEmailMessage('Invalid email address');
+        }else{
+            setEmail(email);
+            setInvalidEmailMessage('');
+        }
     }
     const handlePasswordChange = (event)=>{
         setPassword(event.target.value);
@@ -84,25 +97,36 @@ export default function EditProfile() {
         event.preventDefault();
         setIsReadOnly(false);
     }
-    const isValidEmail = (email)=>{
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
+
+    const handleCancelButton = (event)=>{
+        event.preventDefault();
+        setInvalidEmailMessage('');
+        setInvalidPasswordMessage('');
+        setInvalidUsernameMessage('');
+        setIsReadOnly(true);
+        setFirstName(initialState.firstName);
+        setLastName(initialState.lastName);
+        setUserName(initialState.userName);
+        setEmail(initialState.email);
+        setPassword('');
+        const form = document.querySelector('.form');
+        form.reset();
     }
+    const validateEmail = (email)=> /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
     const handleSubmit = async (event)=>{
         event.preventDefault();
-        printPasswordErrorMessage('');
-        printEmailErrorMessage('');
-        printUsernameErrorMessage('');
+        setInvalidEmailMessage('');
+        setInvalidPasswordMessage('');
+        setInvalidUsernameMessage('');
 
         if(newPassword !== verifyPassword){
-            printPasswordErrorMessage('Passwords do not match');
+            setInvalidPasswordMessage('Passwords do not match');
             return;
         }
 
-        if(!isValidEmail(email)){
-            console.log(email);
-            printEmailErrorMessage('Invalid email address');
+        if(!validateEmail(email)){
+            setInvalidEmailMessage('Invalid email address');
             return;
         }
         
@@ -110,8 +134,8 @@ export default function EditProfile() {
 
         const accesToken = Cookies.get('accessToken');
         if(accesToken){
-            console.log("image is");
-            console.log(profileImage);
+            // console.log("image is");
+            // console.log(profileImage);
             const updateUrl = `${baseUrl}/api/v1/auth/update_user?accessToken=${accesToken}`;
             const updatedData = {};
             if (firstName !== initialState.firstName) updatedData.first_name = firstName;
@@ -128,8 +152,8 @@ export default function EditProfile() {
                 email: email,
                 profileImage: profileImage
             });
-            console.log(initialState);
-            console.log(updatedData);
+            // console.log(initialState);
+            // console.log(updatedData);
 
             try {
                 const response = await fetch(updateUrl, {
@@ -188,7 +212,7 @@ export default function EditProfile() {
                         placeholder="first name" 
                         readOnly={isreadOnly}
                     />
-                    <p>{''}</p>
+                    <output className="output">{''}</output>
                 </div>
                 <div>
                     <label htmlFor="last_name"><h4>Last name: {lastName}</h4></label>
@@ -201,7 +225,7 @@ export default function EditProfile() {
                         placeholder="last name" 
                         readOnly={isreadOnly}
                     />
-                    <p>{''}</p>
+                    <output className="output">{''}</output>
                 </div>
                 <div>
                     <label htmlFor="username"><h4>Username: {userName}</h4></label>
@@ -210,13 +234,13 @@ export default function EditProfile() {
                         type="text" 
                         className="form-control" 
                         name="username" 
-                        id="phone" 
+                        id="username" 
                         placeholder="your username"
                         maxLength={20}
                         minLength={3} 
                         readOnly={isreadOnly}
                     />
-                    {/* <p>{invalidUsername}</p> */}
+                    <output>{invalidUsernameMessage}</output>
                 </div>
 
                 <div>
@@ -230,7 +254,7 @@ export default function EditProfile() {
                         placeholder="you@email.com" 
                         readOnly={isreadOnly}
                     />
-                    <p>{invalidEmail}</p>
+                    <output className="output">{invalidEmailMessage}</output>
                 </div>
 
                 <div>
@@ -244,7 +268,7 @@ export default function EditProfile() {
                         placeholder="password" 
                         readOnly={isreadOnly}
                     />
-                    <p>{''}</p>
+                    <output className="output">{''}</output>
                 </div>
                 <div>
                     <label htmlFor="password2"><h4>Verify</h4></label>
@@ -257,11 +281,24 @@ export default function EditProfile() {
                         placeholder="verify password" 
                         readOnly={isreadOnly}
                     />
-                    <p>{invalidPassword}</p>
+                    <output className="output">{invalidPasswordMessage}</output>
                 </div>
                 <div>
                     <br/>
-                    <button className="submitButton" onClick={isreadOnly? handleEditButton:handleSubmit}> {isreadOnly? 'Edit':'Save'}</button>
+                    <button 
+                        className="submitButton actionButton" 
+                        onClick={isreadOnly? handleEditButton:handleSubmit}
+                        disabled={
+                            !!invalidUsernameMessage || 
+                            !!invalidEmailMessage || 
+                            !!invalidPasswordMessage}> 
+                        {isreadOnly? 'Edit':'Save'}
+                    </button>
+                    {!isreadOnly && (
+                        <button className="actionButton" onClick={handleCancelButton}>
+                            Cancel
+                        </button>
+                    )}
                 </div>
             </form>
         </div>
