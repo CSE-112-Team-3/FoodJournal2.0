@@ -134,8 +134,6 @@ export default function EditProfile() {
 
         const accesToken = Cookies.get('accessToken');
         if(accesToken){
-            // console.log("image is");
-            // console.log(profileImage);
             const updateUrl = `${baseUrl}/api/v1/auth/update_user?accessToken=${accesToken}`;
             const updatedData = {};
             if (firstName !== initialState.firstName) updatedData.first_name = firstName;
@@ -152,8 +150,6 @@ export default function EditProfile() {
                 email: email,
                 profileImage: profileImage
             });
-            // console.log(initialState);
-            // console.log(updatedData);
 
             try {
                 const response = await fetch(updateUrl, {
