@@ -108,6 +108,7 @@ body{
     color: black;
 
     white-space: normal; 
+    padding-bottom: 100px;
     max-width: 100%;
 }
 
@@ -184,3 +185,4 @@ body{
 .searchButton:hover {
     background-color: #2590d8; 
 }
+

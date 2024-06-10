@@ -4,6 +4,7 @@ import CustomPopup from '../../components/popUp/index';
 import { useNavigate } from 'react-router-dom';
 import backgroundImage from '../../assets/background.jpg';
 import { Outlet, Link, useLocation } from 'react-router-dom'
+import { useAuth } from '../../provider/AuthProvider';
 
 
 function SignUpPage() {
@@ -20,6 +21,7 @@ function SignUpPage() {
   const [popupVisibility, setPopupVisibility] = useState(false);
   const [userNameErrorMessage, setUserNameErrorMessage] = useState('');
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const firstNameRef = useRef(null);
@@ -39,8 +41,7 @@ function SignUpPage() {
   }, []);
 
   const validateUserName = (userName) => {
-    const userNameRegex = /^(?=.*\d)[a-zA-Z\d]{5,}$/;
-    return userNameRegex.test(userName);
+    return userName.length >= 3 && userName.length <= 20;
   };
 
   const validateEmail = (email) => {
@@ -58,7 +59,7 @@ function SignUpPage() {
     setEmailValid(validateEmail(e.target.value));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const isUserNameValid = validateUserName(userName);
     const isEmailValid = validateEmail(email);
@@ -79,34 +80,11 @@ function SignUpPage() {
         email: email
       };
 
-      fetch('https://foodjournal20-production.up.railway.app/api/v1/auth/create_user', {
-          method: 'POST',
-          body: JSON.stringify(userData),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then(async (response) => {
-          if (!response.ok) {
-            const errorData = await response.json();
-            if (errorData.detail.includes('User')) {
-              setUserNameErrorMessage(errorData.detail);
-            } else if (errorData.detail.includes('Email') || errorData.detail.includes('Invalid email')) {
-              setEmailErrorMessage(errorData.detail);
-            }
-            throw new Error(errorData.detail || 'Network response was not ok');
-          }
-          setShowSuccessMessage(true);
-          setPopupVisibility(true);
-          setTimeout(() => {
-            setPopupVisibility(false);
-            setShowSuccessMessage(false);
-            navigate('/signin');
-          }, 3000);
-        })
-        .catch((error) => {
-          console.error('Error creating user:', error);
-        });
+        try {
+          await signup(userData, {setPopupVisibility, setShowSuccessMessage});
+        } catch(error) {
+          console.log('sign up failed: ', error);
+        }
       }
     };
 
@@ -150,7 +128,9 @@ function SignUpPage() {
                 onChange={handleUserNameChange}
                 required
               />
-              {!userNameValid && <p>Username must be at least 5 characters long and contain at least 1 number.</p>}
+
+              {!userNameValid && <p>Username must be between 3 to 20 characters long.</p>}
+
               {userNameErrorMessage && <p className="error-message">{userNameErrorMessage}</p>}
               <label htmlFor="email">Email</label>
               <input
@@ -160,7 +140,7 @@ function SignUpPage() {
                 onChange={handleEmailChange}
                 required
               />
-              {!emailValid && <p>Invalid email address</p>}
+              {!emailValid && <p className='error-message'>Invalid email address</p>}
               {emailErrorMessage && <p className="error-message">{emailErrorMessage}</p>}
               <label htmlFor="password">Password</label>
               <input
@@ -178,7 +158,7 @@ function SignUpPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
-              {!passwordMatch && <p>Passwords do not match</p>}
+              {!passwordMatch && <p className='error-message'>Passwords do not match</p>}
               <button className="submit" type="submit">Sign Up</button>
             </div>
           </div>
