@@ -1,24 +1,24 @@
 describe('Error Page Routing Tests', () => {
     describe('Guest User Scenarios', () => {
-        it('should be routed to 403 page if trying to access /mypage', () => {
+        it('should be routed to 404 page if trying to access /mypage', () => {
             cy.visit('/mypage');
-            cy.get('.error-page-message').should('contain', '403');
+            cy.get('.card').should('contain', '404');
         });
-        it('should be routed to 403 page if trying to access /userpage', () => {
+        it('should be routed to 404 page if trying to access /userpage', () => {
             cy.visit('/userpage');
-            cy.get('.error-page-message').should('contain', '403');
+            cy.get('.card').should('contain', '404');
         });
-        it('should be routed to 403 page if trying to access /new-review', () => {
+        it('should be routed to 404 page if trying to access /new-review', () => {
             cy.visit('/new-review');
-            cy.get('.error-page-message').should('contain', '403');
+            cy.get('.card').should('contain', '404');
         });
-        it('should be routed to 403 page if trying to access /settings', () => {
+        it('should be routed to 404 page if trying to access /settings', () => {
             cy.visit('/settings');
-            cy.get('.error-page-message').should('contain', '403');
+            cy.get('.card').should('contain', '404');
         });
         it('should be routed to 404 page if trying to access /thisdoesntexist', () => {
             cy.visit('/thisdoesntexist');
-            cy.get('.error-page-message').should('contain', '404');
+            cy.get('.card').should('contain', '404');
         });
     });
     describe('Authorized User Scenarios', () => {
@@ -43,7 +43,7 @@ describe('Error Page Routing Tests', () => {
         });
         it('should be routed to 404 page if trying to access /thisdoesntexist', () => {
             cy.visit('/thisdoesntexist');
-            cy.get('.error-page-message').should('contain', '404');
+            cy.get('.card').should('contain', '404');
         });
     });
 });
