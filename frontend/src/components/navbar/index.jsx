@@ -4,6 +4,7 @@ import './NavBar.css'
 import ProfilePic from '../profilePic/index.jsx';
 import defaultPicture from '../../assets/blankProfile.png';
 import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/nav-logo.png';
 
 export default function NavBar() {
     const location = useLocation();
