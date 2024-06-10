@@ -25,7 +25,8 @@ export default function MyPage() {
         profilePic: user.profile_picture
     };
 
-    const isCurrentUser = user.id === initialState.userId;
+
+    const isCurrentUser = user ? user.id === initialState.userId : false;
 
     const handleCreateClick = () => {
         navigate('/new-review')

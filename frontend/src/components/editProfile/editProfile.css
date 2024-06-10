@@ -22,7 +22,7 @@
     font-optical-sizing: auto;
     font-style: normal;
 }
-.submitButton{
+.actionButton{
     align-items: flex-start;
     background-color: rgb(92, 184, 92);
     border-bottom-color: rgb(76, 174, 76);
@@ -66,6 +66,12 @@
     font-family: "Reddit Sans Condensed", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
+}
+
+.submitButton[disabled] {
+    /* Your disabled button styles here */
+    opacity: 0.5; /* Example: reduce opacity to visually indicate disabled state */
+    cursor: not-allowed; /* Example: Change cursor to not-allowed */
 }
 .resetButton{
     align-items: flex-start;
@@ -132,9 +138,11 @@
 label{
     white-space: nowrap;
 }
-p{
-    color:blue;
+output{
+    color:red;
     white-space: nowrap;
+    height: 20px;
+    display: block;
 }
 
 input[type=file] {
