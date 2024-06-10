@@ -9,7 +9,7 @@ CREATE TABLE if not exists fd_users (
   username varchar(255) not null,
   password varchar(255) not null,
   email varchar(255),
-  profile_picture blob,
+  profile_picture longblob,
   created_at timestamp default current_timestamp
 );
 
