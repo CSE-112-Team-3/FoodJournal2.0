@@ -4,6 +4,7 @@ import './NavBar.css'
 import ProfilePic from '../profilePic/index.jsx';
 import defaultPicture from '../../assets/blankProfile.png';
 import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/nav-logo.png';
 
 export default function NavBar() {
     const location = useLocation();
@@ -29,7 +30,7 @@ export default function NavBar() {
         <div className="nav-container">
             <nav className='nav-bar jockey-one-regular'>
                 <div className='logo'>
-                    <img src="../../public/images/nav-logo.png" alt='Food Journal Logo' />
+                <img src={logo} alt='Food Journal Logo' />
                     <p>My Food Journal</p>
                 </div>
                 <ul>
