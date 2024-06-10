@@ -48,7 +48,7 @@ export default function NavBar() {
                     </li>
                     {isAuthenticated && (
                         <li className={pathname.includes('settings') ? 'selected-page' : ''}>
-                            <Link className={pathname.includes('settings') ? 'selected-page' : ''} to='/settings'>SETTINGS</Link>
+                            <Link className={pathname.includes('settings') ? 'selected-page' : ''} to='/settings'>PROFILE</Link>
                         </li>
                     )}
                 </ul>

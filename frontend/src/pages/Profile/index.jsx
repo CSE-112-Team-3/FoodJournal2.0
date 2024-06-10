@@ -29,9 +29,6 @@ export default function MyPage() {
     return (
         <div>
             <UserPage initialState={initialState} />
-            {isCurrentUser && (
-                <button className='create-button' onClick={handleCreateClick}>Create Post</button>
-            )}
         </div>
     );
 }
