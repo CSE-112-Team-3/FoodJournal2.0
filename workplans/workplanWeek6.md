@@ -21,7 +21,7 @@ MSCW- must, should, could, won't
 | --------|-------------------- | ----------- |------|
 |   1  | Frontend: Login Page   | Adhithi     | Must |
 |   1  | Backend: Login Page    | Kim, Raul, Marc, Ethan| Must |
-|   1  | Frontend: Sign Up Page | Adhithi, Yubing| Must |
+|   1  | Frontend: Sign Up Page | Yubing      | Must |
 |   1  | Backend: Sign Up Page  | Kim         | Must |
 |   1  | Build user schema      | Kim         | Must |
 |   1  | Home Page/ Nav Bar     | Cecilia     | Should |
