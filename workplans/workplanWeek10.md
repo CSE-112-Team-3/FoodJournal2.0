@@ -20,7 +20,7 @@ MSCW- must, should, could, won't
 | --------|-------------------- | ----------- |------|
 |   1  | Frontend: Login Page   | Adhithi     | Must |
 |   1  | Backend: Login Page    | Kim, Raul, Marc, Ethan| Must |
-|   1  | Frontend: Sign Up Page | Adhithi     | Must |
+|   1  | Frontend: Sign Up Page | Yubing      | Must |
 |   1  | Backend: Sign Up Page  | Kim         | Must |
 |   1  | Build user schema      | Kim         | Must |
 |   1  | Home Page/ Nav Bar     | Cecilia     | Should |
@@ -45,13 +45,14 @@ MSCW- must, should, could, won't
 |---------|-------------------- | ----------- | ---- |
 |2| Redoing Sign Up Page | Adhithi     | Must |
 |2| Updating frontend documentation | Adhithi | Could |
-|2| Form for user to make a new post | Cecilia | Must |
+|2| Form for user to make a new post | Yubing | Must |
 |2| Backend for creating new post | Raul and Kim | Must |
 |2| Backend: create new table for post info | Marc | Must |
 |2| Adding get posts query and endpoint | Ethan | Must |
 |2| Update backend documentation | Ethan | Could |
 |2| Post Review Setup | Ethan | Must |
 |2| Integrating API calls into sign up/login pages | Adhithi| Must |
+|2| Display minimized post on home page | Cecilia | Must |
 
 # Week 8
 
@@ -71,7 +72,7 @@ MSCW- must, should, could, won't
 | Sprint #|           Issue     | Assignee    | MSCW |
 |---------|-------------------- | ----------- | ---- |
 |3| Finish profile page, frontend task | Yuhao | Must |
-|3| Finish create new post page, frontend task | Summer | Must |
+|3| Finish create new post page, frontend task | Yubing | Must |
 |3| Finish integrating APIs, frontend task | Adhithi | Must |
 |3| Finish home page with posts, frontend task | Cecilia | Must |
 |3| Setup for updating a new user | Kim and Satya | Must |
@@ -96,7 +97,7 @@ MSCW- must, should, could, won't
 | Sprint #|           Issue     | Assignee    | MSCW |
 | ------- |-------------------- | ----------- | ---- |
 |4| Add edit and save button and fix nav bar in profile page | Yuhao | Must |
-|4| Create a recipe page | Summer | Could |
+|4| Create a recipe page | Yubing | Could |
 |4| Fix sign up page, finish discover page | Adhithi | Could |
 |4| Implement user authentication | Cecilia | Must |
 |4| Develop API to query user information | Kim and Satya | Must |
@@ -130,6 +131,7 @@ MSCW- must, should, could, won't
 |5|Create user page, Utilize get post by user id | Raul, Yuhao| Must|
 |5|Implement update and delete post in user page| Adithi | Must |
 |5|Finish up the Recipe page, Implement external API | Adithi | Must |
-|5|Finish up the Create post functionality | Summer, Adithi | Must |
+|5|Finish up the Create post functionality | Yubing, Adithi | Must |
 |5|Create unit tests| Ethan, Satya | Must |
+|5|Implement display post details functionality | Yubing | Must |
    
