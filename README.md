@@ -7,10 +7,10 @@ No installation required! Food Journal is a web app. Simply navigate to our webs
 - https://foodjournal2.netlify.app/
 
 ## Usage
-- Explore: Browse the homepage to see posts from other food enthusiasts.
-- Search Recipes: Visit the recipe page to search for new recipes and get personalized recommendations.
-- Join the Community: Sign up and sign in to interact with posts and other users.
-- User Profiles: Visit other users' pages to see all their reviews. Click on your profile picture in the nav bar to access your own page, where you can create new reviews or manage existing ones.
+- **Explore:** Browse the homepage to see posts from other food enthusiasts.
+- **Search Recipes:** Visit the recipe page to search for new recipes and get personalized recommendations.
+- **Join the Community:** Sign up and sign in to interact with posts and other users.
+- **User Profiles:** Visit other users' pages to see all their reviews. Click on your profile picture in the nav bar to access your own page, where you can create new reviews or manage existing ones.
 
 ## Features
 - ### Create and share food journal entries
@@ -23,7 +23,9 @@ No installation required! Food Journal is a web app. Simply navigate to our webs
 ![Profile customization](./images_readme/profile_settings.png)
 
 ## Contributing
-We welcome contributions! Please refer to our detailed contributing guide for instructions on how to get involved in developing Food Journal further.
+Want to further develop our app? Please follow these links:
+- [Backend](./backend/README.md)
+- [Frontend](./frontend/README.md)
 
 ## Possible Future Development
 Here are some exciting features suggestions you might add:
@@ -36,5 +38,4 @@ Here are some exciting features suggestions you might add:
 Join Us!
 Whether you're a seasoned chef, a home cook, or someone who simply loves food, Food Journal is the perfect place for you. Explore, share, and discover new culinary delights every day. Happy journaling!
 
-### Our Development [Team](teamPage.md)
-
+### Want to learn about our esteemed Development Team? [Click me](teamPage.md)
