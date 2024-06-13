@@ -20,11 +20,12 @@
 |-------------------- | ----------- |
 | Redoing Sign Up Page | Adhithi    |
 | Updating frontend documentation | Adhithi |
-| Form for user to make a new post | Cecilia |
+| Form for user to make a new post | Yubing |
 | Backend for creating new post | Raul and Kim |
 | Backend: create new table for post info | Marc |
 | Adding get posts query and endpoint | Ethan |
 | Update backend documentation | Ethan |
 | Post Review Setup | Ethan |
 | Integrating API calls into sign up/login pages | Adhithi|
+| Display minimized post on home page | Cecilia |
 

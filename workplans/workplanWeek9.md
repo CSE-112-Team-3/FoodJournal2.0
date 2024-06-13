@@ -18,7 +18,7 @@
 |           Issue     | Assignee    |
 |-------------------- | ----------- |
 |  update profile page with edit and save button, fix nav bar in relation to profile page | Yuhao    |
-| recipes page | Summer |
+| recipes page | Yubing |
 | fix sign up page, finish discover page | Adhithi |
 | user authentication, beige background | Cecilia |
 | backend for updating profile picture | Kim and Satya |

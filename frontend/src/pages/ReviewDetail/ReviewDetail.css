@@ -79,3 +79,9 @@
     width: 30%;
     font-weight: bold;
   }
+
+  .detail-text {
+    white-space: pre-wrap;
+    overflow-wrap: break-word; /* Ensure long text wraps */
+    word-break: break-word; /* Ensure long text wraps */
+  }

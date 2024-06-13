@@ -3,11 +3,15 @@ import { useAuth } from '../../provider/AuthProvider.jsx';
 import './NavBar.css'
 import ProfilePic from '../profilePic/index.jsx';
 import defaultPicture from '../../assets/blankProfile.png';
+import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/nav-logo.png';
 
 export default function NavBar() {
     const location = useLocation();
     const { pathname } = location;
     const { isAuthenticated, user, logout } = useAuth();
+    const navigate = useNavigate();
+
     const handleLogOut = async(e) => {
         e.preventDefault();
         try {
@@ -16,11 +20,17 @@ export default function NavBar() {
         }
     }
 
+    const handleProfileClick = (e) => {
+        e.preventDefault();
+        // console.log(user)
+        navigate('/mypage', { state: { username: user.username, userId: user.id, profile_picture: user.profile_picture } });
+    }
+
     return (
         <div className="nav-container">
             <nav className='nav-bar jockey-one-regular'>
                 <div className='logo'>
-                    <img src="../../public/images/nav-logo.png" alt='Food Journal Logo' />
+                    <img src={logo} alt='Food Journal Logo' />
                     <p>My Food Journal</p>
                 </div>
                 <ul>
@@ -39,7 +49,7 @@ export default function NavBar() {
                     </li>
                     {isAuthenticated && (
                         <li className={pathname.includes('settings') ? 'selected-page' : ''}>
-                            <Link className={pathname.includes('settings') ? 'selected-page' : ''} to='/settings'>SETTINGS</Link>
+                            <Link className={pathname.includes('settings') ? 'selected-page' : ''} to='/settings'>PROFILE</Link>
                         </li>
                     )}
                 </ul>
@@ -47,7 +57,7 @@ export default function NavBar() {
                     <ul>
                         {isAuthenticated ? 
                             <>
-                                <li>
+                                <li id='profile-pic'onClick={handleProfileClick}>
                                     <ProfilePic 
                                         username={user?.username} 
                                         imageAddress={user?.profile_picture || defaultPicture} 

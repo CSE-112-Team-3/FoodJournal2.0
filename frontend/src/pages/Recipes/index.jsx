@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Recipes.css';
 import NavBar from '../../components/navbar';
 import shallotPastaImage from '../../assets/shallotPasta.png';
@@ -8,9 +8,47 @@ export default function Recipes() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [pastaBank, setPastaBank] = useState([]);
+  const [pastaOfTheWeek, setPastaOfTheWeek] = useState();
 
-  const applicationId = 'bb206c81';
-  const applicationKey = '77d012b2a2ae30af566e9bdc7434331b';
+  const applicationKey =  import.meta.env.VITE_APP_EDAMAM_API_KEY;
+  const applicationId =  import.meta.env.VITE_APP_EDAMAM_API_ID;
+
+  useEffect(() => {
+    const getPasta = async() => {
+      setLoading(true);
+      setError(null);
+      const url = `https://api.edamam.com/search?q=pasta&app_id=${applicationId}&app_key=${applicationKey}`;
+  
+      try {
+        const response = await fetch(url);
+  
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.statusText}`);
+        }
+  
+        const data = await response.json();
+        setPastaBank(data.hits);
+      } catch (err) {
+        console.log(`Failed to fetch recipes. Error: ${err}`);
+      } finally {
+        setLoading(false);
+      }
+    }
+    getPasta();
+  }, [applicationId, applicationKey]);
+
+  useEffect(() => {
+    const selectPastaOfTheWeek = () => {
+      if (pastaBank.length > 0) {
+        const randomPasta = pastaBank[Math.floor(Math.random() * pastaBank.length)];
+        setPastaOfTheWeek(randomPasta);
+      }
+    };
+
+    selectPastaOfTheWeek();
+    console.log(pastaOfTheWeek);
+  }, [pastaBank]);
 
   const searchRecipes = async (e) => {
     e.preventDefault();
@@ -43,18 +81,24 @@ export default function Recipes() {
       <NavBar />
       <div className="recipe-post-container">
         <div className="recipe-of-the-week reddit-sans-condensed">
-          <h2>Recipe of the week:</h2>
+          <h2>Recommended Pasta Recipe:</h2>
           <div className="recipe-card">
-            <img className="recipe-image-placeholder" src={shallotPastaImage} alt="Caramelized Shallot Pasta" />
-            <div className="recipe-info">
-              <h3 className="shallotPastaText">
-                <a href="https://cooking.nytimes.com/recipes/1020830-caramelized-shallot-pasta?algo=cooking_search_relevance_metric_ios_and_web&fellback=false&imp_id=5159509269013095&req_id=7855108512283556&surface=cooking-search-web&variant=0_relevance_reranking" target="_blank" rel="noopener noreferrer">
-                  Caramelized Shallot Pasta
-                </a>
-              </h3>
-              <h4> Cook Time: 40 minutes</h4>
-              <p className="shallotPasta">This pasta is all about the shallots, cooked down in a bath of olive oil to a jammy, caramelized paste. Tomato paste is there for tanginess, and anchovies for saltiness, but they serve more as background flavors to the sweetness of the shallot. This recipe makes enough caramelized shallot mixture for a double batch of pasta, or simply keep it refrigerated to spoon over fried eggs, or to serve underneath crispy chicken thighs or over roasted root vegetables like carrots or sweet potatoes.</p>
-            </div>
+            { pastaOfTheWeek ? (
+              <>
+                <img className="recipe-image-placeholder" src={pastaOfTheWeek.recipe.image} alt={pastaOfTheWeek.recipe.label} />
+                <div className="recipe-info">
+                  <h3 className="shallotPastaText">
+                    {pastaOfTheWeek.recipe.label}
+                  </h3>
+                  <p className="shallotPasta">Check out this pasta dish! If you don't like what we have to offer, feel free to refresh the page for a new pasta dish!</p>
+                  <a href={pastaOfTheWeek.recipe.url}>
+                    View Recipe
+                  </a>
+                </div>              
+              </>
+            ) : <p>...Loading</p>
+            }
+
           </div>
         </div>
         <div className="recipeSearch reddit-sans-condensed">

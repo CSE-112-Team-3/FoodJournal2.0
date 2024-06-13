@@ -18,7 +18,7 @@
 |           Issue     | Assignee    |
 |-------------------- | ----------- |
 | Finish profile page, frontend task | Yuhao    |
-| Finish create new post page, frontend task | Summer |
+| Finish create new post page, frontend task | Yubing |
 | Finish integrating APIs, frontend task | Adhithi |
 | Finish home page with posts, frontend task | Cecilia |
 | Setup for updating a new user | Kim and Satya |
