@@ -30,8 +30,4 @@ jobs:
           pip install -r backend/requirements.txt
           pip install pylint pytest
           pylint $(git ls-files '*.py')
-<<<<<<< HEAD
           pytest
-=======
-          pytest
->>>>>>> 26734fe5130f21125e73dac80e88e6dd87284c66
