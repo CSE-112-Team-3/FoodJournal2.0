@@ -1,29 +1,37 @@
 .home-container {
   display: flex;
   flex-direction: row;
+  margin: 0 auto;
 }
 
 .post-container {
-  display: grid;
+/*  display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 40px;
   padding: 20px;
   margin-left: 220px;
-  width: 75%;
+  width: 75%; */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 40px;
 }
 
 
 .circle-btn {
-  width: 130px;
-  height: 50px;
-  border-radius: 5%;
-  background-color: #36A7F9;
-  border: none;
-  color: white;
-  font-size: 20px;
-  text-align: center;
-  margin-bottom: 10px;
-  margin-right: 10px;
+      width: 130px;
+      height: 50px;
+      border-radius: 5%;
+      background-color: #36A7F9;
+      border: none;
+      color: white;
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 10px;
+      margin-right: 10px;
   
 }
 
@@ -32,16 +40,6 @@
   color: inherit;
   cursor: pointer;
   display: inline-block;
-  width:100%;
-  max-width: 450px;
-}
-
-@media screen and (max-width: 1024px) { 
-  .post-container {
-    grid-template-columns: 1fr;
-    place-items: center;
-  }
-  
 }
 
 .post-link:hover {
