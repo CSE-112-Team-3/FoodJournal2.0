@@ -1,15 +1,23 @@
 .home-container {
   display: flex;
   flex-direction: row;
+  margin: 0 auto;
 }
 
 .post-container {
-  display: grid;
+/*  display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 40px;
   padding: 20px;
   margin-left: 220px;
-  width: 75%;
+  width: 75%; */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 40px;
 }
 
 

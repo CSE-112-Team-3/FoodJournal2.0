@@ -2,6 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Jockey+One&display=swap');
 body{
   background-color: beige;
+  margin: 0 auto;
+  font-family: reddit-sans-condensed;
 }
 .jockey-one-regular {
     font-family: "Jockey One", sans-serif;
