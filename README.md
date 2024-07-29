@@ -3,8 +3,9 @@
 Welcome to Food Journal! This web app empowers food lovers to review meals, share their culinary experiences, and explore what others have tasted. It's a community-driven platform that brings food enthusiasts together, helping each other explore the world of cuisine from the comfort of home. With the aid of AI, Food Journal recommends recipes tailored to your tastes and connects you to the best sources for those recipes. Join us to post your own reviews and share your culinary adventures with the world!
 
 ## Installation
-No installation required! Food Journal is a web app. Simply navigate to our website to get started.
-- https://foodjournal2.netlify.app/
+-  We ran out of Railway App credits so our backend doesn't work anymore, but check out our [Demo Video](https://youtu.be/X0XD_PsgZ1I) for intended functionality
+
+- No installation required! Food Journal is a web app. Simply navigate to our website to get started: https://foodjournal2.netlify.app/
 
 ## Usage
 - **Explore:** Browse the homepage to see posts from other food enthusiasts.
