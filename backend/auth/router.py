@@ -5,7 +5,6 @@ import sqlalchemy.orm as _orm
 from sqlalchemy.orm.session import Session
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 import auth.service as _service
-from auth.model import UserModel #, VisitorModel
 from service_database import get_db
 
 router_auth = APIRouter(
@@ -26,8 +25,6 @@ async def create_user(user: _schemas.UserBase, db: Session = Depends(get_db)):
         Awaitable[dict]: A dictionary indicating whether the user was successfully created.
     """
     return await _service.create_user(user, db)
-  
-  
 
 @router_auth.post("/login")
 async def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
@@ -53,43 +50,43 @@ async def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = De
     return await _service.login(request, db)
 
 @router_auth.patch("/update_user")
-async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: Session = Depends(get_db)):
+async def update_user(request: _schemas.UpdateUserBase, access_token: str, db: Session = Depends(get_db)):
     """
     Updates a user's information in the database.
 
     Args:
         request (_schemas.UpdateUserBase): The updated user information.
-        accessToken (str): The user's access token.
+        access_token (str): The user's access token.
         db (Session, optional): The database session. Defaults to Depends(get_db).
 
     Returns:
         Coroutine: A coroutine that returns a dictionary with a message indicating the success of the update.
     """
-    return await _service.update_user(request, accessToken, db)
+    return await _service.update_user(request, access_token, db)
 
 @router_auth.get("/get_user")
-async def get_user(accessToken: str, db: Session = Depends(get_db)):
+async def get_user(access_token: str, db: Session = Depends(get_db)):
     """
     Get the user information from the database based on the provided access token.
 
     Args:
-        accessToken (str): The access token used to authenticate the user.
+        access_token (str): The access token used to authenticate the user.
         db (Session, optional): The database session. Defaults to Depends(get_db).
 
     Returns:
         Coroutine: A coroutine that returns the user information from the database.
     """
-    return await _service.get_user_by_access_token(accessToken, db)
+    return await _service.get_user_by_access_token(access_token, db)
 
 @router_auth.post("/logout")
-async def logout(accessToken: str):
+async def logout(access_token: str):
     """
-    Get the user information from the database based on the provided access token.
+    Invalidate the given access token.
 
     Args:
-        accessToken (str): The access token used to authenticate the user.
+        access_token (str): The access token used to authenticate the user.
          
     Returns:
-        Coroutine: A coroutine that invalidates the given accessToken.
+        Coroutine: A coroutine that invalidates the given access token.
     """
-    return await _service.logout(accessToken)
+    return await _service.logout(access_token)

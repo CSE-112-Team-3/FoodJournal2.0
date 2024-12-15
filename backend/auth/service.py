@@ -1,18 +1,14 @@
 from . import model
-from fastapi import Depends, HTTPException, status
+from fastapi import HTTPException, status
 from email_validator import validate_email
 from sqlalchemy.orm import Session
 from auth.utils import bcrypt
-from sqlalchemy import DateTime
 import sqlalchemy.orm as _orm
 import schemas as _schemas
 import datetime as _datetime
 import auth.model as _models
 import auth.utils as util
-from uuid import uuid4
-from sqlalchemy import or_, and_, update, delete, insert, select
-import random
-import os
+from sqlalchemy import or_, update
 from datetime import timedelta
 from auth.utils import verify, create_access_token, get_current_user
 
@@ -40,7 +36,7 @@ def get_next_id(db: _orm.Session):
     the ID everytime instead of using local count to ensure that
     if the server restarts the count isn't reset.
 
-    :paam db: Database session
+    :param db: Database session
     :returns: Next usable ID
     """
     rslt = db.query(model.UserModel).order_by(model.UserModel.id).all()[-1]
@@ -55,26 +51,27 @@ async def create_user(user, db: _orm.Session):
     :param user: User information to create, should be a dict
     :return: Created user, if an error is raised, return None"""
 
-    if (email_exists(db, user.email)):
+    if email_exists(db, user.email):
         raise HTTPException(status_code=400, detail=f"Email {user.email} already exists")
-    elif (not validate_email(user.email)):
-        raise HTTPException(status_code=400, detail=f"Invalid email address")
-    elif (user_exists(user.username, db)):
-        print(user.username)
+    if not validate_email(user.email):
+        raise HTTPException(status_code=400, detail="Invalid email address")
+    if user_exists(user.username, db):
         raise HTTPException(status_code=400, detail=f"User {user.username} already exists")
 
     try:
-        hash = bcrypt(user.password)
-        user_obj = model.UserModel( first_name=user.first_name, 
-                                    last_name=user.last_name,
-                                    username=user.username, 
-                                    password=hash, 
-                                    email=user.email,
-                                    profile_picture=user.profile_picture )
+        hashed_password = bcrypt(user.password)
+        user_obj = model.UserModel(
+            first_name=user.first_name,
+            last_name=user.last_name,
+            username=user.username,
+            password=hashed_password,
+            email=user.email,
+            profile_picture=user.profile_picture
+        )
         db.add(user_obj)
         db.commit()
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"User could not be added: {e}")
+        raise HTTPException(status_code=400, detail=f"User could not be added: {e}") from e
 
     return {"user": user}
 
@@ -137,35 +134,35 @@ async def get_user_by_id(user_id: int, db: _orm.Session):
                 detail="User not found"
             )
         return user.username
-    except:
+    except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User could not be retrieved"
-        )
+        ) from e
 
-async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _orm.Session):
+async def update_user(request: _schemas.UpdateUserBase, access_token: str, db: _orm.Session):
     """
     Update a user's information based on the provided request and access token.
 
     :param request: An instance of the UpdateUserBase schema containing the updated user information.
-    :param accessToken: The access token of the user making the request.
+    :param access_token: The access token of the user making the request.
     :param db: The database session.
     :return: A dictionary with a message indicating that the user was updated.
     """
     try:
-        user_id = get_current_user(accessToken, db)
+        user_id = get_current_user(access_token, db)
         update_data = request.model_dump(exclude_unset=True)
         if not update_data:
-            raise HTTPException(status_code=400, detail=f"No fields to update")
+            raise HTTPException(status_code=400, detail="No fields to update")
         if update_data.get("email"):
-            if (email_exists(db, update_data.get("email"))):
-                raise HTTPException(status_code=400, detail=f'Email {update_data.get("email")} already exists')
-            elif (not validate_email(update_data.get("email"))):
-                raise HTTPException(status_code=400, detail=f"Invalid email address")
+            if email_exists(db, update_data.get("email")):
+                raise HTTPException(status_code=400, detail="Email already exists")
+            if not validate_email(update_data.get("email")):
+                raise HTTPException(status_code=400, detail="Invalid email address")
         if update_data.get("username"):
             username = update_data.get("username")
-            if (user_exists(username, db)):
-                raise HTTPException(status_code=400, detail=f'User {username} already exists')
+            if user_exists(username, db):
+                raise HTTPException(status_code=400, detail="User already exists")
         if update_data.get("password"):
             update_data["password"] = bcrypt(update_data.get("password"))
         stmt = (
@@ -175,17 +172,17 @@ async def update_user(request: _schemas.UpdateUserBase, accessToken: str, db: _o
         )
         result = db.execute(stmt)
         if result.rowcount == 0:
-            raise HTTPException (
-                status_code = status.HTTP_404_NOT_FOUND,
-                detail = "User not found"
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
             )
         db.commit()
-        return {"message":"User was updated"}
+        return {"message": "User was updated"}
     except HTTPException as http_exception:
         raise http_exception  # Re-raise HTTPException with custom message and status code
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail="An unexpected error occurred", success=False)
+        raise HTTPException(status_code=500, detail="An unexpected error occurred") from e
 
 def user_exists(username: str, db: _orm.Session):
     """
